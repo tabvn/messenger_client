@@ -20,6 +20,7 @@ const User = styled.div`
     background: #efefef;
   }
   .participants-user-avatar{
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,6 +65,30 @@ const Remove = styled.button`
   }
 `
 
+const Status = styled.div`
+    text-align: left;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+    border: 1px solid #FFF;
+    &.offline{
+          background: rgba(177, 187,192,1);
+      }
+    &.online {
+        background: rgba(119, 183,103,1);
+    }
+    &.busy {
+        background: rgba(244, 67,54,1);
+    }
+    &.away {
+        background: rgba(247, 173,55,1);
+    }
+     
+`
+
 export default class ParticipantsList extends React.Component {
 
   handleRemoveUser = (user) => {
@@ -85,11 +110,15 @@ export default class ParticipantsList extends React.Component {
           {users.map((user, index) => {
             const avatar = _.get(user, 'avatar', null)
             const name = `${_.get(user, 'first_name', '')} ${_.get(user, 'last_name', '')}`
+            const status = _.get(user, 'status', 'offline')
+
             return (
               <User
                 key={index} className={'participants-result'}>
                 <div className={'participants-user-avatar'}>
                   {avatar ? <img src={avatar} alt={''}/> : <i className={'md-icon'}>person_outline</i>}
+                  <Status className={`user-status ${status}`}/>
+
                 </div>
                 <div className={'participants-user-name'}>{name}</div>
                 <Remove
