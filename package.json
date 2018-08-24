@@ -28,6 +28,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "drupal": "./replace.sh",
-    "deploy": "./deploy.sh"
+    "deploy": "./deploy.sh",
+    "commit": "git add -A && git commit -m \"updated\" && git push"
   }
 }
