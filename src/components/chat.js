@@ -252,6 +252,7 @@ class Chat extends React.Component {
               this.renderModal()
             }
             <Messages
+              dock={dock}
               height={dock ? 500 : this.getMessageHeight()}
               hasFile={!!this.state.files.length}
               messages={messages}/>

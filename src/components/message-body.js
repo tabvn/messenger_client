@@ -11,6 +11,7 @@ import MessageGif from './message-gif'
 const Container = styled.div`
   padding: 0 0 0 10px;
   flex-grow: 1;
+  ${props => props.dock ? 'max-width: 300px;' : null}
 `
 
 const Text = styled.div`
@@ -19,6 +20,7 @@ const Text = styled.div`
   border-radius: 8px;
   background: ${props => props.background};
   .message-text{
+    word-break: break-all;
     color: ${props => props.color};
     font-weight: 300;
     a{
@@ -28,7 +30,7 @@ const Text = styled.div`
 `
 
 const P = styled.div`
-  font-size: 21px;
+  font-size: 18px;
   a{
     color: #f8c231;
   }
@@ -76,7 +78,7 @@ class MessageBody extends React.Component {
 
   render () {
 
-    const {message, currentUser} = this.props
+    const {message, currentUser, dock} = this.props
 
     const messageBackground = currentUser.id === message.user_id ? '#12416a' : '#e1e1e1'
     const messageColor = currentUser.id === message.user_id ? '#FFF' : '#4b4b4b'
@@ -92,7 +94,9 @@ class MessageBody extends React.Component {
     const isEmoji = _.get(message, 'emoji', false)
 
     return (
-      <Container className={'message-body'}>
+      <Container
+        dock={dock}
+        className={'message-body'}>
         {
           _.trim(_.get(message, 'body', '')) !== '' ?
             isEmoji ? <Emoji className={'message-emoticon'}>{message.body}</Emoji> :

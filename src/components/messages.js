@@ -41,6 +41,11 @@ export default class Messages extends React.Component {
     }
   }
 
+  componentDidMount () {
+    this.scrollToBottom()
+
+  }
+
   componentDidUpdate (prevProps) {
     if (this.props.messages.length > prevProps.messages.length) {
       this.scrollToBottom()
@@ -49,7 +54,7 @@ export default class Messages extends React.Component {
 
   renderMessages = () => {
 
-    const {messages} = this.props
+    const {messages, dock} = this.props
 
     let author = null
 
@@ -57,7 +62,7 @@ export default class Messages extends React.Component {
 
     messages.map((message, index) => {
 
-      rows.push(<Message hideAvatar={author === message.user_id} key={index} message={message}/>)
+      rows.push(<Message dock={dock} hideAvatar={author === message.user_id} key={index} message={message}/>)
 
       author = message.user_id
 

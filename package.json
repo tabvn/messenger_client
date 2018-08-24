@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "./pre_start.sh && react-scripts start",
-    "build": "./pre_build.sh && react-scripts build",
+    "build": "./pre_build.sh && react-scripts build && ./pre_start.sh",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "drupal": "./replace.sh",

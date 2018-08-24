@@ -46,7 +46,7 @@ class Message extends React.Component {
 
   render () {
 
-    const {message, user, hideAvatar} = this.props
+    const {message, user, hideAvatar, dock} = this.props
 
     let isEmptyMessage = false
 
@@ -70,7 +70,7 @@ class Message extends React.Component {
               className={'ar-message'}>
               <div className={'message-inner'}>
                 <MessageUserAvatar hide={hideAvatar} user={user}/>
-                <MessageBody user={user} message={message}/>
+                <MessageBody dock={dock} user={user} message={message}/>
               </div>
 
               {
