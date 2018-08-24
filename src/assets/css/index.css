@@ -1,0 +1,87 @@
+@import "../fonts/material-icons.css";
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+body.messenger {
+  margin: 0;
+  padding: 0;
+}
+
+body.admin-menu .sidebar-container {
+  top: 30px;
+}
+
+#messenger *,
+#messenger-inbox * {
+  box-sizing: border-box;
+}
+#messenger input,
+#messenger-inbox input {
+  outline: 0 none;
+}
+#messenger input:hover, #messenger input:active, #messenger input:focus,
+#messenger-inbox input:hover,
+#messenger-inbox input:active,
+#messenger-inbox input:focus {
+  outline: 0;
+}
+#messenger button,
+#messenger-inbox button {
+  outline: 0 none;
+}
+#messenger button:hover, #messenger button:active, #messenger button:focus,
+#messenger-inbox button:hover,
+#messenger-inbox button:active,
+#messenger-inbox button:focus {
+  outline: 0;
+}
+
+.region-messanger-container {
+  position: relative;
+  z-index: 100000;
+}
+
+.messenger-popover {
+  z-index: 10000;
+}
+
+.md-icon {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  font-feature-settings: "liga";
+}
+.md-icon.md-16 {
+  font-size: 18px;
+}
+.md-icon.md-18 {
+  font-size: 18px;
+}
+.md-icon.md-24 {
+  font-size: 24px;
+}
+.md-icon.md-36 {
+  font-size: 36px;
+}
+.md-icon.md-48 {
+  font-size: 48px;
+}
+
+/*# sourceMappingURL=index.css.map */
