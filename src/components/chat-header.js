@@ -15,7 +15,7 @@ const Container = styled.div`
   &.not-dock{
     background: #12416a;
   }
-  .user-name{
+  .ar-user-name{
     font-size: 21px;
     font-weight: 100;
     color: #FFF;
@@ -249,7 +249,7 @@ export default class ChatHeader extends React.Component {
     const name = `${_.get(firstUser, 'first_name', '')} ${_.get(firstUser, 'last_name', '')}`
 
     return (
-      <div className={'user-name'}>
+      <div className={'ar-user-name'}>
         {name}
         {users.length > 1 ? ',...' : null}
       </div>

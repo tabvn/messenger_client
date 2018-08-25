@@ -11,7 +11,7 @@ import MessageGif from './message-gif'
 const Container = styled.div`
   padding: 0 0 0 10px;
   flex-grow: 1;
-  ${props => props.dock ? 'max-width: 300px;' : null}
+  max-width: ${props => props.dock ? '300px;' : '590px'};
 `
 
 const Text = styled.div`
@@ -20,7 +20,7 @@ const Text = styled.div`
   border-radius: 8px;
   background: ${props => props.background};
   .message-text{
-    word-break: break-all;
+    word-break: break-all; 
     color: ${props => props.color};
     font-weight: 300;
     a{
@@ -63,7 +63,7 @@ class MessageBody extends React.Component {
       {
         items.map((line, key) => {
 
-          return <P className={'message-text'} key={key} dangerouslySetInnerHTML={{__html: line}}/>
+          return <P className={'message-text message-paragraph'} key={key} dangerouslySetInnerHTML={{__html: line}}/>
         })
       }
     </Fragment>

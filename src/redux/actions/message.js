@@ -281,7 +281,6 @@ export const sendMessage = (message, group = {id: null, avatar: '', title: ''}, 
       return
     }
 
-    message.body = JSON.stringify(message.body)
 
     // before send to server let add to local with temp id and status is sending.
 
@@ -325,7 +324,7 @@ export const sendMessage = (message, group = {id: null, avatar: '', title: ''}, 
     const attachmentIds = JSON.stringify(_.get(message, 'attachments', []))
 
     const query = `mutation sendMessage {
-      sendMessage(group_id: ${groupId}, body: ${_.get(message, 'body', '')}, gif: "${_.get(message, 'gif', '')}", emoji: ${_.get(message, 'emoji', false)}, attachments: ${attachmentIds}) {
+      sendMessage(group_id: ${groupId}, body: ${JSON.stringify(_.get(message, 'body', ''))}, gif: "${_.get(message, 'gif', '')}", emoji: ${_.get(message, 'emoji', false)}, attachments: ${attachmentIds}) {
         id
         body
         emoji
