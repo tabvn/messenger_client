@@ -4,14 +4,23 @@ import _ from 'lodash'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import MessageAttachment from './message-attachment'
-import { replaceUrls, setAttachmentModal } from '../redux/actions'
+import { deleteMessage, replaceUrls, setAttachmentModal } from '../redux/actions'
 import MessageFiles from './message-files'
 import MessageGif from './message-gif'
+import Menu from './menu'
 
 const Container = styled.div`
   padding: 0 0 0 10px;
   flex-grow: 1;
   max-width: ${props => props.dock ? '300px;' : '590px'};
+  .messenger-menu{
+    visibility: hidden;
+  }
+  &:hover{
+    .messenger-menu{
+      visibility: visible;
+    }
+  }
 `
 
 const Text = styled.div`
@@ -19,7 +28,10 @@ const Text = styled.div`
   padding: 15px;
   border-radius: 8px;
   background: ${props => props.background};
+  display: flex;
+  flex-direction: row;
   .message-text{
+    flex-grow: 1;
     word-break: break-all; 
     color: ${props => props.color};
     font-weight: 300;
@@ -36,6 +48,13 @@ const P = styled.div`
   }
 `
 
+const EmojiContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end; 
+  
+`
 const Emoji = styled.div`
   vertical-align: middle;
   font-size: 50px;
@@ -76,13 +95,33 @@ class MessageBody extends React.Component {
     this.props.setAttachmentModal(message.group_id, attachments, selected, true)
   }
 
+  handleMenuAction = (select) => {
+
+    const {message} = this.props
+
+    switch (select.action) {
+
+      case 'delete':
+
+        this.props.deleteMessage(message.id, true)
+
+        break
+
+      default:
+
+        break
+    }
+    console.log('select', select)
+  }
+
   render () {
 
     const {message, currentUser, dock} = this.props
 
-    const messageBackground = currentUser.id === message.user_id ? '#12416a' : '#e1e1e1'
-    const messageColor = currentUser.id === message.user_id ? '#FFF' : '#4b4b4b'
-    const linkColor = currentUser.id === message.user_id ? 'rgb(248, 194, 49)' : 'rgb(18, 65, 106)'
+    const currentUserId = _.get(currentUser, 'id')
+    const messageBackground = currentUserId === message.user_id ? '#12416a' : '#e1e1e1'
+    const messageColor = currentUserId === message.user_id ? '#FFF' : '#4b4b4b'
+    const linkColor = currentUserId === message.user_id ? 'rgb(248, 194, 49)' : 'rgb(18, 65, 106)'
 
     let attachments = _.get(message, 'attachments', [])
     if (!attachments) {
@@ -93,22 +132,55 @@ class MessageBody extends React.Component {
     const gif = _.get(message, 'gif')
     const isEmoji = _.get(message, 'emoji', false)
 
+    let actionItems = [
+
+      {
+
+        title: 'Delete',
+        icon: 'delete',
+        action: 'delete'
+      }
+    ]
+
+    if (currentUserId === message.user_id) {
+      actionItems = [
+        {
+
+          title: 'Edit',
+          icon: 'edit',
+          action: 'edit'
+        },
+        {
+          title: 'Delete',
+          icon: 'delete',
+          action: 'delete'
+        }
+      ]
+    }
+
     return (
       <Container
         dock={dock}
         className={'message-body'}>
         {
           _.trim(_.get(message, 'body', '')) !== '' ?
-            isEmoji ? <Emoji className={'message-emoticon'}>{message.body}</Emoji> :
+            isEmoji ?
+              <EmojiContainer>
+                <Emoji className={'message-emoticon'}>
+                  {message.body}
+                </Emoji>
+                <Menu onClick={this.handleMenuAction} items={actionItems}/>
+              </EmojiContainer> :
               <Text
                 hrefColor={linkColor}
                 color={messageColor} background={messageBackground} className={'message-text'}>
                 {this.renderText()}
+                <Menu onClick={this.handleMenuAction} items={actionItems}/>
               </Text> : null
         }
         {
           gif !== '' && (
-            <MessageGif gif={gif}/>
+            <MessageGif onDelete={this.handleMenuAction} gif={gif}/>
           )
         }
 
@@ -127,6 +199,7 @@ class MessageBody extends React.Component {
           files.length ? <MessageFiles files={files}/> : null
 
         }
+
       </Container>
     )
   }
@@ -137,7 +210,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  setAttachmentModal
+  setAttachmentModal,
+  deleteMessage,
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageBody)

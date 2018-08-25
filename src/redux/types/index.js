@@ -9,6 +9,7 @@ export const UPDATE_GROUP = 'group/update'
 export const PUSH_MESSAGE = 'message/push'
 export const SET_MESSAGE = 'message/set'
 export const UPDATE_MESSAGE = 'message/update'
+export const REMOVE_MESSAGE = 'message/remove'
 
 export const PUSH_USER = 'user/push'
 export const SET_USER = 'user/set'

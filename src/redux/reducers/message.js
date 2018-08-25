@@ -1,7 +1,19 @@
-import { PUSH_MESSAGE, SET_MESSAGE, UPDATE_MESSAGE } from '../types'
+import { PUSH_MESSAGE, REMOVE_MESSAGE, SET_MESSAGE, UPDATE_MESSAGE } from '../types'
 
 export default (state = [], action) => {
   switch (action.type) {
+
+    case REMOVE_MESSAGE:
+
+      let newStateOfMessage = [...state]
+
+      const deleteIndex = state.find((m) => m.id === action.payload)
+      if (deleteIndex !== -1) {
+        newStateOfMessage = newStateOfMessage.slice()
+        newStateOfMessage.splice(deleteIndex, 1)
+      }
+
+      return newStateOfMessage
 
     case SET_MESSAGE:
 

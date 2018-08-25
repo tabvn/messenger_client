@@ -15,6 +15,10 @@ body.admin-menu {
   }
 }
 
+.messenger-popover {
+  z-index: 100000;
+}
+
 #messenger,
 #messenger-inbox {
   * {

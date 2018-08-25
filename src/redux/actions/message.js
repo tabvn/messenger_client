@@ -1,6 +1,6 @@
 import {
   CLOSE_ATTACHMENT_MODAL,
-  PUSH_MESSAGE,
+  PUSH_MESSAGE, REMOVE_MESSAGE,
   SET_ATTACHMENT_MODAL, SET_INBOX_ACTIVE,
   SET_MESSAGE,
   SET_SELECTED_ATTACHMENT_MODAL,
@@ -281,7 +281,6 @@ export const sendMessage = (message, group = {id: null, avatar: '', title: ''}, 
       return
     }
 
-
     // before send to server let add to local with temp id and status is sending.
 
     message = _.setWith(message, 'status', 'sending')
@@ -424,5 +423,30 @@ export const setAttachmentModalSelected = (attachment) => {
       type: SET_SELECTED_ATTACHMENT_MODAL,
       payload: attachment
     })
+  }
+}
+
+export const deleteMessage = (id, callService = false) => {
+  return (dispatch, getState, {service}) => {
+
+    dispatch({
+      type: REMOVE_MESSAGE,
+      payload: id
+    })
+
+    if (callService) {
+
+      const query = `mutation deleteMessage{
+     
+        deleteMessage(id: ${id})
+      
+      }`
+
+      service.request(query).catch((e) => {
+
+        dispatch(setError(e))
+      })
+    }
+
   }
 }

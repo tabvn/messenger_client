@@ -1,7 +1,7 @@
 import { setError } from './error'
 import { updateUserStatus } from './user-status'
 import _ from 'lodash'
-import { setMessage } from './message'
+import { deleteMessage, setMessage } from './message'
 import { addUserToGroup, removeUserFromGroup, setGroup, updateGroup } from './group'
 import { setUser } from './user'
 import { openChat } from './chat'
@@ -213,6 +213,12 @@ export const handleReceiveWsMessage = (message) => {
       case 'message':
 
         dispatch(handleReceiveMessage(message.payload))
+
+        break
+
+      case 'message_deleted':
+
+        dispatch(deleteMessage(message.payload, false))
 
         break
 

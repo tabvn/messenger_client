@@ -12,6 +12,10 @@ body.admin-menu .sidebar-container {
   top: 30px;
 }
 
+.messenger-popover {
+  z-index: 100000;
+}
+
 #messenger *,
 #messenger-inbox * {
   box-sizing: border-box;

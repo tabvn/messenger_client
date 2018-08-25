@@ -1,7 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import Menu from './menu'
 
 const Container = styled.div`
+  display: flex;
+  justify-items: center;
+  align-items: center;
   img{
     max-width: 100%;
     max-height: 260px;
@@ -19,9 +23,16 @@ export default class MessageGif extends React.Component {
 
   render () {
 
+    const action = {title: 'Delete', icon: 'delete', action: 'delete'}
+
     return (
       <Container className={'message-gif'}>
         <img src={this.getUrl()} alt={''}/>
+        <Menu onClick={() => {
+          if (this.props.onDelete) {
+            this.props.onDelete(action)
+          }
+        }} items={[action]}/>
       </Container>
     )
   }
