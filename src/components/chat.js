@@ -44,13 +44,26 @@ class Chat extends React.Component {
   }
 
   componentDidMount () {
+
+    this.loadMessages()
+
+  }
+
+  loadMessages = () => {
     const {group} = this.props
 
     const groupId = _.get(group, 'id')
     if (groupId) {
       this.props.loadMessages(groupId, LIMIT, 0)
     }
+  }
 
+  componentDidUpdate (prevProps) {
+
+    if (this.props.messages.length < 2 && _.get(this.props.group, 'id') && _.get(this.props, 'group.id') !== _.get(prevProps, 'group.id')
+    ) {
+      this.loadMessages()
+    }
   }
 
   handleOnEditMessage = (message) => {

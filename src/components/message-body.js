@@ -1,4 +1,4 @@
-import React  from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 import { bindActionCreators } from 'redux'
@@ -40,7 +40,6 @@ const Text = styled.div`
     }
   }
 `
-
 
 const EmojiContainer = styled.div`
   display: flex;
@@ -85,18 +84,15 @@ class MessageBody extends React.Component {
     const items = _.split(body, '\n')
 
     let text = ''
+    items.map((line, key) => {
 
-    {
-      items.map((line, key) => {
-
-        if (key === 0) {
-          text = `${text} ${line}`
-        } else {
-          text = `${text} <br /> ${line}`
-        }
-        return line
-      })
-    }
+      if (key === 0) {
+        text = `${text} ${line}`
+      } else {
+        text = `${text} <br /> ${line}`
+      }
+      return line
+    })
 
     if (_.get(message, 'created') !== _.get(message, 'updated')) {
 
@@ -243,8 +239,4 @@ const
     deleteMessage,
   }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)
-
-(
-  MessageBody
-)
+export default connect(mapStateToProps, mapDispatchToProps)(MessageBody)
