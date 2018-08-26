@@ -70,7 +70,13 @@ class Message extends React.Component {
               className={'ar-message'}>
               <div className={'message-inner'}>
                 <MessageUserAvatar hide={hideAvatar} user={user}/>
-                <MessageBody dock={dock} user={user} message={message}/>
+                <MessageBody onEdit={(message) => {
+
+                  if(this.props.onEdit){
+                    this.props.onEdit(message)
+                  }
+
+                }} dock={dock} user={user} message={message}/>
               </div>
 
               {

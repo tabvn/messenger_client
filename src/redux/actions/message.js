@@ -114,6 +114,7 @@ export const loadMessages = (groupId, limit = 50, skip = 0) => {
           unread
           gif
           created
+          updated
           attachments {
             id
             message_id
@@ -182,7 +183,8 @@ export const createConversation = (message, userIds = [], g = {title: '', avatar
           user_id
           unread
           gif
-          created
+          created,
+          updated
           attachments {
             id
             message_id
@@ -271,6 +273,27 @@ export const createConversation = (message, userIds = [], g = {title: '', avatar
   }
 }
 
+export const updateMessage = (id, message, callService = false) => {
+  return (dispatch, getState, {service}) => {
+
+    message = _.setWith(message, 'updated', Math.floor(Date.now() / 1000))
+    dispatch(updateLocalMessage(id, message))
+
+    if (callService) {
+
+      const body = JSON.stringify(message.body)
+      const emoji = message.emoji
+      const q = `mutation updateMessage{
+        updateMessage(id: ${id}, body: ${body}, emoji: ${emoji})
+      }`
+
+      service.request(q).catch((e) => {
+        dispatch(setError(e))
+      })
+    }
+  }
+}
+
 export const sendMessage = (message, group = {id: null, avatar: '', title: ''}, userIds = []) => {
   return async (dispatch, getState, {service}) => {
 
@@ -331,6 +354,7 @@ export const sendMessage = (message, group = {id: null, avatar: '', title: ''}, 
         user_id
         group_id
         created
+        updated
         attachments {
           id
           message_id

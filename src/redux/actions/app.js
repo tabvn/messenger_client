@@ -59,7 +59,8 @@ export const initLoad = () => {
               user_id
               unread
               gif
-              created
+              created,
+              updated
               attachments {
                 id
                 message_id

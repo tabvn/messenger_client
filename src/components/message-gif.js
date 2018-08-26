@@ -23,16 +23,17 @@ export default class MessageGif extends React.Component {
 
   render () {
 
+    const {sent} = this.props
     const action = {title: 'Delete', icon: 'delete', action: 'delete'}
 
     return (
       <Container className={'message-gif'}>
         <img src={this.getUrl()} alt={''}/>
-        <Menu onClick={() => {
+        {sent && <Menu onClick={() => {
           if (this.props.onDelete) {
             this.props.onDelete(action)
           }
-        }} items={[action]}/>
+        }} items={[action]}/> }
       </Container>
     )
   }

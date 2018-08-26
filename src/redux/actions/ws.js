@@ -1,7 +1,7 @@
 import { setError } from './error'
 import { updateUserStatus } from './user-status'
 import _ from 'lodash'
-import { deleteMessage, setMessage } from './message'
+import { deleteMessage, setMessage, updateLocalMessage } from './message'
 import { addUserToGroup, removeUserFromGroup, setGroup, updateGroup } from './group'
 import { setUser } from './user'
 import { openChat } from './chat'
@@ -178,6 +178,21 @@ const handleReceiveUserJoinGroup = (payload) => {
 
   }
 }
+
+const handleReceiveMessageUpdated = (payload) => {
+
+  return (dispatch, getState) => {
+
+    let findMessage = getState().message.find((m) => m.id === payload.id)
+
+    if (findMessage) {
+
+      findMessage = Object.assign(findMessage, payload)
+      dispatch(updateLocalMessage(payload.id, findMessage))
+    }
+
+  }
+}
 export const handleReceiveWsMessage = (message) => {
 
   return (dispatch) => {
@@ -219,6 +234,12 @@ export const handleReceiveWsMessage = (message) => {
       case 'message_deleted':
 
         dispatch(deleteMessage(message.payload, false))
+
+        break
+
+      case 'message_updated':
+
+        dispatch(handleReceiveMessageUpdated(message.payload))
 
         break
 

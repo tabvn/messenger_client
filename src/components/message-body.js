@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React  from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 import { bindActionCreators } from 'redux'
@@ -30,7 +30,7 @@ const Text = styled.div`
   background: ${props => props.background};
   display: flex;
   flex-direction: row;
-  .message-text{
+  .message-text-inner{
     flex-grow: 1;
     word-break: break-all; 
     color: ${props => props.color};
@@ -41,12 +41,6 @@ const Text = styled.div`
   }
 `
 
-const P = styled.div`
-  font-size: 18px;
-  a{
-    color: #f8c231;
-  }
-`
 
 const EmojiContainer = styled.div`
   display: flex;
@@ -66,6 +60,18 @@ const Emoji = styled.div`
   font-family: Apple Color Emoji, Segoe UI Emoji, NotoColorEmoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
 `
 
+const BodyInner = styled.div`
+  flex-grow: 1;
+  font-size: 18px;
+  .message-edited{
+    color: inherit;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 100;
+  }
+
+`
+
 class MessageBody extends React.Component {
 
   renderText () {
@@ -78,14 +84,26 @@ class MessageBody extends React.Component {
     }
     const items = _.split(body, '\n')
 
-    return <Fragment>
-      {
-        items.map((line, key) => {
+    let text = ''
 
-          return <P className={'message-text message-paragraph'} key={key} dangerouslySetInnerHTML={{__html: line}}/>
-        })
-      }
-    </Fragment>
+    {
+      items.map((line, key) => {
+
+        if (key === 0) {
+          text = `${text} ${line}`
+        } else {
+          text = `${text} <br /> ${line}`
+        }
+        return line
+      })
+    }
+
+    if (_.get(message, 'created') !== _.get(message, 'updated')) {
+
+      text = `${text} <span class="message-edited">(edited)</span>`
+    }
+
+    return text ? <BodyInner className={'message-text-inner'} dangerouslySetInnerHTML={{__html: text}}/> : null
   }
 
   handleOpenAttachmentModal = (attachments, selected) => {
@@ -107,11 +125,18 @@ class MessageBody extends React.Component {
 
         break
 
+      case 'edit':
+
+        if (this.props.onEdit) {
+          this.props.onEdit(message)
+        }
+
+        break
+
       default:
 
         break
     }
-    console.log('select', select)
   }
 
   render () {
@@ -122,6 +147,8 @@ class MessageBody extends React.Component {
     const messageBackground = currentUserId === message.user_id ? '#12416a' : '#e1e1e1'
     const messageColor = currentUserId === message.user_id ? '#FFF' : '#4b4b4b'
     const linkColor = currentUserId === message.user_id ? 'rgb(248, 194, 49)' : 'rgb(18, 65, 106)'
+    const status = _.get(message, 'status')
+    const isSent = status !== 'sending' && status !== 'error'
 
     let attachments = _.get(message, 'attachments', [])
     if (!attachments) {
@@ -169,18 +196,18 @@ class MessageBody extends React.Component {
                 <Emoji className={'message-emoticon'}>
                   {message.body}
                 </Emoji>
-                <Menu onClick={this.handleMenuAction} items={actionItems}/>
+                {isSent && <Menu onClick={this.handleMenuAction} items={actionItems}/>}
               </EmojiContainer> :
               <Text
                 hrefColor={linkColor}
                 color={messageColor} background={messageBackground} className={'message-text'}>
                 {this.renderText()}
-                <Menu onClick={this.handleMenuAction} items={actionItems}/>
+                {isSent && <Menu onClick={this.handleMenuAction} items={actionItems}/>}
               </Text> : null
         }
         {
           gif !== '' && (
-            <MessageGif onDelete={this.handleMenuAction} gif={gif}/>
+            <MessageGif sent={isSent} onDelete={this.handleMenuAction} gif={gif}/>
           )
         }
 
@@ -205,13 +232,19 @@ class MessageBody extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  currentUser: state.app.user,
-})
+const
+  mapStateToProps = (state) => ({
+    currentUser: state.app.user,
+  })
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  setAttachmentModal,
-  deleteMessage,
-}, dispatch)
+const
+  mapDispatchToProps = (dispatch) => bindActionCreators({
+    setAttachmentModal,
+    deleteMessage,
+  }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessageBody)
+export default connect(mapStateToProps, mapDispatchToProps)
+
+(
+  MessageBody
+)

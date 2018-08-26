@@ -4,7 +4,7 @@ import Popover from './popover'
 import PropTypes from 'prop-types'
 
 const Container = styled.div`
-  width: 30px;
+  width: 20px;
 `
 
 const Button = styled.button`

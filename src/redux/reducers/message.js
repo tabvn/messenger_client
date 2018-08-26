@@ -7,11 +7,7 @@ export default (state = [], action) => {
 
       let newStateOfMessage = [...state]
 
-      const deleteIndex = state.find((m) => m.id === action.payload)
-      if (deleteIndex !== -1) {
-        newStateOfMessage = newStateOfMessage.slice()
-        newStateOfMessage.splice(deleteIndex, 1)
-      }
+      newStateOfMessage = newStateOfMessage.filter((m) => m.id !== action.payload)
 
       return newStateOfMessage
 

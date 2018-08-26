@@ -62,7 +62,12 @@ export default class Messages extends React.Component {
 
     messages.map((message, index) => {
 
-      rows.push(<Message dock={dock} hideAvatar={author === message.user_id} key={index} message={message}/>)
+      rows.push(<Message onEdit={(message) => {
+        if (this.props.onEdit) {
+          this.props.onEdit(message)
+        }
+        
+      }} dock={dock} hideAvatar={author === message.user_id} key={index} message={message}/>)
 
       author = message.user_id
 

@@ -7,7 +7,7 @@ import ChatHeader from './chat-header'
 import { getGroupUnreadCount, getGroupUsers } from '../redux/selector/group'
 import Messages from './messages'
 import { getGroupMessages } from '../redux/selector/message'
-import { closeChat, loadMessages, sendMessage, setActiveChat, toggleChat } from '../redux/actions'
+import { closeChat, loadMessages, sendMessage, setActiveChat, toggleChat, updateMessage } from '../redux/actions'
 import Composer from './composer'
 import { maxUploadSize } from '../config'
 import ChatModal from './chat-modal'
@@ -36,7 +36,8 @@ class Chat extends React.Component {
     files: [],
     gif: '',
     modal: null,
-    emoji: null
+    emoji: null,
+    edit: null
   }
 
   componentDidMount () {
@@ -49,6 +50,13 @@ class Chat extends React.Component {
 
   }
 
+  handleOnEditMessage = (message) => {
+
+    this.setState({
+      edit: message
+    })
+
+  }
   activeChat = () => {
 
     const {active} = this.props
@@ -70,20 +78,37 @@ class Chat extends React.Component {
 
   send = (msg) => {
     const {group, users, currentUserId} = this.props
-    let userIds = []
-    if (users.length) {
-      users.forEach((u) => {
-        userIds.push(u.id)
-      })
+
+    if (this.state.edit) {
+
+      if (this.state.edit.body !== msg.body) {
+
+        let editMessage = this.state.edit
+
+        editMessage.emoji = msg.emoji
+        editMessage.body = msg.body
+        this.props.updateMessage(editMessage.id, editMessage, true)
+      }
+
+    } else {
+
+      let userIds = []
+      if (users.length) {
+        users.forEach((u) => {
+          userIds.push(u.id)
+        })
+      }
+      msg.files = this.state.files
+      msg.user_id = currentUserId
+      msg.gif = this.state.gif
+      this.props.sendMessage(msg, group, userIds)
+
     }
-    msg.files = this.state.files
-    msg.user_id = currentUserId
-    msg.gif = this.state.gif
-    this.props.sendMessage(msg, group, userIds)
 
     this.setState({
       gif: '',
-      files: []
+      files: [],
+      edit: null
     })
   }
   onAddFiles = (files) => {
@@ -252,6 +277,7 @@ class Chat extends React.Component {
               this.renderModal()
             }
             <Messages
+              onEdit={this.handleOnEditMessage}
               dock={dock}
               height={dock ? 500 : this.getMessageHeight()}
               hasFile={!!this.state.files.length}
@@ -261,6 +287,7 @@ class Chat extends React.Component {
 
         {isOpen && (
           <Composer
+            edit={this.state.edit}
             isNew={isNew}
             onOpenModal={this.showModal}
             onRemoveFile={this.onRemoveFile}
@@ -294,7 +321,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   toggleChat,
   closeChat,
   sendMessage,
-  setActiveChat
+  setActiveChat,
+  updateMessage
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat)

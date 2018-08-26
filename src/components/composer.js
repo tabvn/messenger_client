@@ -211,6 +211,12 @@ export default class Composer extends React.Component {
     if (this.props.emoji && prevProps.emoji !== this.props.emoji) {
       this.handleAddEmoji(this.props.emoji)
     }
+
+    if (this.props.edit && prevProps.edit !== this.props.edit && _.get(prevProps.edit, 'id') !== _.get(this.props.edit, 'id')) {
+      this.setState({
+        message: this.props.edit.body
+      })
+    }
   }
 
   handleAddEmoji = (emoji) => {
@@ -274,14 +280,22 @@ export default class Composer extends React.Component {
 
   render () {
     const {message, gif} = this.state
-    const {files, isNew} = this.props
+    const {files, isNew, edit} = this.props
 
     const inputId = _.uniqueId('input')
 
     let allowSend = false
+    let allowActions = true
+
     if (_.trim(message) !== '' || files.length || _.trim(gif) !== '') {
       allowSend = true
+      allowActions = false
     }
+
+    if (edit) {
+      allowActions = false
+    }
+
     return (
       <Container className={'composer'}>
         {isNew && <Overlay/>}
@@ -301,7 +315,10 @@ export default class Composer extends React.Component {
               if (event.shiftKey === false && event.key === 'Enter') {
 
                 event.preventDefault()
-                this.send()
+                if (allowSend) {
+                  this.send()
+                }
+
               }
             }}
             onBlur={() => {
@@ -333,7 +350,7 @@ export default class Composer extends React.Component {
               <i className={'md-icon'}>tag_faces</i>
             </Button>
             {
-              !allowSend &&
+              allowActions &&
               (<Fragment>
                 <Button
                   onClick={() => {
@@ -360,7 +377,7 @@ export default class Composer extends React.Component {
               </Fragment>)
             }
             {allowSend && (<Button onClick={() => this.send()} className={'send'}>
-              <i className={'md-icon'}>send</i>
+              <i className={'md-icon'}>{edit ? 'save' : 'send'}</i>
             </Button>)}
           </Tools>
         </Inner>
