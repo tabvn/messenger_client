@@ -30,7 +30,7 @@ const ChatMessages = styled.div`
   background: #FFF;
 `
 
-const LIMIT = 10
+const LIMIT = 50
 
 class Chat extends React.Component {
 
