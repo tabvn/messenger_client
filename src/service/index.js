@@ -68,8 +68,6 @@ export default class Service {
     }
     this.ws.onclose = (e) => {
 
-      console.log('closed', e)
-
       this._connected = false
       this._isReconnecting = false
       this.reconnect()

@@ -30,6 +30,8 @@ const ChatMessages = styled.div`
   background: #FFF;
 `
 
+const LIMIT = 10
+
 class Chat extends React.Component {
 
   state = {
@@ -37,7 +39,8 @@ class Chat extends React.Component {
     gif: '',
     modal: null,
     emoji: null,
-    edit: null
+    edit: null,
+    isLoadingMore: false
   }
 
   componentDidMount () {
@@ -45,7 +48,7 @@ class Chat extends React.Component {
 
     const groupId = _.get(group, 'id')
     if (groupId) {
-      this.props.loadMessages(groupId, 50, 0)
+      this.props.loadMessages(groupId, LIMIT, 0)
     }
 
   }
@@ -229,6 +232,35 @@ class Chat extends React.Component {
     return height - 140
   }
 
+  handleLoadMoreMessages = () => {
+
+    const {messages, group} = this.props
+
+    if (messages.length >= LIMIT) {
+      const groupId = _.get(group, 'id')
+      if (groupId) {
+
+        this.setState({
+          isLoadingMore: true
+        }, () => {
+
+          this.props.loadMessages(groupId, LIMIT, messages.length).then(() => {
+            this.setState({
+              isLoadingMore: false
+            })
+
+          }).catch((e) => {
+
+            this.setState({
+              isLoadingMore: false
+            })
+
+          })
+        })
+      }
+    }
+  }
+
   render () {
 
     const {dock, group, users, messages, active, avatar, unread, isNew} = this.props
@@ -277,6 +309,8 @@ class Chat extends React.Component {
               this.renderModal()
             }
             <Messages
+              isLoadingMore={this.state.isLoadingMore}
+              onLoadMore={this.handleLoadMoreMessages}
               onEdit={this.handleOnEditMessage}
               dock={dock}
               height={dock ? 500 : this.getMessageHeight()}

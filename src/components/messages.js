@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Message from './message'
+import _ from 'lodash'
 
 const Container = styled.div`
   flex-grow: 1;
@@ -33,6 +34,8 @@ const Container = styled.div`
   }
 `
 
+let sessionScrollTop = null
+
 export default class Messages extends React.Component {
 
   scrollToBottom = () => {
@@ -47,8 +50,19 @@ export default class Messages extends React.Component {
   }
 
   componentDidUpdate (prevProps) {
+    const {isLoadingMore} = this.props
+
     if (this.props.messages.length > prevProps.messages.length) {
-      this.scrollToBottom()
+      if (isLoadingMore) {
+
+        if (this.ref && sessionScrollTop) {
+          this.ref.scrollTop = this.ref.scrollHeight - sessionScrollTop
+        }
+
+      } else {
+        this.scrollToBottom()
+      }
+
     }
   }
 
@@ -66,7 +80,7 @@ export default class Messages extends React.Component {
         if (this.props.onEdit) {
           this.props.onEdit(message)
         }
-        
+
       }} dock={dock} hideAvatar={author === message.user_id} key={index} message={message}/>)
 
       author = message.user_id
@@ -93,6 +107,24 @@ export default class Messages extends React.Component {
     )
   }
 
+  handleOnScroll = (event) => {
+
+    const scrollViewOffsetY = _.get(event.target, 'scrollTop', 0)
+    const scrollViewFrameHeight = _.get(event.target, 'clientHeight', 0)
+
+    const sum = scrollViewOffsetY + scrollViewFrameHeight
+
+    if (sum <= scrollViewFrameHeight) {
+      // Reached top
+      sessionScrollTop = this.ref.scrollHeight
+
+      if (this.props.onLoadMore) {
+        this.props.onLoadMore()
+      }
+    }
+
+  }
+
   render () {
 
     const {messages, hasFile, height} = this.props
@@ -111,7 +143,7 @@ export default class Messages extends React.Component {
           }
         }}
         className={'ar-messages'}>
-        <div ref={(ref) => this.ref = ref} className={'inner'}>
+        <div onScroll={this.handleOnScroll} ref={(ref) => this.ref = ref} className={'inner'}>
           {
             messages.length ? this.renderMessages() : this.renderEmpty()
           }

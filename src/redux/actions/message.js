@@ -127,15 +127,22 @@ export const loadMessages = (groupId, limit = 50, skip = 0) => {
     }
     `
 
-    return service.request(query).then((res) => {
+    return new Promise((resolve, reject) => {
 
-      const messages = res.messages
+      service.request(query).then((res) => {
 
-      dispatch(setMessage(messages))
+        const messages = res.messages
 
-    }).catch((err) => {
+        dispatch(setMessage(messages))
 
-      dispatch(setError(err))
+        return resolve(messages)
+
+      }).catch((err) => {
+
+        dispatch(setError(err))
+        return reject(err)
+      })
+
     })
 
   }
