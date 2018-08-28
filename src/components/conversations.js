@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Conversation from './conversation'
+import _ from 'lodash'
 
 const Container = styled.div`
   overflow-x: hidden;
@@ -120,7 +121,7 @@ export default class Conversations extends React.Component {
 
   renderNotFound = () => {
 
-    const {searchIsDone, search,sidebarIsOpen} = this.props
+    const {searchIsDone, search, sidebarIsOpen} = this.props
 
     if (searchIsDone && search !== '') {
       return this.renderSearchNoResult()
@@ -146,17 +147,34 @@ export default class Conversations extends React.Component {
     )
   }
 
+  handleOnScroll = (event) => {
+
+    const scrollViewOffsetY = _.get(event.target, 'scrollTop', 0)
+    const scrollViewFrameHeight = _.get(event.target, 'clientHeight', 0)
+    const scrollViewContentHeight = _.get(event, 'target.scrollHeight', 0)
+    const sum = scrollViewOffsetY + scrollViewFrameHeight
+
+    if (sum >= scrollViewContentHeight) {
+
+      if (this.props.onLoadMore) {
+        this.props.onLoadMore()
+      }
+    }
+
+  }
+
   render () {
 
-    const {groups, appIsFetched, height,sidebarIsOpen} = this.props
+    const {groups, appIsFetched, height, sidebarIsOpen} = this.props
 
     let h = height - 260
-    if(sidebarIsOpen){
+    if (sidebarIsOpen) {
       h = height - 140
     }
 
     return (
       <Container
+        onScroll={this.handleOnScroll}
         h={h}
         className={'conversations'}>
         {

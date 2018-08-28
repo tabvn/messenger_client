@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Sidebar from './sidebar'
 import Chats from './chats'
-import { openChat, createChat } from '../redux/actions'
+import { openChat, createChat, removeInboxActive } from '../redux/actions'
 
 const Dock = styled.div`
   position: fixed;
@@ -27,6 +27,9 @@ class Messenger extends React.Component {
   componentDidMount () {
 
     window.addEventListener('resize', this.resize.bind(this))
+
+    document.body.classList.add('ar-messenger')
+    this.props.removeInboxActive()
   }
 
   componentWillUnmount () {
@@ -69,7 +72,7 @@ class Messenger extends React.Component {
               </div>
 
             </Dock>
-          ): null
+          ) : null
         }
       </div>
     )
@@ -83,7 +86,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   openChat,
-  createChat
+  createChat,
+  removeInboxActive
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messenger)

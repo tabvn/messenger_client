@@ -14,10 +14,13 @@ const Container = styled.div`
   ${props => !props.dock ? 'background: #efefef' : null}
 `
 
+const LIMIT = 50
+
 class SidebarContent extends React.Component {
 
   state = {
-    fetched: false
+    fetched: false,
+    search: '',
   }
   handleClose = (g) => {
 
@@ -37,6 +40,7 @@ class SidebarContent extends React.Component {
 
     if (search === '') {
       this.setState({
+        search: '',
         fetched: false
       })
 
@@ -45,6 +49,7 @@ class SidebarContent extends React.Component {
     if (activeTab === 0) {
 
       this.setState({
+        search: search,
         fetched: false
       }, () => {
         this.props.searchGroups(search).then(() => {
@@ -57,6 +62,7 @@ class SidebarContent extends React.Component {
     } else {
       // search contacts
       this.setState({
+        search: search,
         fetched: false
       }, () => {
 
@@ -71,6 +77,23 @@ class SidebarContent extends React.Component {
 
   }
 
+  handleLoadMoreConversations = () => {
+
+    const {groups} = this.props
+
+    this.setState({
+      fetched: false
+    }, () => {
+
+      this.props.searchGroups(this.state.search, LIMIT, groups.length).then(() => {
+        this.setState({
+          fetched: true
+        })
+      })
+
+    })
+  }
+
   render () {
 
     const {activeTab, sidebarIsOpen, groups, friends, search, appFetched, dock, height} = this.props
@@ -83,6 +106,7 @@ class SidebarContent extends React.Component {
           {activeTab === 0 &&
           (
             <Conversations
+              onLoadMore={this.handleLoadMoreConversations}
               dock={dock}
               sidebarIsOpen={sidebarIsOpen}
               height={height}

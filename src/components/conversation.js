@@ -96,7 +96,7 @@ const mapStateToProps = (state, props) => ({
   users: getGroupUsers(state, props),
   lastMessage: getLastMessage(state, props),
   sidebarIsOpen: state.sidebar.open,
-  active: groupIsActive(state, _.get(props, 'group.id')),
+  active: groupIsActive(state, _.get(props, 'group.id'), props.dock),
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch)

@@ -109,15 +109,17 @@ export const getGroupUnreadCount = createSelector(
   (count) => count,
 )
 
-const _groupIsActive = (state, groupId) => {
+const _groupIsActive = (state, groupId, dock = false) => {
+
   if (!groupId) {
     return false
   }
 
-  if (_.get(state.chat.active, 'group.id') === groupId || _.get(state.inbox.active, 'group.id') === groupId) {
-    return true
+  if (dock) {
+    return _.get(state.chat.active, 'group.id') === groupId
   }
-  return false
+
+  return _.get(state.inbox.active, 'group.id') === groupId
 
 }
 

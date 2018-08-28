@@ -193,6 +193,25 @@ const handleReceiveMessageUpdated = (payload) => {
 
   }
 }
+
+const handelReceiveAddFriend = (payload) => {
+  return (dispatch) => {
+    dispatch(setUser(payload.friend))
+
+  }
+}
+
+const handelReceiveUnFriend = (payload) => {
+  return (dispatch, getState) => {
+
+    let user = getState().user.find((u) => u.id === payload.friend_id)
+
+    if (user) {
+      user = _.setWith(user, 'friend', false)
+      dispatch(setUser(user))
+    }
+  }
+}
 export const handleReceiveWsMessage = (message) => {
 
   return (dispatch) => {
@@ -201,7 +220,7 @@ export const handleReceiveWsMessage = (message) => {
       message = JSON.parse(message)
 
     } catch (e) {
-      console.log(e)
+
       dispatch(setError(e))
     }
 
@@ -240,6 +259,18 @@ export const handleReceiveWsMessage = (message) => {
       case 'message_updated':
 
         dispatch(handleReceiveMessageUpdated(message.payload))
+
+        break
+
+      case 'add_friend':
+
+        dispatch(handelReceiveAddFriend(message.payload))
+
+        break
+
+      case 'un_friend':
+
+        dispatch(handelReceiveUnFriend(message.payload))
 
         break
 

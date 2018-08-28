@@ -76,13 +76,13 @@ export const setGroup = (group = []) => {
  * @param skip
  * @returns {Function}
  */
-export const searchGroups = (search, limit, skip) => {
+export const searchGroups = (search, limit = 50, skip = 0) => {
 
   return (dispatch, getState, {service}) => {
 
     const query = `
       query groups {
-          groups(search: "${search}", limit: 50, skip: 0) {
+          groups(search: "${search}", limit: ${limit}, skip: ${skip}) {
               id
               title
               avatar
@@ -147,6 +147,10 @@ export const searchGroups = (search, limit, skip) => {
 
           users = _.uniqBy(users, 'id')
           dispatch(setUser(users))
+
+          if (search === '') {
+            dispatch(setGroup(groups))
+          }
 
         }
 

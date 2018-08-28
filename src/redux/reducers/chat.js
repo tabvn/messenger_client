@@ -81,7 +81,8 @@ export default (state = {
 
       return {
         ...state,
-        tabs: tt
+        tabs: tt,
+        active: _.get(state.active, 'id') === action.payload ? null : state.active
       }
 
     case UPDATE_CHAT_TAB:
