@@ -2,14 +2,15 @@ import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 import { api } from '../config'
+import GroupAvatar from './group-avatar'
 
 const Container = styled.div`
   position: relative;
   height: 40px;
   padding-left: 8px;
   .group-avatar{
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     background: #009beb;
     border-radius: 50%;
     display: flex;
@@ -20,8 +21,8 @@ const Container = styled.div`
     }
   }
   .user-avatar, .group-avatar{
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     background: #0096e3;
     border-radius: 50%;
     display: flex;
@@ -31,8 +32,8 @@ const Container = styled.div`
       color: #FFF;
     }
     img{
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       object-fit: cover;
     }
@@ -92,11 +93,11 @@ export default class ConversationAvatar extends React.Component {
   }
 
   renderGroupAvatar () {
-    const {avatar} = this.props
+    const {avatar, users} = this.props
 
     return (
-      <div className={'group-avatar'}>
-        {!avatar ? <i className={'md-icon md-24'}>group</i> : <img src={this.getFileUrl(avatar)} alt={''}/>}
+      !avatar ? <GroupAvatar users={users}/> : <div className={'group-avatar'}>
+        <img src={this.getFileUrl(avatar)} alt={''}/>
       </div>
     )
   }

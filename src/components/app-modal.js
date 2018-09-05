@@ -72,12 +72,13 @@ class AppModal extends React.Component {
     const title = _.get(modal, 'title', null)
     const close = _.get(modal, 'close', null)
     const open = _.get(modal, 'open', false)
+    const className = _.get(modal, 'className', null)
 
     return (
       modal && open ? (
         <Fragment>
           <Overlay className="modal-overlay"/>
-          <Container className={'app-modal'}>
+          <Container className={`app-modal${className ? ' ' + className : ''}`}>
             {title || close ? (
               <Header className={'modal-header'}>
                 <Title>{title}</Title>

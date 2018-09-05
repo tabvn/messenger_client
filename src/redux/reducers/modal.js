@@ -5,7 +5,8 @@ export default (state = {
   close: null,
   component: null,
   open: false,
-  onClose: null
+  onClose: null,
+  className: null,
 
 }, action) => {
 
@@ -23,6 +24,7 @@ export default (state = {
         open: payload.open,
         close: payload.close,
         onClose: payload.onClose,
+        className: payload.className,
       }
 
     case CLOSE_MODAL:
@@ -36,7 +38,8 @@ export default (state = {
         close: null,
         open: false,
         onClose: null,
-        component: null
+        component: null,
+        className: null,
       }
     default:
 

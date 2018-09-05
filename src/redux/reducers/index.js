@@ -17,6 +17,7 @@ import gif from './gif'
 import emoji from './emoji'
 import inbox from './inbox'
 import sound from './sound'
+import call from './call'
 
 export default combineReducers({
   app,
@@ -36,5 +37,6 @@ export default combineReducers({
   modal,
   gif,
   emoji,
-  inbox
+  inbox,
+  call
 })

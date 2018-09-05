@@ -208,6 +208,10 @@ export default class Composer extends React.Component {
 
   componentDidUpdate (prevProps, prevState) {
 
+    if (this.props.emoji && this.props.onClearEmoji) {
+      this.props.onClearEmoji()
+    }
+
     if (this.props.emoji && prevProps.emoji !== this.props.emoji) {
       this.handleAddEmoji(this.props.emoji)
     }

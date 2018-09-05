@@ -104,6 +104,7 @@ export default class Service {
 
     if (this._connected === true && this.ws.readyState === 1) {
       const message = JSON.stringify(msg)
+
       this.ws.send(message)
     } else {
       this._queue.push({

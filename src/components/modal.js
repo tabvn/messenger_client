@@ -31,9 +31,10 @@ class Modal extends React.Component {
 
   handleOpenModal = () => {
 
-    const {open, title, onClose} = this.props
+    let {open, title, onClose, className, header} = this.props
 
-    const closeButton = (<Close onClick={(e) => {
+
+    let closeButton = (<Close onClick={(e) => {
       if (onClose) {
         onClose(e)
       } else {
@@ -42,7 +43,11 @@ class Modal extends React.Component {
 
     }}><i className={'md-icon'}>close</i></Close>)
 
-    this.props.openModal(this.props.children, title, closeButton, open, onClose)
+    if(!header){
+      title = null
+      closeButton = null
+    }
+    this.props.openModal(this.props.children, title, closeButton, open, onClose, className)
 
   }
 
@@ -57,10 +62,16 @@ class Modal extends React.Component {
   }
 }
 
+Modal.defaultProps = {
+  header: true,
+}
+
 Modal.propTypes = {
   title: PropTypes.any,
   open: PropTypes.bool,
   onClose: PropTypes.func,
+  className: PropTypes.string,
+  header: PropTypes.bool,
 }
 
 const mapStateToProps = (state) => ({})

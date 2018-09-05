@@ -20,11 +20,13 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
-    "styled-components": "^3.4.2"
+    "styled-components": "^3.4.2",
+    "webrtc-adapter": "^6.3.2"
   },
   "scripts": {
     "start": "./pre_start.sh && react-scripts start",
     "build": "./pre_build.sh && react-scripts build && ./pre_start.sh",
+    "build-dev": "react-scripts build && npm run drupal",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "drupal": "./replace.sh",

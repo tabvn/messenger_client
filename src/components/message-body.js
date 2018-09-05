@@ -32,11 +32,12 @@ const Text = styled.div`
   flex-direction: row;
   .message-text-inner{
     flex-grow: 1;
-    word-break: break-all; 
     color: ${props => props.color};
     font-weight: 300;
     a{
       color: ${props => props.hrefColor};
+      word-break: break-all; 
+      display: inline-block;
     }
   }
 `

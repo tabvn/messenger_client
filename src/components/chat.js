@@ -7,7 +7,15 @@ import ChatHeader from './chat-header'
 import { getGroupUnreadCount, getGroupUsers } from '../redux/selector/group'
 import Messages from './messages'
 import { getGroupMessages } from '../redux/selector/message'
-import { closeChat, loadMessages, sendMessage, setActiveChat, toggleChat, updateMessage } from '../redux/actions'
+import {
+  closeChat,
+  loadMessages,
+  sendMessage,
+  setActiveChat,
+  toggleChat,
+  updateMessage,
+  startCall
+} from '../redux/actions'
 import Composer from './composer'
 import { maxUploadSize } from '../config'
 import ChatModal from './chat-modal'
@@ -274,6 +282,10 @@ class Chat extends React.Component {
     }
   }
 
+  handleStartVideoCall = () => {
+    this.props.startCall(this.props.users, this.props.group)
+  }
+
   render () {
 
     const {dock, group, users, messages, active, avatar, unread, isNew} = this.props
@@ -294,6 +306,7 @@ class Chat extends React.Component {
           onClick={() => this.activeChat()}
           active={active}
           onOpenModal={this.showModal}
+          onVideoCall={this.handleStartVideoCall}
           onClose={() => {
             if (dock && this.props.tab) {
               this.props.closeChat(this.props.tab.id)
@@ -334,6 +347,11 @@ class Chat extends React.Component {
 
         {isOpen && (
           <Composer
+            onClearEmoji={() => {
+              this.setState({
+                emoji: null
+              })
+            }}
             edit={this.state.edit}
             isNew={isNew}
             onOpenModal={this.showModal}
@@ -369,7 +387,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   closeChat,
   sendMessage,
   setActiveChat,
-  updateMessage
+  updateMessage,
+  startCall
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat)

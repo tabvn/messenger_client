@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 import { api } from '../config'
+import GroupAvatar from './group-avatar'
 
 const Container = styled.div`
   height: 74px;
@@ -19,6 +20,7 @@ const Container = styled.div`
     font-size: 21px;
     font-weight: 100;
     color: #FFF;
+    text-align: left;
     
   }
   .chat-title{
@@ -39,6 +41,8 @@ const Container = styled.div`
     color: #FFF;
     font-weight: 100;
     text-align: left;
+    display: flex;
+    align-items: center;
   }
   .header-chat-info-container{
     padding: 0 15px;
@@ -126,6 +130,7 @@ const HeaderChatInfo = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid #e5e7e8;
     i{
       color: #FFF;
     }
@@ -154,7 +159,7 @@ const CloseButton = styled.button`
 `
 
 const HeaderAvatar = styled.div`
-  width: 45px;
+  width: 55px;
   height: 45px;
   margin-right: 10px;
   position: relative;
@@ -207,6 +212,24 @@ const GroupMoreUser = styled.div`
    }
 `
 
+const CallButton = styled.button`
+
+  border: 0 none;
+  background: none;
+  padding: 0;
+  marin: 0;
+  outline: 0 none;
+  margin-left: 5px;
+  cursor: pointer;
+  &:active,&:focus{
+    outline: 0 none;
+  }
+  i{
+    color: #FFF;
+    font-size: 24px;
+  }
+`
+
 export default class ChatHeader extends React.Component {
 
   getFileUrl = (avatar) => {
@@ -214,10 +237,10 @@ export default class ChatHeader extends React.Component {
   }
 
   renderGroupAvatar = () => {
-    const {avatar} = this.props
+    const {avatar, users} = this.props
     return (
-      <div className={'group-avatar'}>
-        {!avatar ? <i className={'md-icon md-24'}>group</i> : <img src={this.getFileUrl(avatar)} alt={''}/>}
+      !avatar ? <GroupAvatar users={users}/> : <div className={'group-avatar'}>
+        <img src={this.getFileUrl(avatar)} alt={''}/>}
       </div>
     )
   }
@@ -276,7 +299,13 @@ export default class ChatHeader extends React.Component {
           className={'chat-title'}>
           {title ? title : this.renderChatTitle()}
           {users.length === 1 && <div
-            className={'user-status'}>{_.upperFirst(_.get(users, '[0].status', 'offline'))}</div>}
+            className={'user-status'}>{_.upperFirst(_.get(users, '[0].status', 'offline'))} <CallButton
+            onClick={() => {
+              if (this.props.onVideoCall) {
+                this.props.onVideoCall()
+              }
+            }}
+            title={'Video call'}><i className={'md-icon'}>video_call</i></CallButton></div>}
           {
             users.length > 1 && (
               <GroupMoreUser onClick={() => {

@@ -187,10 +187,7 @@ export const removeUnreadCount = (groupId) => {
           markAsRead(group_id: ${groupId}, ids: [])
         }
       `
-
-      service.request(q).then((res) => {
-        console.log('mark as read', res)
-      }).catch((err) => {
+      service.request(q).catch((err) => {
         dispatch(setError(err))
       })
 

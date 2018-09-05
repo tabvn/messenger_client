@@ -212,6 +212,15 @@ const handelReceiveUnFriend = (payload) => {
     }
   }
 }
+
+const handleReceiveCalling = (payload) => {
+
+  return (dispatch) => {
+
+    console.log('calling', payload)
+
+  }
+}
 export const handleReceiveWsMessage = (message) => {
 
   return (dispatch) => {
@@ -271,6 +280,12 @@ export const handleReceiveWsMessage = (message) => {
       case 'un_friend':
 
         dispatch(handelReceiveUnFriend(message.payload))
+
+        break
+
+      case 'calling':
+
+        dispatch(handleReceiveCalling(message.payload))
 
         break
 
