@@ -1,10 +1,11 @@
-import { CALL_END, START_VIDEO_CALL } from '../types'
+import { ANSWER_CALL, CALL_END, RECEIVE_CALLING, REJECT_CALL, START_VIDEO_CALL } from '../types'
 
 const initState = {
   caller: null,
   users: [],
   group: null,
-  accept: false
+  accepted: false,
+  joined: [],
 }
 
 export default (state = initState, action) => {
@@ -17,8 +18,19 @@ export default (state = initState, action) => {
         ...state,
         caller: action.payload.caller,
         users: action.payload.users,
-        group: action.payload.group
+        group: action.payload.group,
+        accepted: action.payload.accepted
 
+      }
+
+    case RECEIVE_CALLING:
+
+      return {
+
+        caller: action.payload.caller,
+        users: action.payload.users,
+        group: action.payload.group,
+        accepted: false
       }
 
     case CALL_END:
@@ -26,9 +38,28 @@ export default (state = initState, action) => {
       return {
         ...state,
         caller: null,
-        from: null,
         users: [],
-        group: null
+        group: null,
+        accepted: false
+      }
+
+    case REJECT_CALL:
+
+      return {
+
+        ...state,
+        caller: null,
+        users: [],
+        group: null,
+        accepted: false
+
+      }
+
+    case ANSWER_CALL:
+
+      return {
+        ...state,
+        accepted: true
       }
     default:
 

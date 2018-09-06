@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Call from './call'
+import Calling from './calling'
 
 const Container = styled.div`
   position: fixed;
@@ -13,17 +14,23 @@ const Container = styled.div`
   height: 632px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  display: flex;
 `
 
 class VideoCall extends React.Component {
 
   render () {
 
-    const {users, group, caller} = this.props.call
+    const {users, group, caller, accepted} = this.props.call
     return (
-      caller ? <Container className={'video-call'}>
-        <Call currentUser={this.props.currentUser} caller={caller} users={users} group={group}/>
-      </Container> : null
+      caller ? (
+          <Container className={'video-call'}>
+            {!accepted ? <Calling caller={caller}/> : <Call currentUser={this.props.currentUser} caller={caller}
+                                                            users={users}
+                                                            group={group}/>}
+          </Container>
+        )
+        : null
     )
   }
 }

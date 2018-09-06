@@ -6,6 +6,7 @@ import { addUserToGroup, removeUserFromGroup, setGroup, updateGroup } from './gr
 import { setUser } from './user'
 import { openChat } from './chat'
 import { ON_PLAY_SOUND } from '../types'
+import { callEnd, receiveCalling } from './call'
 
 const handleReceiveUserStatus = (payload) => {
   return (dispatch, getState) => {
@@ -219,6 +220,22 @@ const handleReceiveCalling = (payload) => {
 
     console.log('calling', payload)
 
+    const p = {
+      users: payload.group.users,
+      group: payload.group,
+      caller: payload.caller,
+      accepted: false
+    }
+
+    dispatch(receiveCalling(p))
+
+  }
+}
+
+const handleReceiveCallJoin = (payload) => {
+  return (dispatch) => {
+
+    console.log('receive joined', payload)
   }
 }
 export const handleReceiveWsMessage = (message) => {
@@ -286,6 +303,18 @@ export const handleReceiveWsMessage = (message) => {
       case 'calling':
 
         dispatch(handleReceiveCalling(message.payload))
+
+        break
+
+      case 'call_end':
+
+        dispatch(callEnd(false))
+
+        break
+
+      case 'call_join':
+
+        dispatch(handleReceiveCallJoin(message.payload))
 
         break
 

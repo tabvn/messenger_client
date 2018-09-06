@@ -59,4 +59,6 @@ export const ON_PLAY_SOUND = 'sound/play'
 
 export const START_VIDEO_CALL = 'call/start'
 export const CALL_END = 'call/end'
-export const CALL_ACCEPT = 'call/accept'
+export const ANSWER_CALL = 'call/answer'
+export const RECEIVE_CALLING = 'call/receive_calling'
+export const REJECT_CALL = 'call/reject'
