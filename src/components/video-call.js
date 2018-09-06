@@ -11,10 +11,12 @@ const Container = styled.div`
   bottom: 0;
   z-index: 100000;
   width: 640px;
-  height: 632px;
+  height: 540px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 `
 
 class VideoCall extends React.Component {

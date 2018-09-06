@@ -38,5 +38,5 @@ export default combineReducers({
   gif,
   emoji,
   inbox,
-  call
+  call,
 })

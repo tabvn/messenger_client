@@ -7,12 +7,14 @@ import { INIT_APP } from './redux/types'
 import _ from 'lodash'
 import { initLoad } from './redux/actions'
 import MessengerConnect from './service/messenger-connect'
+import LocalEvent from './service/local-event'
 
 const service = new Service(api)
+const event = new LocalEvent()
 
 export const store = createStore(
   reducers,
-  applyMiddleware(thunk.withExtraArgument({service}))
+  applyMiddleware(thunk.withExtraArgument({service, event}))
 )
 
 let initStore = {}

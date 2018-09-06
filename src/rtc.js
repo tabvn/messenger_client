@@ -10,10 +10,12 @@ class RTC {
     this.getUserMedia = this.getUserMedia.bind(this)
   }
 
+  getLocalStream () {
+    return localStream
+  }
+
   getUserMedia = (cb) => {
 
-
-    return cb(null,null)
 
     if (localStream) {
       return cb(null, localStream)

@@ -1,4 +1,6 @@
-import { ANSWER_CALL, CALL_END, RECEIVE_CALLING, REJECT_CALL, START_VIDEO_CALL } from '../types'
+import _ from 'lodash'
+
+import { ANSWER_CALL, CALL_END, CALL_JOINED, RECEIVE_CALLING, REJECT_CALL, START_VIDEO_CALL } from '../types'
 
 const initState = {
   caller: null,
@@ -23,10 +25,22 @@ export default (state = initState, action) => {
 
       }
 
+    case CALL_JOINED:
+
+      let j = state.joined
+
+      j.push(action.payload)
+      j = _.uniqBy(j, 'id')
+
+      return {
+        ...state,
+        joined: j
+      }
+
     case RECEIVE_CALLING:
 
       return {
-
+        ...state,
         caller: action.payload.caller,
         users: action.payload.users,
         group: action.payload.group,
@@ -61,6 +75,7 @@ export default (state = initState, action) => {
         ...state,
         accepted: true
       }
+
     default:
 
       return state

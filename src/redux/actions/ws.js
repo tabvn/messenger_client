@@ -5,7 +5,7 @@ import { deleteMessage, setMessage, updateLocalMessage } from './message'
 import { addUserToGroup, removeUserFromGroup, setGroup, updateGroup } from './group'
 import { setUser } from './user'
 import { openChat } from './chat'
-import { ON_PLAY_SOUND } from '../types'
+import { CALL_JOINED, ON_PLAY_SOUND } from '../types'
 import { callEnd, receiveCalling } from './call'
 
 const handleReceiveUserStatus = (payload) => {
@@ -233,9 +233,24 @@ const handleReceiveCalling = (payload) => {
 }
 
 const handleReceiveCallJoin = (payload) => {
-  return (dispatch) => {
+  return (dispatch, getState, {service, event}) => {
 
-    console.log('receive joined', payload)
+    const topic = `call_join`
+    event.emit(topic, payload.user)
+   /* dispatch({
+      type: CALL_JOINED,
+      payload: payload.user,
+    })*/
+
+  }
+}
+
+const handleReceiveCallExchange = (payload) => {
+  return (dispatch, getState, {service, event}) => {
+
+
+    const topic = `call_exchange/${payload.from}`
+    event.emit(topic, payload)
   }
 }
 export const handleReceiveWsMessage = (message) => {
@@ -315,6 +330,12 @@ export const handleReceiveWsMessage = (message) => {
       case 'call_join':
 
         dispatch(handleReceiveCallJoin(message.payload))
+
+        break
+
+      case 'call_exchange':
+
+        dispatch(handleReceiveCallExchange(message.payload))
 
         break
 
