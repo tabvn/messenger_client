@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { rejectCall, answerCall } from '../redux/actions'
+import { api } from '../config'
 
 const Container = styled.div`
   border-top-left-radius: 8px;
@@ -31,7 +32,8 @@ const Avatar = styled.div`
     img{
       width: 100px;
       height: 100px;
-      max-width: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
     i{
       color: #FFF;
@@ -73,7 +75,30 @@ const Button = styled.button`
   }
 `
 
+const Sound = styled.div`
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+`
+
 class Calling extends React.Component {
+
+  componentDidMount () {
+    if (this.ref) {
+
+      this.play()
+    }
+  }
+
+  play () {
+
+    if (this.ref) {
+      this.ref.pause()
+      this.ref.currentTime = 0
+      this.ref.volume = 0.2
+      this.ref.play()
+    }
+  }
 
   render () {
     const {caller} = this.props
@@ -98,6 +123,13 @@ class Calling extends React.Component {
             this.props.rejectCall()
           }}><i className={'md-icon'}>call_end</i></Button>
         </Actions>
+
+        <Sound>
+          <audio ref={(ref) => this.ref = ref} id="notification-sound" controls={true} loop={true}>
+            <source src={`${api}/public/call.mp3`} type="audio/mpeg"/>
+            <source src={`${api}/public/call.ogg`} type="audio/ogg"/>
+          </audio>
+        </Sound>
 
       </Container>)
   }

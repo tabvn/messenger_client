@@ -305,7 +305,7 @@ export default class ChatHeader extends React.Component {
                 this.props.onVideoCall()
               }
             }}
-            title={'Video call'}><i className={'md-icon'}>video_call</i></CallButton></div>}
+            title={'Video call'}><i className={'md-icon'}>videocam</i></CallButton></div>}
           {
             users.length > 1 && (
               <GroupMoreUser onClick={() => {

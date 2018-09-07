@@ -44,10 +44,18 @@ const Container = styled.div`
   }
 `
 
-const rtcConfig = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
+const rtcConfig = {
+  iceServers: [
+    {
+      urls: 'stun:stun.l.google.com:19302'
+    }
+  ]
+}
+
 let peers = {}
 let videoElements = {}
 let streams = {}
+let activeVideoUserId = null
 
 const logError = (err) => {
   console.log('Log Error:', err)
@@ -111,33 +119,51 @@ class Call extends React.Component {
   }
 
   setVideoStream = (userId, stream, active = false) => {
+    const {currentUser} = this.props
+
+    const activeContainer = document.getElementById('active-video')
+    const videosContainer = document.getElementById('call-videos')
     let videoElm = document.getElementById(`video-${userId}`)
 
-    if (!videoElm) {
-      const elm = document.createElement('video')
-      elm.autoplay = true
-      elm.muted = true
-      elm.controls = false
-      elm.id = `video-${userId}`
-
-      videoElements[userId] = elm
-      videoElm = elm
-
+    if (videoElm) {
+      videoElm.parentNode.removeChild(videoElm)
     }
 
     if (active) {
-      const wrapper = document.getElementById('active-video')
+
+      if (activeVideoUserId && userId !== activeVideoUserId) {
+        // let move active video to the bottom
+        this.setVideoStream(activeVideoUserId, streams[activeVideoUserId], false)
+      }
+      activeVideoUserId = userId
+    }
+
+    const elm = document.createElement('video')
+    elm.autoplay = true
+    elm.muted = currentUser.id === userId
+    elm.controls = false
+    elm.id = `video-${userId}`
+    elm.onclick = () => {
+      if (!active) {
+
+        this.setVideoStream(userId, stream, true)
+      }
+
+    }
+
+    videoElements[userId] = elm
+
+    if (active) {
       if (this.activeRef) {
         this.activeRef.style.background = 'none'
       }
-      wrapper.appendChild(videoElm)
+      activeContainer.appendChild(elm)
     }
     else {
-      document.getElementById('call-videos').appendChild(videoElm)
+      videosContainer.appendChild(elm)
     }
 
-    videoElm.srcObject = stream
-
+    elm.srcObject = stream
     streams[userId] = stream
 
   }
@@ -166,11 +192,11 @@ class Call extends React.Component {
     if (currentUser.id !== caller.id) {
       const pc = peers[caller.id]
       if (!pc) {
-        console.log('need create new peer to caller', caller, currentUser)
+
         this.createPeerConnection(caller.id, false)
 
         this.props.subscribe(`call_exchange/${caller.id}`, (data) => {
-          console.log('received exchange data', data)
+
           this.exchange(data, caller.id)
         })
       }
@@ -178,7 +204,6 @@ class Call extends React.Component {
     }
 
     this.props.subscribe('call_join', (user) => {
-      console.log('new user is joined', user)
 
       this.join(user)
 
@@ -189,14 +214,10 @@ class Call extends React.Component {
 
   onUserJoined = (user) => {
 
-
-
-    //pc.createOffer({offerToReceiveVideo: true, offerToReceiveAudio: true}).then(d => pc.setLocalDescription(d)).catch(log)
-
     this.createPeerConnection(user.id, true)
 
     this.props.subscribe(`call_exchange/${user.id}`, (data) => {
-      //console.log('received exchange data', data)
+
       this.exchange(data, user.id)
     })
 
@@ -206,17 +227,9 @@ class Call extends React.Component {
 
     const {currentUser} = this.props
 
-    let pc = new RTCPeerConnection({
-      iceServers: [
-        {
-          urls: 'stun:stun.l.google.com:19302'
-        }
-      ]
-    })
+    let pc = new RTCPeerConnection(rtcConfig)
 
     peers[userId] = pc
-
-    console.log('create new peer connection', userId, isOffer)
 
     const _this = this
 
@@ -225,7 +238,6 @@ class Call extends React.Component {
       // console.log('onicecandidate', event.candidate)
 
       if (event.candidate) {
-        // socket.emit('exchange', {'to': socketId, 'candidate': event.candidate});
 
         const payload = {
           action: 'call_exchange',
@@ -241,14 +253,14 @@ class Call extends React.Component {
 
     }
     pc.onnegotiationneeded = function () {
-      console.log('onnegotiationneeded', isOffer)
+
       if (isOffer) {
         createOffer()
       }
     }
 
     pc.oniceconnectionstatechange = function (event) {
-      console.log('oniceconnectionstatechange', event.target.iceConnectionState)
+
       //disconnected,failed
       if (event.target.iceConnectionState === 'connected') {
         createDataChannel()
@@ -257,28 +269,10 @@ class Call extends React.Component {
 
     function createOffer () {
 
-      /* pc.createOffer({offerToReceiveVideo: true, offerToReceiveAudio: true}).then(d => {
-
-         pc.setLocalDescription(d).then(() => {
-
-           const payload = {
-             action: 'call_exchange',
-             payload: {
-               to: userId,
-               from: currentUser.id,
-               sdp: pc.localDescription
-             }
-           }
-
-           _this.props.send(payload)
-         })
-
-       }).catch(logError)*/
-
       pc.createOffer(function (desc) {
-        console.log('createOffer', desc)
+
         pc.setLocalDescription(desc, function () {
-          console.log('setLocalDescription', pc.localDescription)
+
           //socket.emit('exchange', {'to': socketId, 'sdp': pc.localDescription});
 
           const payload = {
@@ -290,7 +284,6 @@ class Call extends React.Component {
             }
           }
 
-          console.log('sending payload', payload)
           _this.props.send(payload)
 
         }, logError)
@@ -308,7 +301,7 @@ class Call extends React.Component {
       }
 
       dataChannel.onmessage = function (event) {
-        console.log('dataChannel.onmessage:', event.data)
+
         // container.receiveTextData({user: socketId, message: event.data});
       }
 
@@ -325,23 +318,25 @@ class Call extends React.Component {
 
     }
     pc.onaddstream = function (event) {
-      console.log('onaddstream', event.stream)
-      //container.setState({info: 'One peer join!'});
-      console.log('One peer joined!')
 
       _this.setVideoStream(userId, event.stream)
 
     }
     pc.onsignalingstatechange = function (event) {
 
-      console.log('on signal state chang')
     }
 
     pc.onremovestream = function (event) {
-      console.log('onremovestream', event.stream)
+
     }
     pc.onclose = () => {
       console.log(`${userId} closed`)
+      _.unset(streams, userId)
+      _.unset(peers, userId)
+      if (activeVideoUserId === userId) {
+        // remove active
+        this.setVideoStream(currentUser.id, streams[currentUser.id], true)
+      }
     }
 
     const localStream = rtc.getLocalStream()
@@ -358,21 +353,15 @@ class Call extends React.Component {
   }
 
   componentWillUnmount () {
-    console.log('unmount', new Date())
+
+    streams = {}
+    peers = {}
     rtc.removeStream()
   }
 
-  isMute = (userId) => {
-    const {currentUser} = this.props
-
-    if (userId === currentUser.id) {
-      return true
-    }
-
-    return _.get(this.state.muted, userId)
-  }
-
   handleEndCall = () => {
+    streams = {}
+    peers = {}
     rtc.removeStream()
     this.props.callEnd()
 
