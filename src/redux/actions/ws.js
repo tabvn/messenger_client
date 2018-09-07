@@ -218,8 +218,6 @@ const handleReceiveCalling = (payload) => {
 
   return (dispatch) => {
 
-    console.log('calling', payload)
-
     const p = {
       users: payload.group.users,
       group: payload.group,
@@ -237,17 +235,16 @@ const handleReceiveCallJoin = (payload) => {
 
     const topic = `call_join`
     event.emit(topic, payload.user)
-   /* dispatch({
-      type: CALL_JOINED,
-      payload: payload.user,
-    })*/
+    /* dispatch({
+       type: CALL_JOINED,
+       payload: payload.user,
+     })*/
 
   }
 }
 
 const handleReceiveCallExchange = (payload) => {
   return (dispatch, getState, {service, event}) => {
-
 
     const topic = `call_exchange/${payload.from}`
     event.emit(topic, payload)

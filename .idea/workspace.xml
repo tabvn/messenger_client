@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1f4f5dc0-d582-4105-9b06-f97ef1947856" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/call.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/call.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/calling.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/calling.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/chat-header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/chat-header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/actions/ws.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/ws.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,7 +17,7 @@
     <session id="-764544575">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="34" />
+          <entry key="project.closed" value="35" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.11" value="3" />
           <entry key="project.open.time.12" value="1" />
@@ -47,7 +44,7 @@
           <entry key="css" value="5" />
           <entry key="hs" value="1" />
           <entry key="html" value="18" />
-          <entry key="js" value="879" />
+          <entry key="js" value="880" />
           <entry key="json" value="7" />
           <entry key="md" value="3" />
           <entry key="rnc" value="1" />
@@ -62,7 +59,7 @@
           <entry key="HTML" value="18" />
           <entry key="Haskell" value="1" />
           <entry key="JSON" value="7" />
-          <entry key="JavaScript" value="879" />
+          <entry key="JavaScript" value="880" />
           <entry key="PLAIN_TEXT" value="13" />
           <entry key="RNG Compact" value="1" />
           <entry key="SCSS" value="12" />
@@ -99,13 +96,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/calling.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
               <caret line="34" column="24" selection-start-line="34" selection-start-column="24" selection-end-line="34" selection-end-column="24" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/redux/actions/ws.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="430">
+              <caret line="235" column="29" lean-forward="true" selection-start-line="235" selection-start-column="29" selection-end-line="235" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -187,12 +196,12 @@
         <option value="$PROJECT_DIR$/src/redux/types/index.js" />
         <option value="$PROJECT_DIR$/src/service/local-event.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/call.js" />
-        <option value="$PROJECT_DIR$/src/redux/actions/ws.js" />
         <option value="$PROJECT_DIR$/src/rtc.js" />
         <option value="$PROJECT_DIR$/src/components/video-call.js" />
         <option value="$PROJECT_DIR$/src/components/call.js" />
         <option value="$PROJECT_DIR$/src/components/chat-header.js" />
         <option value="$PROJECT_DIR$/src/components/calling.js" />
+        <option value="$PROJECT_DIR$/src/redux/actions/ws.js" />
       </list>
     </option>
   </component>
@@ -370,12 +379,12 @@
       <workItem from="1536026363259" duration="3445000" />
       <workItem from="1536111042867" duration="37169000" />
       <workItem from="1536282877023" duration="11000" />
-      <workItem from="1536282911665" duration="3964000" />
+      <workItem from="1536282911665" duration="4775000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="313887000" />
+    <option name="totallyTimeSpent" value="314698000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="982" extended-state="0" />
@@ -383,10 +392,10 @@
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="npm" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17752808" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17752808" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50030136" side_tool="true" weight="0.32921347" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32921347" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -662,16 +671,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/redux/actions/ws.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="651">
-          <caret line="249" selection-start-line="249" selection-end-line="249" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/store.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -763,6 +762,16 @@
           <caret line="34" column="24" selection-start-line="34" selection-start-column="24" selection-end-line="34" selection-end-column="24" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/redux/actions/ws.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="235" column="29" lean-forward="true" selection-start-line="235" selection-start-column="29" selection-end-line="235" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
