@@ -8,8 +8,10 @@ body.messenger {
   padding: 0;
 }
 
-body.admin-menu .sidebar-container {
-  top: 30px;
+@media (min-width: 991px) {
+  body.admin-menu .sidebar-container {
+    top: 30px;
+  }
 }
 
 .messenger-popover {

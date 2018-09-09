@@ -33,9 +33,7 @@ const Container = styled.div`
   
   @media (max-width: 991px) {
      &.dock{
-     top: 50px !important;
       &.is-closed{
-        top: 50px;
         display: none;
       }
      }

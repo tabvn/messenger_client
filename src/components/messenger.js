@@ -11,6 +11,11 @@ const Dock = styled.div`
   bottom: 0;
   left: auto;
   right: ${props => props.right}px;
+  @media (max-width: 991px) {
+    &.is-closed{
+      right: -10px;
+    }
+  }
   .dock-inner{
     display: flex;
     flex-direction: row;
@@ -66,7 +71,7 @@ class Messenger extends React.Component {
           }}/>
         {
           tabs.length ? (
-            <Dock right={px} className={'dock-container'}>
+            <Dock right={px} className={`dock-container ${sidebarIsOpen ? 'is-open' : 'is-closed'}`}>
               <div className={'dock-inner'}>
                 <Chats/>
               </div>

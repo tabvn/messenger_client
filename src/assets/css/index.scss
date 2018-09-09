@@ -10,9 +10,12 @@ body.messenger {
 }
 
 body.admin-menu {
-  .sidebar-container {
-    top: 30px;
+  @media (min-width: 991px) {
+    .sidebar-container {
+      top: 30px;
+    }
   }
+
 }
 
 .messenger-popover {

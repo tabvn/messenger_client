@@ -11,6 +11,7 @@ const Container = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
     height: ${props => props.h}px;
+    max-height: ${props => props.maxHeight};
   }
   .no-message{
     display: flex;
@@ -125,6 +126,20 @@ export default class Messages extends React.Component {
 
   }
 
+  getMaxHeight () {
+
+    const {dock} = this.props
+
+    if (dock) {
+      const windowHeight = window.innerHeight
+      const h = windowHeight - (74 + 58)
+
+      return `${h}px`
+    }
+
+    return '100%'
+  }
+
   render () {
 
     const {messages, hasFile, height} = this.props
@@ -134,8 +149,10 @@ export default class Messages extends React.Component {
     if (hasFile) {
       h = h - 44
     }
+    const maxHeight = this.getMaxHeight()
     return (
       <Container
+        maxHeight={maxHeight}
         h={h}
         onClick={(e) => {
           if (this.props.onClick) {

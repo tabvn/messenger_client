@@ -15,6 +15,7 @@ const Container = styled.div`
   video{
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    max-height: 100%;
   }
   .active-video{
     border-top-left-radius: 8px;
@@ -125,6 +126,11 @@ class Call extends React.Component {
     const videosContainer = document.getElementById('call-videos')
     let videoElm = document.getElementById(`video-${userId}`)
 
+
+    if(activeVideoUserId === currentUser.id && activeVideoUserId !== userId){
+      active = true
+    }
+
     if (videoElm) {
       videoElm.parentNode.removeChild(videoElm)
     }
@@ -142,6 +148,8 @@ class Call extends React.Component {
     elm.autoplay = true
     elm.muted = currentUser.id === userId
     elm.controls = false
+    elm.playsinline = true
+    elm.setAttribute('playsinline', true)
     elm.id = `video-${userId}`
     elm.onclick = () => {
       if (!active) {
