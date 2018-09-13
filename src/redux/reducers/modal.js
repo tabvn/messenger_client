@@ -25,6 +25,7 @@ export default (state = {
         close: payload.close,
         onClose: payload.onClose,
         className: payload.className,
+        name: payload.name,
       }
 
     case CLOSE_MODAL:

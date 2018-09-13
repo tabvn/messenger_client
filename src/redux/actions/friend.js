@@ -134,3 +134,21 @@ export const searchFriends = (search = '', limit = 50, skip = 0) => {
 
   }
 }
+
+export const addFriend = (user) => {
+
+  return (dispatch, getState, {service}) => {
+
+    dispatch(setFriend(user))
+
+    // request service
+    const query = `mutation addFriend {
+        addFriend(friend: ${user.id})
+      }
+    `
+    service.request(query).catch((e) => {
+      dispatch(setError(e))
+    })
+
+  }
+}

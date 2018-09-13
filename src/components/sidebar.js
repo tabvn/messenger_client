@@ -12,6 +12,7 @@ import Modal from './modal'
 import CreateGroup from './create-group'
 import PropTypes from 'prop-types'
 import { ON_CREATE_GROUP } from '../redux/types'
+import FriendSearch from './friend-search'
 
 const Container = styled.div`
   width: ${props => props.open ? '242' : '75'}px;
@@ -82,7 +83,8 @@ const MobileButton = styled.button`
 class Sidebar extends React.Component {
 
   state = {
-    createGroup: false
+    createGroup: false,
+    friendSearch: false
   }
 
   componentDidMount () {
@@ -151,30 +153,57 @@ class Sidebar extends React.Component {
               })
             }}/>
 
-          <Modal
-            onClose={() => {
-              this.setState({
-                createGroup: false
-              })
-            }}
-            title={'Create group'} open={this.state.createGroup}>
+          {
+            this.onCreateGroup && (
+              <Modal
+                onClose={() => {
+                  this.setState({
+                    createGroup: false
+                  })
+                }}
+                title={'Create group'}
+                open={this.state.createGroup}>
 
-            <CreateGroup
-              onCreate={(e) => {
-                if (this.props.onCreateGroup) {
-                  this.props.onCreateGroup(e)
-                }
-                // close modal
-                this.setState({
-                  createGroup: false
-                })
-              }}
-              onClose={() => {
-                this.setState({
-                  createGroup: false,
-                })
-              }}/>
-          </Modal>
+                <CreateGroup
+                  onOpenFriendSearch={() => {
+                    this.setState({
+                      friendSearch: true,
+                      createGroup: false,
+                    })
+                  }}
+                  onCreate={(e) => {
+                    if (this.props.onCreateGroup) {
+                      this.props.onCreateGroup(e)
+                    }
+                    // close modal
+                    this.setState({
+                      createGroup: false
+                    })
+                  }}
+                  onClose={() => {
+                    this.setState({
+                      createGroup: false,
+                    })
+                  }}/>
+              </Modal>
+            )
+          }
+
+          {
+            this.state.friendSearch && (
+              <Modal
+                title={'Add friends'}
+                open={this.state.friendSearch}>
+
+                <FriendSearch goBack={() => {
+                  this.setState({
+                    friendSearch: false,
+                    createGroup: true,
+                  })
+                }}/>
+              </Modal>
+            )
+          }
 
         </Container>
         {

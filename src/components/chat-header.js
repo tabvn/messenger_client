@@ -212,6 +212,12 @@ const GroupMoreUser = styled.div`
    }
 `
 
+
+const GroupBottomInfo = styled.div `
+  display: flex;
+  flex-direction: row;
+`
+
 const CallButton = styled.button`
 
   border: 0 none;
@@ -308,6 +314,7 @@ export default class ChatHeader extends React.Component {
             title={'Video call'}><i className={'md-icon'}>videocam</i></CallButton></div>}
           {
             users.length > 1 && (
+              <GroupBottomInfo>
               <GroupMoreUser onClick={() => {
                 if (this.props.onOpenModal) {
                   this.props.onOpenModal('participants')
@@ -316,6 +323,14 @@ export default class ChatHeader extends React.Component {
                 <i className={'md-icon'}>group</i>
                 <span>+{users.length} more...</span>
               </GroupMoreUser>
+                <CallButton
+                  onClick={() => {
+                    if (this.props.onVideoCall) {
+                      this.props.onVideoCall()
+                    }
+                  }}
+                  title={'Video call'}><i className={'md-icon'}>videocam</i></CallButton>
+              </GroupBottomInfo>
             )
           }
 

@@ -170,7 +170,6 @@ const Empty = styled.div`
     color: #c4c4c4;
     text-align: center;
   }
-  
 
 `
 
@@ -180,8 +179,16 @@ const Inner = styled.div`
     overflow-x: hidden;
     border-radius: 8px;
     height: ${props => props.height};
-   
-    
+`
+
+const HelpMessage = styled.div`
+  font-size: 17px;
+  color: #c4c4c4;
+  .using-friend-search-action{
+    color: #2397e8;
+    font-weight: 700;
+    cursor: pointer;
+  }
 `
 
 class UserList extends React.Component {
@@ -262,7 +269,12 @@ class UserList extends React.Component {
           <div className={'person-icon'}><i className={'md-icon'}>person_outline</i></div>
         </div>
         <div className={'msg'}>
-          you don’t have any <br/>friends yet
+          you don’t have any <br/>friends yet<br/>
+          <HelpMessage className={'help-message'}>try using <span onClick={() => {
+            if (this.props.onOpenFriendSearch) {
+              this.props.onOpenFriendSearch()
+            }
+          }} className={'using-friend-search-action'}>friends search</span></HelpMessage>
         </div>
       </Empty>
     )

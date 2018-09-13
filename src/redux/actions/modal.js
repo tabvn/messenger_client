@@ -1,6 +1,6 @@
 import { CLOSE_MODAL, OPEN_MODAL } from '../types'
 
-export const openModal = (component = null, title = null, close = null, open = true, onClose = null, className = null) => {
+export const openModal = (component = null, title = null, close = null, open = true, onClose = null, className = null, name = '') => {
 
   return (dispatch) => {
 
@@ -13,11 +13,12 @@ export const openModal = (component = null, title = null, close = null, open = t
         close: close,
         onClose: onClose,
         className: className,
+        name: name
       }
     })
+
   }
 }
-
 
 export const closeModal = () => {
 

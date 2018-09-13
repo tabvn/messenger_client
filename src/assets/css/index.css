@@ -9,7 +9,7 @@ body.messenger {
 }
 
 @media (min-width: 991px) {
-  body.admin-menu .sidebar-container {
+  body.admin-menu .sidebar-container.dock {
     top: 30px;
   }
 }

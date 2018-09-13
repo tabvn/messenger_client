@@ -127,6 +127,11 @@ class CreateGroupSearchUsers extends React.Component {
 
         <div className={'create-group-user-list'}>
           <UserList
+            onOpenFriendSearch={() => {
+              if(this.props.onOpenFriendSearch){
+                this.props.onOpenFriendSearch()
+              }
+            }}
             onSelect={this.handleSelectUser}
             selected={this.state.selected}
             placeholder={'Search people to add...'}/>

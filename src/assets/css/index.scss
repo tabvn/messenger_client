@@ -11,7 +11,7 @@ body.messenger {
 
 body.admin-menu {
   @media (min-width: 991px) {
-    .sidebar-container {
+    .sidebar-container.dock {
       top: 30px;
     }
   }

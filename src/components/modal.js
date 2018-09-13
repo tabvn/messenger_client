@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { closeModal, openModal } from '../redux/actions'
+import _ from 'lodash'
 
 const Close = styled.button`
   border: 0 none;
@@ -24,15 +25,16 @@ class Modal extends React.Component {
 
   componentDidUpdate (prevProps) {
 
-    if (this.props.open !== prevProps.open) {
-      this.handleOpenModal()
+    const name = _.get(this.props.children, 'type.name')
+    const prevName = _.get(prevProps.children, 'type.name')
+    if (this.props.open !== prevProps.open || name !== prevName) {
+      this.handleOpenModal(name)
     }
   }
 
-  handleOpenModal = () => {
+  handleOpenModal = (name) => {
 
     let {open, title, onClose, className, header} = this.props
-
 
     let closeButton = (<Close onClick={(e) => {
       if (onClose) {
@@ -43,11 +45,11 @@ class Modal extends React.Component {
 
     }}><i className={'md-icon'}>close</i></Close>)
 
-    if(!header){
+    if (!header) {
       title = null
       closeButton = null
     }
-    this.props.openModal(this.props.children, title, closeButton, open, onClose, className)
+    this.props.openModal(this.props.children, title, closeButton, open, onClose, className, name)
 
   }
 

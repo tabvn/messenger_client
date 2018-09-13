@@ -66,6 +66,11 @@ export default class CreateGroup extends React.Component {
           })
         }}/>
         <CreateGroupSearchUsers
+          onOpenFriendSearch={() => {
+            if(this.props.onOpenFriendSearch){
+              this.props.onOpenFriendSearch()
+            }
+          }}
           onChange={(users) => {
             this.setState({users: users})
           }}
