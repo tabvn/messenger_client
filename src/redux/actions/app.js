@@ -21,6 +21,7 @@ export const initLoad = () => {
         query init {
           user {
             id
+            uid
             first_name
             last_name
             email
@@ -30,6 +31,7 @@ export const initLoad = () => {
           }
           friends(search: "", limit: 50, skip: 0) {
             id
+            uid
             first_name
             last_name
             avatar

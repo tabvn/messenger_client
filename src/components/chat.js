@@ -24,6 +24,7 @@ import EmojiModal from './emoji-modal'
 import ChatOptionsModal from './chat-options-modal'
 import ChatParticipantsModal from './chat-participants-modal'
 import CreateSingleChat from './create-single-chat'
+import ChatReportModal from './chat-report-modal'
 
 const Container = styled.div`
   flex-grow: 1;
@@ -239,6 +240,22 @@ class Chat extends React.Component {
             dock={this.props.dock}
             onClose={() => this.setState({modal: null})}
             users={users} group={group}/>
+          </ChatModal>
+        )
+      }
+
+      {
+        modal === 'flag' && (
+          <ChatModal onClickOutSide={this.clickOutSide}>
+            <ChatReportModal
+              onClose={() => {
+                this.setState({
+                  modal: null
+                })
+              }}
+              height={height}
+              users={users}
+              dock={dock}/>
           </ChatModal>
         )
       }

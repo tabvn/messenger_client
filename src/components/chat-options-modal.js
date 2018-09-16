@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import BlockUserDialog from './block-user-dialog'
 import { blockUser, closeChat, removeGroup } from '../redux/actions'
@@ -119,7 +119,7 @@ class ChatOptionsModal extends React.Component {
               <Buttons className={'buttons'}>
                 <Button
                   onClick={() => {
-                    if(this.props.onOpenModal){
+                    if (this.props.onOpenModal) {
                       this.props.onOpenModal('participants')
                     }
                   }}
@@ -127,26 +127,32 @@ class ChatOptionsModal extends React.Component {
                   <i className={'md-icon'}>settings</i>
                   <Text>Chat options</Text>
                 </Button>
+
                 {
                   users.length === 1 ? (
-                    <Fragment>
-                      <Button
-                        onClick={() => {
-                          this.setState({
-                            dialog: 'block'
-                          })
-                        }}
-                        className={'option-block'}>
-                        <i className={'md-icon'}>block</i>
-                        <Text>Block this user</Text>
-                      </Button>
-                      <Button className={'option-block'}>
-                        <i className={'md-icon'}>flag</i>
-                        <Text>Report this user</Text>
-                      </Button>
-                    </Fragment>
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          dialog: 'block'
+                        })
+                      }}
+                      className={'option-block'}>
+                      <i className={'md-icon'}>block</i>
+                      <Text>Block this user</Text>
+                    </Button>
                   ) : null
                 }
+                <Button
+                  onClick={() => {
+                    if (this.props.onOpenModal) {
+                      this.props.onOpenModal('flag')
+                    }
+                  }}
+                  className={'option-block'}>
+                  <i className={'md-icon'}>flag</i>
+                  <Text>Report this {users.length > 1 ? 'group' : 'user'}</Text>
+                </Button>
+
               </Buttons>
             </Footer>
           ) : null
