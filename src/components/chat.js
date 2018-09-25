@@ -25,6 +25,7 @@ import ChatOptionsModal from './chat-options-modal'
 import ChatParticipantsModal from './chat-participants-modal'
 import CreateSingleChat from './create-single-chat'
 import ChatReportModal from './chat-report-modal'
+import BlockGroupUserModal from './block-group-user-modal'
 
 const Container = styled.div`
   flex-grow: 1;
@@ -228,6 +229,22 @@ class Chat extends React.Component {
               users={users}/>
           </ChatModal>)
 
+      }
+
+      {
+        modal === 'block' && (
+          <ChatModal
+            onClickOutSide={this.clickOutSide}
+          >
+            <BlockGroupUserModal
+              height={height}
+              dock={dock}
+              users={users}
+              onClose={() => this.setState({modal: null})}
+            />
+          </ChatModal>
+
+        )
       }
 
       {

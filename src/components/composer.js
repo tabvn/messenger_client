@@ -375,7 +375,7 @@ export default class Composer extends React.Component {
                       this.props.onOpenModal('options')
                     }
                   }}
-                  title={'Add user'} className={'add-tool'}>
+                  title={'Chat options'} className={'add-tool'}>
                   <i className={'md-icon'}>add_circle_outline</i>
                 </Button>
               </Fragment>)

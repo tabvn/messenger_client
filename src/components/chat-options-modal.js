@@ -106,6 +106,8 @@ class ChatOptionsModal extends React.Component {
     const {dialog} = this.state
     const {users} = this.props
 
+    const isGroup = users.length > 1
+
     return (
       <Container className={'chat-options'}>
 
@@ -128,20 +130,25 @@ class ChatOptionsModal extends React.Component {
                   <Text>Chat options</Text>
                 </Button>
 
-                {
-                  users.length === 1 ? (
-                    <Button
-                      onClick={() => {
-                        this.setState({
-                          dialog: 'block'
-                        })
-                      }}
-                      className={'option-block'}>
-                      <i className={'md-icon'}>block</i>
-                      <Text>Block this user</Text>
-                    </Button>
-                  ) : null
-                }
+
+                <Button
+                  onClick={() => {
+                    if (isGroup) {
+                      if (this.props.onOpenModal) {
+                        this.props.onOpenModal('block')
+                      }
+                    } else {
+                      this.setState({
+                        dialog: 'block'
+                      })
+                    }
+
+                  }}
+                  className={'option-block'}>
+                  <i className={'md-icon'}>block</i>
+                  <Text>{isGroup ? 'Block this group' : 'Block this user'}</Text>
+                </Button>
+
                 <Button
                   onClick={() => {
                     if (this.props.onOpenModal) {
