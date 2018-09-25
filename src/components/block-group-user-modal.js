@@ -129,11 +129,24 @@ export default class BlockGroupUserModal extends React.Component {
     all: false,
   }
   onSelect = (user, isSelect = false) => {
+    const {users} = this.props
+
+    let isCheckedAll = true
+    let select = this.state.selected
+
+    select[user.id] = isSelect
+
+    for (let i = 0; i < users.length; i++) {
+      if (!_.get(select, users[i].id, false)) {
+        isCheckedAll = false
+      }
+    }
 
     this.setState({
       selected: {
         ...this.state.selected,
         [user.id]: isSelect,
+        all: isCheckedAll,
       }
     })
   }
@@ -186,7 +199,6 @@ export default class BlockGroupUserModal extends React.Component {
             <SelectAll
               onClick={() => {
                 const checked = !this.state.all
-
                 this.setState({
                   all: checked,
                   selected: !checked ? {} : checkList

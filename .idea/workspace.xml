@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1f4f5dc0-d582-4105-9b06-f97ef1947856" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/block-group-user-modal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/chat-options-modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/chat-options-modal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/chat.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/composer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/composer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/block-group-user-modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/block-group-user-modal.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -77,7 +73,7 @@
           <entry key="css" value="13" />
           <entry key="dummy" value="1" />
           <entry key="html" value="115" />
-          <entry key="js" value="158633" />
+          <entry key="js" value="158945" />
           <entry key="json" value="336" />
           <entry key="scss" value="336" />
           <entry key="sh" value="187" />
@@ -88,7 +84,7 @@
           <entry key="CSS" value="13" />
           <entry key="HTML" value="115" />
           <entry key="JSON" value="336" />
-          <entry key="JavaScript" value="158633" />
+          <entry key="JavaScript" value="158945" />
           <entry key="PLAIN_TEXT" value="188" />
           <entry key="SCSS" value="336" />
         </counts>
@@ -105,8 +101,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/block-group-user-modal.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="141" column="30" selection-start-line="141" selection-start-column="30" selection-end-line="141" selection-end-column="30" />
+            <state relative-caret-position="379">
+              <caret line="146" column="31" selection-start-line="146" selection-start-column="31" selection-end-line="146" selection-end-column="31" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -422,12 +418,12 @@
       <workItem from="1536821670779" duration="9026000" />
       <workItem from="1537061677968" duration="7011000" />
       <workItem from="1537578901348" duration="5036000" />
-      <workItem from="1537862016895" duration="2530000" />
+      <workItem from="1537862016895" duration="2903000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="342716000" />
+    <option name="totallyTimeSpent" value="343089000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="982" extended-state="0" />
@@ -435,10 +431,10 @@
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="npm" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17752808" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17752808" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50030136" side_tool="true" weight="0.32921347" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32921347" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -826,8 +822,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/block-group-user-modal.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="141" column="30" selection-start-line="141" selection-start-column="30" selection-end-line="141" selection-end-column="30" />
+        <state relative-caret-position="379">
+          <caret line="146" column="31" selection-start-line="146" selection-start-column="31" selection-end-line="146" selection-end-column="31" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
