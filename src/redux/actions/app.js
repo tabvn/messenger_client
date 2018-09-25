@@ -137,13 +137,22 @@ export const initLoad = () => {
 
       // re-open group chat windows
       let historyTabs = localStorage.getItem('messenger_chats')
+      let openList = localStorage.getItem('messenger_chats_open');
+      if(openList){
+        openList = JSON.parse(openList);
+      }
+
       if (historyTabs) {
         historyTabs = JSON.parse(historyTabs)
         if (historyTabs && historyTabs.length) {
           historyTabs.forEach((gid) => {
             const findGroup = groups.find((g) => g.id === gid)
             if (findGroup) {
-              dispatch(openChat(findGroup.users, gid))
+
+              const isOpen = _.get(openList, gid, false);
+
+              dispatch(openChat(findGroup.users, {id: gid}, false, isOpen));
+
             } else {
               historyTabs = historyTabs.filter((i) => i !== gid)
               localStorage.setItem('messenger_chats', JSON.stringify(historyTabs))

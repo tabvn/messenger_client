@@ -6,7 +6,7 @@ const ID = () => {
   return Math.random().toString(36).substr(2, 9)
 }
 
-export const openChat = (users = [], group = {id: null, title: '', avatar: ''}, setActive = true) => {
+export const openChat = (users = [], group = {id: null, title: '', avatar: ''}, setActive = true, isOpen = true) => {
   return (dispatch, getState) => {
 
     const group_id = _.get(group, 'id', null)
@@ -73,7 +73,7 @@ export const openChat = (users = [], group = {id: null, title: '', avatar: ''}, 
       isNew: false,
       id: ID(),
       group_id: group_id,
-      open: true,
+      open: isOpen,
       group: {
         users: users,
         id: group_id,
