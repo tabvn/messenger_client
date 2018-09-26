@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1f4f5dc0-d582-4105-9b06-f97ef1947856" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/block-group-user-modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/block-group-user-modal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/actions/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/reducers/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/chat.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,8 +20,8 @@
     <session id="-764544575">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="41" />
-          <entry key="project.open.time.10" value="1" />
+          <entry key="project.closed" value="42" />
+          <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.11" value="3" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.13" value="3" />
@@ -38,7 +41,7 @@
           <entry key="project.open.time.7" value="5" />
           <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="42" />
+          <entry key="project.opened" value="43" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -46,7 +49,7 @@
           <entry key="css" value="5" />
           <entry key="hs" value="1" />
           <entry key="html" value="18" />
-          <entry key="js" value="939" />
+          <entry key="js" value="943" />
           <entry key="json" value="7" />
           <entry key="md" value="3" />
           <entry key="rnc" value="1" />
@@ -61,7 +64,7 @@
           <entry key="HTML" value="18" />
           <entry key="Haskell" value="1" />
           <entry key="JSON" value="7" />
-          <entry key="JavaScript" value="939" />
+          <entry key="JavaScript" value="943" />
           <entry key="PLAIN_TEXT" value="13" />
           <entry key="RNG Compact" value="1" />
           <entry key="SCSS" value="14" />
@@ -73,7 +76,7 @@
           <entry key="css" value="13" />
           <entry key="dummy" value="1" />
           <entry key="html" value="115" />
-          <entry key="js" value="158945" />
+          <entry key="js" value="159820" />
           <entry key="json" value="336" />
           <entry key="scss" value="336" />
           <entry key="sh" value="187" />
@@ -84,7 +87,7 @@
           <entry key="CSS" value="13" />
           <entry key="HTML" value="115" />
           <entry key="JSON" value="336" />
-          <entry key="JavaScript" value="158945" />
+          <entry key="JavaScript" value="159820" />
           <entry key="PLAIN_TEXT" value="188" />
           <entry key="SCSS" value="336" />
         </counts>
@@ -101,8 +104,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/block-group-user-modal.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="146" column="31" selection-start-line="146" selection-start-column="31" selection-end-line="146" selection-end-column="31" />
+            <state relative-caret-position="496">
+              <caret line="213" column="23" selection-start-line="213" selection-start-column="23" selection-end-line="213" selection-end-column="23" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -111,10 +114,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/redux/reducers/chat.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="578">
+              <caret line="34" selection-start-line="34" selection-end-line="34" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/redux/actions/user.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="127" column="29" selection-start-line="127" selection-start-column="29" selection-end-line="127" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/chat.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="339">
-              <caret line="242" column="58" selection-start-line="242" selection-start-column="58" selection-end-line="242" selection-end-column="58" />
+              <caret line="242" column="21" selection-start-line="242" selection-start-column="14" selection-end-line="242" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -122,7 +146,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/composer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443">
+            <state relative-caret-position="6358">
               <caret line="377" column="38" selection-start-line="377" selection-start-column="38" selection-end-line="377" selection-end-column="38" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -134,17 +158,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/chat-options-modal.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="522">
-              <caret line="148" column="52" selection-start-line="148" selection-start-column="52" selection-end-line="148" selection-end-column="52" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/chat-participants-modal.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="616">
-              <caret line="219" column="23" selection-start-line="219" selection-start-column="23" selection-end-line="219" selection-end-column="23" />
+            <state relative-caret-position="324">
+              <caret line="90" column="36" lean-forward="true" selection-start-line="90" selection-start-column="8" selection-end-line="90" selection-end-column="36" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -153,10 +168,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/chat-participants-modal.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="308">
+              <caret line="214" column="23" selection-start-line="214" selection-start-column="23" selection-end-line="214" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/participants-list.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1513">
+              <caret line="91" column="21" selection-start-line="91" selection-start-column="21" selection-end-line="91" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/user-list.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="328" column="97" lean-forward="true" selection-start-line="327" selection-start-column="17" selection-end-line="328" selection-end-column="97" />
+            <state relative-caret-position="292">
+              <caret line="180" column="37" lean-forward="true" selection-start-line="177" selection-start-column="4" selection-end-line="180" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -192,7 +228,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/conversation.js" />
         <option value="$PROJECT_DIR$/src/redux/selector/group.js" />
         <option value="$PROJECT_DIR$/src/components/group-avatar.js" />
         <option value="$PROJECT_DIR$/src/components/conversation-avatar.js" />
@@ -237,11 +272,12 @@
         <option value="$PROJECT_DIR$/src/components/gif-modal.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/app.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/chat.js" />
-        <option value="$PROJECT_DIR$/src/redux/reducers/chat.js" />
         <option value="$PROJECT_DIR$/src/components/chat-options-modal.js" />
         <option value="$PROJECT_DIR$/src/components/composer.js" />
         <option value="$PROJECT_DIR$/src/components/chat.js" />
         <option value="$PROJECT_DIR$/src/components/chat-participants-modal.js" />
+        <option value="$PROJECT_DIR$/src/redux/actions/user.js" />
+        <option value="$PROJECT_DIR$/src/redux/reducers/chat.js" />
         <option value="$PROJECT_DIR$/src/components/block-group-user-modal.js" />
       </list>
     </option>
@@ -281,6 +317,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -327,13 +364,19 @@
               <item name="web" type="b2602c69:ProjectViewProjectNode" />
               <item name="web" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="redux" type="462c0819:PsiDirectoryNode" />
+              <item name="reducers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="web" type="b2602c69:ProjectViewProjectNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -418,12 +461,13 @@
       <workItem from="1536821670779" duration="9026000" />
       <workItem from="1537061677968" duration="7011000" />
       <workItem from="1537578901348" duration="5036000" />
-      <workItem from="1537862016895" duration="2903000" />
+      <workItem from="1537862016895" duration="2931000" />
+      <workItem from="1537927077303" duration="1799000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="343089000" />
+    <option name="totallyTimeSpent" value="344916000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="982" extended-state="0" />
@@ -431,10 +475,10 @@
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="npm" order="1" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17752808" />
+      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17752808" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50030136" side_tool="true" weight="0.32921347" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32921347" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -460,20 +504,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/redux/reducers/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="571">
-          <caret line="40" column="7" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="5155" column="32" selection-start-line="5155" selection-start-column="10" selection-end-line="5155" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/reducers/call.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -641,11 +671,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/block-user-dialog.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-964" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/emoji-modal.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -709,9 +734,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2771">
           <caret line="168" column="24" selection-start-line="168" selection-start-column="24" selection-end-line="168" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -730,13 +752,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/reducers/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/actions/app.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -769,26 +785,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/redux/reducers/chat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="55" column="16" lean-forward="true" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/chat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="242" column="58" selection-start-line="242" selection-start-column="58" selection-end-line="242" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/composer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
+        <state relative-caret-position="6358">
           <caret line="377" column="38" selection-start-line="377" selection-start-column="38" selection-end-line="377" selection-end-column="38" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
@@ -796,34 +795,73 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/chat-participants-modal.js">
+    <entry file="file://$PROJECT_DIR$/src/components/chat.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="219" column="23" selection-start-line="219" selection-start-column="23" selection-end-line="219" selection-end-column="23" />
+        <state relative-caret-position="339">
+          <caret line="242" column="21" selection-start-line="242" selection-start-column="14" selection-end-line="242" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/block-user-dialog.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-947" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/chat-options-modal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="90" column="36" lean-forward="true" selection-start-line="90" selection-start-column="8" selection-end-line="90" selection-end-column="36" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/user-list.js">
+    <entry file="file://$PROJECT_DIR$/src/redux/actions/user.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="328" column="97" lean-forward="true" selection-start-line="327" selection-start-column="17" selection-end-line="328" selection-end-column="97" />
+        <state relative-caret-position="345">
+          <caret line="127" column="29" selection-start-line="127" selection-start-column="29" selection-end-line="127" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/chat-options-modal.js">
+    <entry file="file://$PROJECT_DIR$/src/components/user-list.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="148" column="52" selection-start-line="148" selection-start-column="52" selection-end-line="148" selection-end-column="52" />
+        <state relative-caret-position="292">
+          <caret line="180" column="37" lean-forward="true" selection-start-line="177" selection-start-column="4" selection-end-line="180" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/chat-participants-modal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="214" column="23" selection-start-line="214" selection-start-column="23" selection-end-line="214" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/participants-list.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1513">
+          <caret line="91" column="21" selection-start-line="91" selection-start-column="21" selection-end-line="91" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/redux/reducers/chat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/block-group-user-modal.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="146" column="31" selection-start-line="146" selection-start-column="31" selection-end-line="146" selection-end-column="31" />
+        <state relative-caret-position="496">
+          <caret line="213" column="23" selection-start-line="213" selection-start-column="23" selection-end-line="213" selection-end-column="23" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>

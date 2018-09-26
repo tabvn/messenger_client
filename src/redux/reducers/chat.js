@@ -32,7 +32,8 @@ const remove = (gid) => {
 
   if(typeof openList[gid] !== 'undefined'){
     delete openList[gid];
-    localStorage.setItem('messenger_chats_open', JSON.parse(openList));
+
+    localStorage.setItem('messenger_chats_open', JSON.stringify(openList));
   }
 }
 

@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
+import { bindActionCreators } from 'redux'
+import { blockUser } from '../redux/actions'
+import {connect} from 'react-redux'
 
 const Container = styled.div`
 
@@ -39,6 +42,9 @@ const Inner = styled.div`
 `
 const Users = styled.div`
 
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: ${props => props.height}px;
 `
 
 const User = styled.div`
@@ -102,6 +108,7 @@ const Footer = styled.div`
   padding: 10px;
 `
 const SelectAll = styled.button`
+  flex-grow:1;
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -122,7 +129,31 @@ const SelectAll = styled.button`
   }
 `
 
-export default class BlockGroupUserModal extends React.Component {
+const Button = styled.button`
+  background: #818181;
+  color: #FFF;
+  fonts-size: 15px;
+  font-weight: 700;
+  padding: 10px 18px;
+  text-align: center;
+  margin:0;
+  outline: 0 none;
+  border: 0 none;
+  border-radius: 5px;
+  cursor: pointer;
+  &:active,&:focus{
+    outline: 0 none;
+  }
+  &.btn-color{
+    background: #2397e8;
+    margin-left: 10px;
+  }
+  &:hover{
+    opacity: 0.88;
+  }
+`
+
+class BlockGroupUserModal extends React.Component {
 
   state = {
     selected: {},
@@ -146,17 +177,47 @@ export default class BlockGroupUserModal extends React.Component {
       selected: {
         ...this.state.selected,
         [user.id]: isSelect,
-        all: isCheckedAll,
-      }
+
+      },
+      all: isCheckedAll,
     })
   }
 
+  onCancel = () => {
+
+    if (this.props.onClose) {
+      this.props.onClose()
+    }
+  }
+  onSave = () => {
+
+    // handle block user
+
+    _.each(this.state.selected, (v,userId) => {
+
+      this.props.blockUser(userId)
+    });
+
+    if (this.props.onClose) {
+      this.props.onClose()
+    }
+  }
+
   render () {
-    const {users} = this.props
+    const {users, dock, height} = this.props
+
     let checkList = {}
     users.forEach((u) => {
       checkList[u.id] = true
     })
+
+    let h = height - 350
+
+    if (dock) {
+      h = 270
+    }
+
+
     return (
       <Container className={'block-group-user-modal'}>
         <Close onClick={() => {
@@ -166,7 +227,9 @@ export default class BlockGroupUserModal extends React.Component {
         }} className={'close-modal'}><i className={'md-icon'}>close</i></Close>
         <Inner className={'block-group-user-modal-inner'}>
           <Title>Select users to block:</Title>
-          <Users className={'user-list'}>
+          <Users
+            height={h}
+            className={'user-list'}>
             {
               users.map((user, index) => {
 
@@ -207,9 +270,21 @@ export default class BlockGroupUserModal extends React.Component {
               className={`select-all-action ${this.state.all ? 'is-selected' : 'is-not-selected'}`}>
               <i className={'md-icon'}>{this.state.all ? 'check_circle' : 'radio_button_unchecked'}</i> select all
             </SelectAll>
+            <Button onClick={this.onCancel} className={'btn-cancel'}>Cancel</Button>
+            <Button onClick={this.onSave} className={'btn-color'}>Save</Button>
+
           </Footer>
         </Inner>
       </Container>
     )
   }
 }
+
+
+const mapStateToProps = (state) => ({})
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  blockUser,
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlockGroupUserModal)

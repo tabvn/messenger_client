@@ -125,9 +125,10 @@ export const blockUser = (userId) => {
 
     if (user) {
       user.blocked = true
+      dispatch(setUser(user))
     }
 
-    dispatch(setUser(user))
+
 
     const query = `mutation blockUser {
       blockUser(friend: ${userId})
