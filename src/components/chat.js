@@ -42,6 +42,7 @@ const ChatMessages = styled.div`
 
 const LIMIT = 50
 let lastMessage = null
+let targetEvent = null;
 
 class Chat extends React.Component {
 
@@ -96,8 +97,9 @@ class Chat extends React.Component {
 
   }
 
-  showModal = (name) => {
+  showModal = (name, e) => {
 
+    targetEvent = e.target.id;
     this.setState({
       modal: this.state.modal === name ? null : name
     })
@@ -188,6 +190,7 @@ class Chat extends React.Component {
       {
         modal === 'gif' && (
           <ChatModal
+            clickedTarget={targetEvent}
             onClickOutSide={this.clickOutSide}>
             <GifModal
               height={height}
@@ -205,6 +208,7 @@ class Chat extends React.Component {
       {
         modal === 'emoji' && (
           <ChatModal
+            clickedTarget={targetEvent}
             onClickOutSide={this.clickOutSide}>
             <EmojiModal
               height={height}
@@ -222,6 +226,7 @@ class Chat extends React.Component {
       {
         modal === 'options' && (
           <ChatModal
+            clickedTarget={targetEvent}
             background={'none'}
             onClickOutSide={this.clickOutSide}
           >

@@ -351,9 +351,10 @@ export default class Composer extends React.Component {
           </div>
           <Tools className={'composer-tools'}>
             <Button
-              onClick={() => {
+              id={'chat-emoji-button'}
+              onClick={(e) => {
                 if (this.props.onOpenModal) {
-                  this.props.onOpenModal('emoji')
+                  this.props.onOpenModal('emoji', e)
                 }
               }}
               title={'Emoji'} className={'emotion-tool'}>
@@ -363,9 +364,10 @@ export default class Composer extends React.Component {
               allowActions &&
               (<Fragment>
                 <Button
-                  onClick={() => {
+                  id={'chat-gif-button'}
+                  onClick={(e) => {
                     if (this.props.onOpenModal) {
-                      this.props.onOpenModal('gif')
+                      this.props.onOpenModal('gif', e)
                     }
                   }}
                   title={'GIF'} className={'gif-tool'}>
@@ -376,9 +378,10 @@ export default class Composer extends React.Component {
                   <input id={`attachment-input-${inputId}`} onChange={this.onAddFiles} type={'file'} multiple={true}/>
                 </label>
                 <Button
-                  onClick={() => {
+                  id={'chat-options-button'}
+                  onClick={(e) => {
                     if (this.props.onOpenModal) {
-                      this.props.onOpenModal('options')
+                      this.props.onOpenModal('options', e)
                     }
                   }}
                   title={'Chat options'} className={'add-tool'}>

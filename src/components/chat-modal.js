@@ -35,7 +35,11 @@ class ChatModal extends React.Component {
 
   handleClickOutside = evt => {
     if (this.props.onClickOutSide) {
-      this.props.onClickOutSide(evt)
+
+      if(this.props.clickedTarget !== evt.target.id){
+        this.props.onClickOutSide(evt)
+      }
+
     }
   }
 
