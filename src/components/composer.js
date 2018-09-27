@@ -190,7 +190,6 @@ export default class Composer extends React.Component {
     emoji: false,
 
   }
-
   replaceEmoji = (message) => {
 
     if (!message || message === '') {
@@ -315,6 +314,13 @@ export default class Composer extends React.Component {
           <textarea
             value={message}
             onChange={this.onChange}
+            onKeyDown={(e) => {
+              if (message === '' && e.key === 'ArrowUp' && this.props.onPressArrowUp) {
+                this.props.onPressArrowUp()
+
+                e.preventDefault()
+              }
+            }}
             onKeyPress={(event) => {
               if (event.shiftKey === false && event.key === 'Enter') {
 

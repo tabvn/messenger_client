@@ -204,77 +204,83 @@ export const createConversation = (message, userIds = [], g = {title: '', avatar
       }
     }`
 
-    service.request(query).then((res) => {
+    return new Promise((resolve, reject) => {
 
-      const group = _.get(res, 'createConversation')
-      // find and update chat
+      service.request(query).then((res) => {
 
-      const group_id = group.id
-      let users = group.users
-      users = users.filter((u) => u.id !== currentUserId)
+        const group = _.get(res, 'createConversation')
+        // find and update chat
 
-      const messages = group.messages
-      dispatch(setMessage(messages))
-      dispatch(setGroup(group))
+        const group_id = group.id
+        let users = group.users
+        users = users.filter((u) => u.id !== currentUserId)
 
-      // find active tab and update info
-      let tab = tabs.find((t) => {
+        const messages = group.messages
+        dispatch(setMessage(messages))
+        dispatch(setGroup(group))
 
-        if (t.group.users.length === userIds.length) {
+        // find active tab and update info
+        let tab = tabs.find((t) => {
+
+          if (t.group.users.length === userIds.length) {
+
+            let u = []
+
+            t.group.users.forEach((i) => {
+              u.push(i.id)
+            })
+
+            return _.isEqual(u.sort(), userIds.sort())
+          }
+
+          return false
+
+        })
+
+        if (tab) {
+
+          tab.group_id = group_id
+          tab.group.id = group_id
+          tab.group.users = users
+
+          dispatch({
+            type: UPDATE_CHAT_TAB,
+            payload: tab
+          })
+
+        }
+
+        // find inbox and update group id
+
+        const inboxUsers = _.get(state.inbox.active, 'group.users', [])
+        if (state.inbox.active && inboxUsers.length) {
 
           let u = []
 
-          t.group.users.forEach((i) => {
+          inboxUsers.forEach((i) => {
             u.push(i.id)
           })
 
-          return _.isEqual(u.sort(), userIds.sort())
+          if (_.isEqual(u.sort(), userIds.sort())) {
+
+            // update chat inbox
+            let inboxActive = state.inbox.active
+            inboxActive.group_id = group_id
+            inboxActive.group.id = group_id
+            dispatch({
+              type: SET_INBOX_ACTIVE,
+              payload: inboxActive,
+            })
+          }
+
         }
 
-        return false
+        return resolve(_.get(messages, '[0]'))
 
+      }).catch((err) => {
+        dispatch(setError(err))
+        return reject(err)
       })
-
-      if (tab) {
-
-        tab.group_id = group_id
-        tab.group.id = group_id
-        tab.group.users = users
-
-        dispatch({
-          type: UPDATE_CHAT_TAB,
-          payload: tab
-        })
-
-      }
-
-      // find inbox and update group id
-
-      const inboxUsers = _.get(state.inbox.active, 'group.users', [])
-      if (state.inbox.active && inboxUsers.length) {
-
-        let u = []
-
-        inboxUsers.forEach((i) => {
-          u.push(i.id)
-        })
-
-        if (_.isEqual(u.sort(), userIds.sort())) {
-
-          // update chat inbox
-          let inboxActive = state.inbox.active
-          inboxActive.group_id = group_id
-          inboxActive.group.id = group_id
-          dispatch({
-            type: SET_INBOX_ACTIVE,
-            payload: inboxActive,
-          })
-        }
-
-      }
-
-    }).catch((err) => {
-      dispatch(setError(err))
     })
 
   }
@@ -373,20 +379,28 @@ export const sendMessage = (message, group = {id: null, avatar: '', title: ''}, 
       }
     }`
 
-    service.request(query).then((res) => {
+    return new Promise((resolve, reject) => {
 
-      // we may remove local message
-      dispatch(updateLocalMessage(tmpId, null))
+      service.request(query).then((res) => {
 
-      const msg = _.get(res, 'sendMessage')
-      dispatch(setMessage(msg))
+        // we may remove local message
+        dispatch(updateLocalMessage(tmpId, null))
 
-    }).catch((err) => {
+        const msg = _.get(res, 'sendMessage')
+        dispatch(setMessage(msg))
 
-      message.status = 'error'
-      dispatch(updateLocalMessage(tmpId, message))
+        return resolve(msg)
 
-      dispatch(setError(err))
+      }).catch((err) => {
+
+        message.status = 'error'
+        dispatch(updateLocalMessage(tmpId, message))
+
+        dispatch(setError(err))
+
+        return reject(err)
+      })
+
     })
 
   }

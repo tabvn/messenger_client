@@ -41,6 +41,7 @@ const ChatMessages = styled.div`
 `
 
 const LIMIT = 50
+let lastMessage = null
 
 class Chat extends React.Component {
 
@@ -50,7 +51,7 @@ class Chat extends React.Component {
     modal: null,
     emoji: null,
     edit: null,
-    isLoadingMore: false
+    isLoadingMore: false,
   }
 
   componentDidMount () {
@@ -127,7 +128,10 @@ class Chat extends React.Component {
       msg.files = this.state.files
       msg.user_id = currentUserId
       msg.gif = this.state.gif
-      this.props.sendMessage(msg, group, userIds)
+
+      this.props.sendMessage(msg, group, userIds).then((msg) => {
+        lastMessage = msg
+      })
 
     }
 
@@ -381,6 +385,14 @@ class Chat extends React.Component {
 
         {isOpen && (
           <Composer
+            onPressArrowUp={() => {
+              if (lastMessage) {
+                if (lastMessage.body) {
+                  this.handleOnEditMessage(lastMessage)
+                }
+
+              }
+            }}
             onClearEmoji={() => {
               this.setState({
                 emoji: null
