@@ -10,6 +10,7 @@ const Container = styled.div`
   flex-direction: column;
   height: 100%;
   flex-grow: 1;
+  position: relative;
 `
 
 const Inner = styled.div`
@@ -50,8 +51,88 @@ const Emoji = styled.div`
 
 `
 
+const Tabs = styled.div`
+  box-shadow: 0 -5px 5px -5px #eaeaea;
+  position: absolute;
+  bottom: 1px;
+  left:0;
+  display: flex;
+  flex-direction: row;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  align-items: center;
+  width: 100%;
+`
+
+const Tab = styled.div`
+ 
+  font-family: Apple Color Emoji, Segoe UI Emoji, NotoColorEmoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
+  font-size: 30px;
+  line-height: 30px;
+  display: block;
+  padding: 0;
+  span{
+   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+    flex-basis: 35px;
+    cursor: pointer;
+    text-align: center;
+    padding: 8px 14px;
+    display: block;
+    background-color: ${props => props.selected ? '#e9ebee' : '#FFF'};
+    font-size: 30px;
+    line-height: 30px;
+    &:hover{
+       background-color: #e9ebee;
+    }
+   
+  }
+  &:first-child{
+    span{
+      border-bottom-left-radius: 8px;
+    }
+  }
+    
+`
+
+const FILTERS = [
+  {
+    title: 'People',
+    name: 'People',
+    icon: '😀'
+  },
+  {
+    title: 'Nature',
+    name: 'Nature',
+    icon: '🐶'
+  },
+  {
+    title: 'Objects',
+    name: 'Objects',
+    icon: '📦'
+  },
+  {
+    title: 'Places',
+    name: 'Places',
+    icon: '🚘'
+  },
+  {
+    title: 'Symbols',
+    name: 'Symbols',
+    icon: '❤️'
+  },
+  {
+    title: 'Flags',
+    name: 'Flags',
+    icon: '🚩'
+  }
+]
+
 class EmojiModal extends React.Component {
 
+  state = {
+    selected: 'People',
+  }
 
   componentDidMount () {
     this.props.getEmojis()
@@ -59,11 +140,13 @@ class EmojiModal extends React.Component {
 
   render () {
 
-    const {items, selected, dock, height} = this.props
+    let {items, selected, dock, height} = this.props
+
+    items = items.filter((s) => s.category === this.state.selected)
 
     let results = selected.concat(items)
-    let h = dock ? 430 : (height - 210)
 
+    let h = dock ? 400 : (height - 240)
 
     return (
       <Container className={'gif-modal'}>
@@ -95,6 +178,20 @@ class EmojiModal extends React.Component {
           </Results>
         </Inner>
 
+        <Tabs className={'emoji-filter'}>
+          {
+            FILTERS.map((c) => {
+              return <Tab title={c.title} selected={this.state.selected === c.name} onClick={() => {
+
+                this.setState({
+                  selected: c.name,
+                })
+              }}>
+                <span>{c.icon}</span>
+              </Tab>
+            })
+          }
+        </Tabs>
       </Container>
     )
   }

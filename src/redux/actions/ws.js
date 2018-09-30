@@ -89,6 +89,8 @@ const handleReceiveMessage = (message) => {
         if (currentUserId !== message.user_id) {
           dispatch(openChat(g.users, g, false))
 
+
+
           if (_.get(state.chat.active, 'group_id') !== groupId && _.get(state.inbox.active, 'group.id') !== groupId) {
 
             // play sound
@@ -108,6 +110,7 @@ const handleReceiveMessage = (message) => {
 
       if (currentUserId !== _.get(message, 'user_id')) {
         // this is message send by other so we do need check if not active conversation we increase count
+
 
         if (_.get(state.chat.active, 'group_id') !== groupId && _.get(state.inbox.active, 'group.id') !== groupId) {
           // let increase it

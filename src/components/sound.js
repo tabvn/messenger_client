@@ -28,7 +28,7 @@ class Sound extends React.Component {
     if (this.ref) {
       this.ref.pause()
       this.ref.currentTime = 0
-      this.ref.volume = 0.2
+      this.ref.volume = 0.4
       this.ref.play()
     }
   }

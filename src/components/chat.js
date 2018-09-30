@@ -99,7 +99,9 @@ class Chat extends React.Component {
 
   showModal = (name, e) => {
 
-    targetEvent = e.target.id;
+
+    targetEvent = e ? e.target.id : null;
+
     this.setState({
       modal: this.state.modal === name ? null : name
     })

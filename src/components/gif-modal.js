@@ -162,10 +162,17 @@ class GifModal extends React.Component {
 
   render () {
 
-    const {search, results} = this.state
+    let {search, results} = this.state
     const {dock, height} = this.props
     let items = this.props.selected
 
+    if(search === ''){
+      _.each(items, (i) => {
+
+
+        results = results.filter((s) => s.id !== i.id);
+      })
+    }
     items = search === "" ? items.concat(results) : results;
 
     let h = dock ? 400 : (height - 240)
