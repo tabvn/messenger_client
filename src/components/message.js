@@ -15,6 +15,7 @@ const Container = styled.div`
     display:flex;
     flex-direction: row;
     opacity: ${props => props.opacity};
+    position: relative;
   }
   
 `
@@ -69,7 +70,7 @@ class Message extends React.Component {
               opacity={opacity}
               className={'ar-message'}>
               <div className={'message-inner'}>
-                <MessageUserAvatar hide={hideAvatar} user={user}/>
+                <MessageUserAvatar created={_.get(message, 'created')} hide={hideAvatar} user={user}/>
                 <MessageBody onEdit={(message) => {
 
                   if(this.props.onEdit){

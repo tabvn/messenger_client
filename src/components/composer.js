@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 import ComposerAttachments from './composer-attachments'
+import ConnectionInfo from './connection-info'
 
 const Container = styled.div`
   border-top: 1px solid #e8e8e8;
@@ -311,6 +312,7 @@ export default class Composer extends React.Component {
           files={files}/>
         <Inner className={'composer-inner'} onClick={this.onClickInside}>
           <div className={'composer-input-container'}>
+          <ConnectionInfo />
           <textarea
             value={message}
             onChange={this.onChange}

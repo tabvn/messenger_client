@@ -10,6 +10,7 @@ import MessageGif from './message-gif'
 import Menu from './menu'
 
 const Container = styled.div`
+  position: relative;
   padding: 0 0 0 10px;
   flex-grow: 1;
   max-width: ${props => props.dock ? '300px;' : '590px'};
@@ -95,7 +96,8 @@ class MessageBody extends React.Component {
       return line
     })
 
-    if (_.get(message, 'created') !== _.get(message, 'updated')) {
+    const updated = _.get(message, 'updated', null)
+    if (updated && _.get(message, 'created') !== updated) {
 
       text = `${text} <span class="message-edited">(edited)</span>`
     }

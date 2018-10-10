@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
+import moment from 'moment'
 
 const Container = styled.div`
 
@@ -20,6 +21,11 @@ const Container = styled.div`
     border-radius: 50%;
     object-fit: cover;
   }
+  &:hover{
+    .messenger-user-tooltip{
+      display: block;
+    }
+  }
 `
 
 const Empty = styled.div`
@@ -29,21 +35,83 @@ const Empty = styled.div`
   background: none;
 `
 
-export default class MessageUserAvatar extends React.Component {
+const ArrowBox = styled.div`
+  color: #FFF;
+  position: relative;
+	background: #000000;
+	border: 1px solid #000000;
+	border-radius: 5px;
+	padding: 5px 10px;
+	&:after,&:before{
+	  right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+	}
+	&:after{
+	  border-color: rgba(0, 0, 0, 0);
+	  border-right-color: #000000;
+	  border-width: 5px;
+	  margin-top: -5px;
+	}
+	&:before{
+	  border-color: rgba(0, 0, 0, 0);
+	  border-right-color: #000000;
+	  border-width: 6px;
+	  margin-top: -6px;
+	}
+`
 
+const ToolTip = styled.div`
+  display: none;
+  color: #FFF;
+  font-size: 18px;
+  position: absolute;
+  top: 2px;
+  left: 46px;
+`
+
+export default class MessageUserAvatar extends React.Component {
   render () {
-    const {user, hide} = this.props
+    const {user, hide, created} = this.props
     const avatar = _.get(user, 'avatar', '')
 
     const firstName = _.get(user, 'first_name', '')
     const lastName = _.get(user, 'last_name', '')
 
+    // check if same week we only display day and time otherwise we need show day
+
+    const currentWeek = moment().format('WW gggg')
+    const weekFormat = moment.unix(created).format('WW gggg')
+
+
+    let timeDisplay
+
+    if (currentWeek === weekFormat) {
+      timeDisplay = moment.unix(created).format('ddd hh:mm a')
+    } else {
+      timeDisplay = moment.unix(created).format('MM/DD/YYYY, hh:mm a')
+    }
 
     return (
       <Fragment>
-        {!hide ? <Container title={`${firstName} ${lastName}`} className={'message-user-avatar'}>
-          {avatar ? <img src={avatar} alt={''}/> : <i className={'md-icon md-24'}>person_outline</i>}
-        </Container> : <Empty/>}
+        {!hide ?
+          (
+            <Container title={`${firstName} ${lastName}`} className={'message-user-avatar'}>
+              {avatar ? <img src={avatar} alt={''}/> : <i className={'md-icon md-24'}>person_outline</i>}
+              <ToolTip
+                className={'messenger-user-tooltip'}>
+                <ArrowBox>
+                  {`${firstName} - ${lastName} ${timeDisplay}`}
+                </ArrowBox>
+              </ToolTip>
+            </Container>
+
+          ) : <Empty/>}
       </Fragment>
     )
 

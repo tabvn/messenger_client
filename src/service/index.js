@@ -2,6 +2,11 @@ import _ from 'lodash'
 import { GraphQLClient } from 'graphql-request'
 import axios from 'axios'
 import { handleReceiveWsMessage } from '../redux/actions'
+import { EventEmitter } from 'fbemitter'
+
+const NETWORK_STATUS = 'network_status'
+
+let lastStatus = true
 
 export default class Service {
   constructor (url) {
@@ -23,6 +28,26 @@ export default class Service {
 
     this.store = null
 
+    this._networkInfo = _.debounce(this.networkInfo, 300)
+
+    this.event = new EventEmitter()
+
+  }
+
+  networkInfo () {
+
+    if (lastStatus !== this._connected) {
+      this.event.emit(NETWORK_STATUS, this._connected)
+    }
+
+    lastStatus = this._connected
+  }
+
+  subScribeNetworkInfo (cb) {
+    if (lastStatus !== this._connected) {
+      cb(this._connected)
+    }
+    return this.event.addListener(NETWORK_STATUS, cb)
   }
 
   setStore = (store) => {
@@ -40,8 +65,10 @@ export default class Service {
     this.ws.onopen = () => {
 
       // change status of connected
+
       this._connected = true
       this._isReconnecting = false
+      this._networkInfo(true)
 
       this.auth()
       this.sendQueue()
@@ -65,12 +92,16 @@ export default class Service {
       this._isReconnecting = false
       this.reconnect()
 
+      this._networkInfo(false)
+
     }
     this.ws.onclose = (e) => {
 
       this._connected = false
       this._isReconnecting = false
+
       this.reconnect()
+      this._networkInfo(false)
 
     }
 

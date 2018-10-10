@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import Message from './message'
 import _ from 'lodash'
 
@@ -33,6 +33,74 @@ const Container = styled.div`
     color: #b0bdc9;
     font-size: 21px;
   }
+`
+
+const messengerLoading1 = keyframes`
+    from{
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+`
+
+const messengerLoading2 = keyframes`
+    from{
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(19px, 0);
+    }
+`
+
+const messengerLoading3 = keyframes`
+    from{
+       transform: scale(1);
+    }
+    to {
+      transform: scale(0);
+    }
+`
+
+const Loading = styled.div`
+    height: 64px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .messenger-loading {
+      display: inline-block;
+      position: relative;
+      width: 64px;
+      height: 64px;
+      .messenger-loading-circle{
+        position: absolute;
+        top: 27px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #959595;
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  
+      }
+  }
+ 
+  .messenger-loading div:nth-child(1) {
+    left: 6px;
+    animation: ${messengerLoading1} 0.6s infinite;
+  }
+  .messenger-loading div:nth-child(2) {
+    left: 6px;
+    animation: ${messengerLoading2} 0.6s infinite;
+  }
+  .messenger-loading div:nth-child(3) {
+    left: 26px;
+    animation: ${messengerLoading2} 0.6s infinite;
+  }
+  .messenger-loading div:nth-child(4) {
+    left: 45px;
+    animation: ${messengerLoading3} 0.6s infinite;
+  }
+  
 `
 
 let sessionScrollTop = null
@@ -161,6 +229,14 @@ export default class Messages extends React.Component {
         }}
         className={'ar-messages'}>
         <div onScroll={this.handleOnScroll} ref={(ref) => this.ref = ref} className={'inner'}>
+          {this.props.isLoadingMore ? <Loading>
+            <div className={'messenger-loading'}>
+              <div className={'messenger-loading-circle'}/>
+              <div className={'messenger-loading-circle'}/>
+              <div className={'messenger-loading-circle'}/>
+              <div className={'messenger-loading-circle'}/>
+            </div>
+          </Loading> : null}
           {
             messages.length ? this.renderMessages() : this.renderEmpty()
           }

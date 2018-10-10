@@ -215,7 +215,10 @@ export const createConversation = (message, userIds = [], g = {title: '', avatar
         let users = group.users
         users = users.filter((u) => u.id !== currentUserId)
 
-        const messages = group.messages
+        let messages = group.messages
+
+        const _created = _.get(messages, '[0].created')
+        messages = _.setWith(messages, '[0].updated', _created)
         dispatch(setMessage(messages))
         dispatch(setGroup(group))
 
