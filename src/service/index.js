@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { GraphQLClient } from 'graphql-request'
 import axios from 'axios'
 import { handleReceiveWsMessage } from '../redux/actions'
 import { EventEmitter } from 'fbemitter'
@@ -12,10 +11,6 @@ export default class Service {
   constructor (url) {
     this.url = url
     this.token = null
-
-    this.client = new GraphQLClient(`${this.url}/api`, {
-      headers: {},
-    })
 
     // webSocket
     this.wsUrl = this._wsUrl(`${url}/ws`)
@@ -188,8 +183,28 @@ export default class Service {
   }
 
   request (query, variables = null) {
-    this.client.setHeader('Authorization', this.getTokenString())
-    return this.client.request(query, variables)
+
+    return new Promise((resolve, reject) => {
+
+      axios({
+        url: `${this.url}/api`,
+        method: 'post',
+        headers: {
+          Authorization: this.getTokenString(),
+        },
+        withCredentials: true,
+        data: {
+          query: query,
+          variables: variables,
+        }
+      }).then((result) => {
+
+        return resolve(result.data.data)
+      }).catch((e) => {
+        return reject(e)
+      })
+
+    })
   }
 
   uploadPromise (file) {

@@ -73,29 +73,16 @@ const ToolTip = styled.div`
   position: absolute;
   top: 2px;
   left: 46px;
+  z-index: 2;
 `
 
 export default class MessageUserAvatar extends React.Component {
   render () {
-    const {user, hide, created} = this.props
+    const {user, hide, tooltipMessage} = this.props
     const avatar = _.get(user, 'avatar', '')
 
     const firstName = _.get(user, 'first_name', '')
     const lastName = _.get(user, 'last_name', '')
-
-    // check if same week we only display day and time otherwise we need show day
-
-    const currentWeek = moment().format('WW gggg')
-    const weekFormat = moment.unix(created).format('WW gggg')
-
-
-    let timeDisplay
-
-    if (currentWeek === weekFormat) {
-      timeDisplay = moment.unix(created).format('ddd hh:mm a')
-    } else {
-      timeDisplay = moment.unix(created).format('MM/DD/YYYY, hh:mm a')
-    }
 
     return (
       <Fragment>
@@ -106,7 +93,7 @@ export default class MessageUserAvatar extends React.Component {
               <ToolTip
                 className={'messenger-user-tooltip'}>
                 <ArrowBox>
-                  {`${firstName} - ${lastName} ${timeDisplay}`}
+                  {tooltipMessage}
                 </ArrowBox>
               </ToolTip>
             </Container>

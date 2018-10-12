@@ -11,6 +11,7 @@ import Menu from './menu'
 
 const Container = styled.div`
   position: relative;
+  z-index:0;
   padding: 0 0 0 10px;
   flex-grow: 1;
   max-width: ${props => props.dock ? '300px;' : '590px'};
@@ -20,6 +21,9 @@ const Container = styled.div`
   &:hover{
     .messenger-menu{
       visibility: visible;
+    }
+    .messenger-body-tooltip{
+      display: block;
     }
   }
 `
@@ -71,6 +75,54 @@ const BodyInner = styled.div`
     font-weight: 100;
   }
 
+`
+
+const Empty = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: none;
+`
+
+const ArrowBox = styled.div`
+  color: #FFF;
+  position: relative;
+	background: #000000;
+	border: 1px solid #000000;
+	border-radius: 5px;
+	padding: 5px 10px;
+	&:after,&:before{
+	  top: 100%;
+	  left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+	}
+	&:after{
+	  border-color: rgba(0, 0, 0, 0);
+	  border-top-color: #000000;
+	  border-width: 5px;
+	  margin-left: -5px;
+	}
+	&:before{
+	  border-color: rgba(0, 0, 0, 0);
+	  border-top-color: #000000;
+	  border-width: 6px;
+	  margin-left: -6px;
+	}
+`
+
+const ToolTip = styled.div`
+  display: none;
+  color: #FFF;
+  font-size: 18px;
+  position: absolute;
+  top: -37px;
+  left: 10px;
+  z-index: 2;
 `
 
 class MessageBody extends React.Component {
@@ -140,7 +192,7 @@ class MessageBody extends React.Component {
 
   render () {
 
-    const {message, currentUser, dock} = this.props
+    const {message, currentUser, dock,tooltipMessage} = this.props
 
     const currentUserId = _.get(currentUser, 'id')
     const messageBackground = currentUserId === message.user_id ? '#12416a' : '#e1e1e1'
@@ -188,6 +240,13 @@ class MessageBody extends React.Component {
       <Container
         dock={dock}
         className={'message-body'}>
+        <ToolTip className={'messenger-body-tooltip'}>
+          <ArrowBox>
+            {
+              tooltipMessage
+            }
+          </ArrowBox>
+        </ToolTip>
         {
           _.trim(_.get(message, 'body', '')) !== '' ?
             isEmoji ?

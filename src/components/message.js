@@ -7,10 +7,14 @@ import MessageUserAvatar from './message-user-avatar'
 import MessageBody from './message-body'
 import _ from 'lodash'
 import { sendMessage } from '../redux/actions'
+import moment from 'moment'
 
 const Container = styled.div`
   height: min-content;
   padding: 10px 20px 10px 10px;
+  &:first-child{
+    padding-top: 30px;
+  }
   .message-inner{
     display:flex;
     flex-direction: row;
@@ -62,6 +66,26 @@ class Message extends React.Component {
       opacity = 0.2
     }
 
+    const firstName = _.get(user, 'first_name', '')
+    const lastName = _.get(user, 'last_name', '')
+    const created = _.get(message, 'created')
+
+    // check if same week we only display day and time otherwise we need show day
+
+    const currentWeek = moment().format('WW gggg')
+    const weekFormat = moment.unix(created).format('WW gggg')
+
+
+    let timeDisplay
+
+    if (currentWeek === weekFormat) {
+      timeDisplay = moment.unix(created).format('ddd hh:mm a')
+    } else {
+      timeDisplay = moment.unix(created).format('MM/DD/YYYY, hh:mm a')
+    }
+
+    const tooltipMessage = `${firstName} - ${lastName} ${timeDisplay}`
+
     return (
       <Fragment>
         {
@@ -70,8 +94,8 @@ class Message extends React.Component {
               opacity={opacity}
               className={'ar-message'}>
               <div className={'message-inner'}>
-                <MessageUserAvatar created={_.get(message, 'created')} hide={hideAvatar} user={user}/>
-                <MessageBody onEdit={(message) => {
+                <MessageUserAvatar tooltipMessage={tooltipMessage} created={_.get(message, 'created')} hide={hideAvatar} user={user}/>
+                <MessageBody tooltipMessage={tooltipMessage} onEdit={(message) => {
 
                   if(this.props.onEdit){
                     this.props.onEdit(message)
