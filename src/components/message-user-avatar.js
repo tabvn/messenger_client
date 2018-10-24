@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import moment from 'moment'
 
 const Container = styled.div`
 

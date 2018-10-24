@@ -8,6 +8,7 @@ import { deleteMessage, replaceUrls, setAttachmentModal } from '../redux/actions
 import MessageFiles from './message-files'
 import MessageGif from './message-gif'
 import Menu from './menu'
+import WebScreenshot from './web-screenshot'
 
 const Container = styled.div`
   position: relative;
@@ -75,13 +76,6 @@ const BodyInner = styled.div`
     font-weight: 100;
   }
 
-`
-
-const Empty = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: none;
 `
 
 const ArrowBox = styled.div`
@@ -192,7 +186,7 @@ class MessageBody extends React.Component {
 
   render () {
 
-    const {message, currentUser, dock,tooltipMessage} = this.props
+    const {message, currentUser, dock, tooltipMessage} = this.props
 
     const currentUserId = _.get(currentUser, 'id')
     const messageBackground = currentUserId === message.user_id ? '#12416a' : '#e1e1e1'
@@ -205,6 +199,9 @@ class MessageBody extends React.Component {
     if (!attachments) {
       attachments = []
     }
+
+    let urls = _.get(message, 'body', '').match(/\bhttps?:\/\/\S+/gi)
+    urls = _.uniq(urls)
 
     const files = _.get(message, 'files', [])
     const gif = _.get(message, 'gif')
@@ -283,6 +280,12 @@ class MessageBody extends React.Component {
         {
           files.length ? <MessageFiles files={files}/> : null
 
+        }
+
+        {
+          urls.map((url, index) => {
+            return <WebScreenshot key={index} url={url}/>
+          })
         }
 
       </Container>

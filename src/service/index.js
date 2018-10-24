@@ -2,7 +2,7 @@ import _ from 'lodash'
 import axios from 'axios'
 import { handleReceiveWsMessage } from '../redux/actions'
 import { EventEmitter } from 'fbemitter'
-
+import WebShot from './webshot'
 const NETWORK_STATUS = 'network_status'
 
 let lastStatus = true
@@ -26,6 +26,8 @@ export default class Service {
     this._networkInfo = _.debounce(this.networkInfo, 300)
 
     this.event = new EventEmitter()
+
+    this.webShot = new WebShot();
 
   }
 
