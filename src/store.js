@@ -32,7 +32,7 @@ store.dispatch({
   type: INIT_APP,
   payload: initStore
 })
-
+service.setApiUrl(_.get(initStore, 'api.url'))
 service.setStore(store)
 service.setToken(_.get(initStore, 'account'))
 

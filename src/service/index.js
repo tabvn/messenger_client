@@ -18,16 +18,20 @@ export default class Service {
     this._isReconnecting = false
     this._connected = false
     this._queue = []
-
-    this.connect()
-
     this.store = null
 
     this._networkInfo = _.debounce(this.networkInfo, 300)
 
     this.event = new EventEmitter()
 
-    this.webShot = new WebShot();
+    this.webShot = new WebShot()
+
+  }
+
+  setApiUrl(url){
+    this.url = url
+    this.wsUrl = this._wsUrl(`${url}/ws`)
+    this.connect()
 
   }
 
