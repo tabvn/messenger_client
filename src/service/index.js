@@ -3,6 +3,7 @@ import axios from 'axios'
 import { handleReceiveWsMessage } from '../redux/actions'
 import { EventEmitter } from 'fbemitter'
 import WebShot from './webshot'
+
 const NETWORK_STATUS = 'network_status'
 
 let lastStatus = true
@@ -28,11 +29,15 @@ export default class Service {
 
   }
 
-  setApiUrl(url){
+  setApiUrl (url) {
     this.url = url
     this.wsUrl = this._wsUrl(`${url}/ws`)
     this.connect()
 
+  }
+
+  getApiUrl () {
+    return this.url
   }
 
   networkInfo () {
@@ -265,6 +270,21 @@ export default class Service {
       })
     })
 
+  }
+
+  report (data) {
+
+    //{"field_report_user":[539,520],"field_report_user_options":1,"field_report_message":"Testing"}
+
+    const values = JSON.stringify({
+      field_report_user: data.users,
+      field_report_message: data.message,
+      field_report_user_options: data.options,
+
+    })
+
+    const requestUrl = `/js.php?js_module=ar_entityform&js_callback=submit&type=report_user&values=${values}`
+    return axios.get(requestUrl)
   }
 
 }

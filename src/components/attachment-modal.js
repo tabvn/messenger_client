@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { bindActionCreators } from 'redux'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { closeAttachmentModal, setAttachmentModalSelected } from '../redux/actions'
-import { api } from '../config'
 import _ from 'lodash'
 
 const Container = styled.div`
@@ -108,6 +107,7 @@ class AttachmentModal extends React.Component {
   }
 
   getFileUrl = (attachment) => {
+    const api = this.props.getApiUrl()
     return `${api}/attachment?name=${attachment.name}`
   }
 
@@ -173,6 +173,11 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getApiUrl: () => {
+    return (dispatch, getState, {service}) => {
+      return service.getApiUrl()
+    }
+  },
   closeAttachmentModal,
   setAttachmentModalSelected
 }, dispatch)

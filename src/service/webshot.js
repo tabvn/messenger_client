@@ -10,7 +10,7 @@ let isRuning = false
 export default class Webshot {
 
   constructor () {
-    setInterval(() => {this.run()}, 2000)
+    setInterval(() => {this.run()}, 1000)
   }
 
   shot (url) {

@@ -1,4 +1,3 @@
-import { api } from '../../config'
 import { LOAD_EMOJI, SELECT_EMOJI } from '../types'
 import { setError } from './error'
 
@@ -9,7 +8,7 @@ export const getEmojis = () => {
       return
     }
 
-    service.get(`${api}/public/emoji.json`).then((res) => {
+    service.get(`${service.getApiUrl()}/public/emoji.json`).then((res) => {
       dispatch({
         type: LOAD_EMOJI,
         payload: res.data

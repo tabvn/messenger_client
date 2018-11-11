@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { api } from '../config'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 const Container = styled.div`
 
@@ -115,17 +116,17 @@ const Filename = styled.div`
 
 `
 
-export default class MessageAttachment extends React.Component {
+class MessageAttachment extends React.Component {
 
   attachmentUrl = (name) => {
-    return `${api}/attachment?name=${name}`
+    return `${this.props.getApiUrl()}/attachment?name=${name}`
   }
 
   getUrl = () => {
 
     const {attachment} = this.props
 
-    return `${api}/attachment?name=${attachment.name}`
+    return `${this.props.getApiUrl()}/attachment?name=${attachment.name}`
   }
   renderImage = () => {
     const {attachment} = this.props
@@ -176,7 +177,6 @@ export default class MessageAttachment extends React.Component {
 
     const attachmentType = _.get(attachment, 'type')
 
-
     return (
       _.get(attachment, 'name') ? <Container className={'message-attachment'}>
         {_.includes(attachmentType, 'image/') ? this.renderImage() : this.renderFile()}
@@ -184,3 +184,17 @@ export default class MessageAttachment extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  items: state.emoji.items,
+})
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getApiUrl: () => {
+    return (dispatch, getState, {service}) => {
+      return service.getApiUrl()
+    }
+  }
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageAttachment)

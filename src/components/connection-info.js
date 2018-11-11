@@ -9,6 +9,7 @@ const Container = styled.div`
   top: 0;
   right: 0;
   bottom: 0;
+  z-index: 10;
   background: #FFF;
   display: flex;
   align-items: center;

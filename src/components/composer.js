@@ -8,6 +8,19 @@ const Container = styled.div`
   border-top: 1px solid #e8e8e8;
   position: relative;
   background: #FFF;
+  pre{
+    visibility: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    background: none;
+    border: 0 none;
+    outline: 0;
+    line-height: 1.33;
+  }
   
 `
 
@@ -26,19 +39,30 @@ const Inner = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  min-height: 60px;
+  max-height: 200px;
   .composer-input-container{
     flex-grow: 1;
+    position: relative;
+    max-height: 150px;
   }
   .composer-input{
+    min-height: 50px;
     resize: none;
     padding: 5px;
     color: #c4c4c4;
     font-size: 21px;
     font-weight: 300;
     border: 0 none;
-    height: 50px;
     width: 100%;
+    height: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     outline: 0 none;
+    transition: background-color ease 200ms, box-shadow ease 200ms, -webkit-box-shadow ease 200ms;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     &:focus,&:active{
       outline: 0 none;
     }
@@ -311,45 +335,46 @@ export default class Composer extends React.Component {
           }}
           files={files}/>
         <Inner className={'composer-inner'} onClick={this.onClickInside}>
+          <ConnectionInfo/>
           <div className={'composer-input-container'}>
-          <ConnectionInfo />
-          <textarea
-            value={message}
-            onChange={this.onChange}
-            onKeyDown={(e) => {
-              if (message === '' && e.key === 'ArrowUp' && this.props.onPressArrowUp) {
-                this.props.onPressArrowUp()
+            <pre>{message}</pre>
+            <textarea
+              value={message}
+              onChange={this.onChange}
+              onKeyDown={(e) => {
+                if (message === '' && e.key === 'ArrowUp' && this.props.onPressArrowUp) {
+                  this.props.onPressArrowUp()
 
-                e.preventDefault()
-              }
-            }}
-            onKeyPress={(event) => {
-              if (event.shiftKey === false && event.key === 'Enter') {
+                  e.preventDefault()
+                }
+              }}
+              onKeyPress={(event) => {
+                if (event.shiftKey === false && event.key === 'Enter') {
 
-                event.preventDefault()
-                if (allowSend) {
-                  this.send()
+                  event.preventDefault()
+                  if (allowSend) {
+                    this.send()
+                  }
+
+                }
+              }}
+              onBlur={() => {
+                if (!message) {
+                  this.setState({
+                    placeholder: true
+                  })
                 }
 
-              }
-            }}
-            onBlur={() => {
-              if (!message) {
-                this.setState({
-                  placeholder: true
-                })
-              }
+              }}
+              onFocus={(e) => {
+                if (!message) {
+                  this.setState({
+                    placeholder: false
+                  })
+                }
+                this.onClickInside(e)
 
-            }}
-            onFocus={(e) => {
-              if (!message) {
-                this.setState({
-                  placeholder: false
-                })
-              }
-              this.onClickInside(e)
-
-            }} className={'composer-input'} placeholder={this.state.placeholder ? 'Type a message...' : ''}/>
+              }} className={'composer-input'} placeholder={this.state.placeholder ? 'Type a message...' : ''}/>
           </div>
           <Tools className={'composer-tools'}>
             <Button

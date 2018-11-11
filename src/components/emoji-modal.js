@@ -11,6 +11,26 @@ const Container = styled.div`
   height: 100%;
   flex-grow: 1;
   position: relative;
+  
+  .search-input-container{
+    background: #f8f8f8;
+    display: flex;
+    flex-direction:row;
+    padding: 0 5px;
+    border-radius: 5px;
+    input{
+      font-size: 15px;
+      font-style: italic;
+      color: #b0b0b0;
+      min-height:40px; 
+      border: 0 none;
+      background: transparent;
+      padding: 8px 10px;
+      flex-grow: 1;
+      max-width: 99%;
+    }
+  }
+  
 `
 
 const Inner = styled.div`
@@ -95,6 +115,21 @@ const Tab = styled.div`
     
 `
 
+const Button = styled.button`
+  cursor: pointer;
+  border: 0 none;
+  padding: 0;
+  background: none;
+  outline: 0 none;
+  &:active,&:focus{
+    outline: 0 none;
+  }
+  i{
+    color: #4d4d4d;
+    font-size: 20px;
+  }
+`
+
 const FILTERS = [
   {
     title: 'People',
@@ -132,26 +167,61 @@ class EmojiModal extends React.Component {
 
   state = {
     selected: 'People',
+    value: '',
   }
 
   componentDidMount () {
     this.props.getEmojis()
   }
 
+  onChange = (e) => {
+    this.setState({
+      value: e.target.value,
+    })
+  }
+  clearSearch = () => {
+    this.setState({
+      value: ''
+    })
+  }
+
   render () {
 
+    const {value} = this.state
     let {items, selected, dock, height} = this.props
 
-    items = items.filter((s) => s.category === this.state.selected)
+    if (value !== '') {
+      items = items.filter((s) => {
+
+        if (_.includes(s.description, value) || _.includes(_.get(s, 'aliases'), value)) {
+          return true
+        }
+
+        return false
+      })
+    } else {
+      items = items.filter((s) => s.category === this.state.selected)
+    }
 
     let results = selected.concat(items)
 
-    let h = dock ? 400 : (height - 240)
+    let h = dock ? 360 : (height - 280)
 
     return (
       <Container className={'gif-modal'}>
 
         <Inner className={'gif-modal-inner'}>
+          <div className={'search-input-container'}>
+            <input
+              placeholder={'Search emojis'}
+              type={'text'} value={value} onChange={this.onChange}/>
+            <Button onClick={() => {
+              if (value !== '') {
+                this.clearSearch()
+              }
+            }}><i className={'md-icon'}>{_.trim(value) !== '' ? 'close' : 'search'}</i></Button>
+          </div>
+
           <Results
             h={h}
             className={'results'}>

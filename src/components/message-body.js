@@ -293,15 +293,13 @@ class MessageBody extends React.Component {
   }
 }
 
-const
-  mapStateToProps = (state) => ({
-    currentUser: state.app.user,
-  })
+const mapStateToProps = (state) => ({
+  currentUser: state.app.user,
+})
 
-const
-  mapDispatchToProps = (dispatch) => bindActionCreators({
-    setAttachmentModal,
-    deleteMessage,
-  }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  setAttachmentModal,
+  deleteMessage,
+}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageBody)

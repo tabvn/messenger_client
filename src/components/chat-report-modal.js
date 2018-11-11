@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 const Container = styled.div`
   display: flex;
@@ -108,24 +110,28 @@ const Submit = styled.button`
 const OPTIONS = [
   {
     title: 'Harassment',
-    description: 'Adversarial or harmful actions taken by this user directed at a person or group.'
+    description: 'Adversarial or harmful actions taken by this user directed at a person or group.',
+    id: 1,
   },
   {
     title: 'General Spam',
-    description: 'Fake Profile, producing fake content, or Inactive member.'
+    description: 'Fake Profile, producing fake content, or Inactive member.',
+    id: 2,
   },
   {
     title: 'Promotional Spam',
-    description: 'Member promotion Inappropriate links, products, websites, or facilities.'
+    description: 'Member promotion Inappropriate links, products, websites, or facilities.',
+    id: 3,
   },
   {
     title: 'Insincere',
-    description: 'Member isn\'t participating authentically or is being sarcastic or disrespectful.'
+    description: 'Member isn\'t participating authentically or is being sarcastic or disrespectful.',
+    id: 4,
   },
 
 ]
 
-export default class ChatReportModal extends React.Component {
+class ChatReportModal extends React.Component {
 
   state = {
     selected: 2,
@@ -164,10 +170,13 @@ export default class ChatReportModal extends React.Component {
       const option = OPTIONS[this.state.selected]
       const data = {
         users: ids,
-        value: `${option.title}: ${option.description}`,
-        explain: value,
+        options: option.id,//`${option.title}: ${option.description}`,
+        message: value,
       }
-      console.log('Report:', data)
+      this.props.report(data)
+      if (this.props.onClose) {
+        this.props.onClose()
+      }
     })
 
   }
@@ -225,3 +234,15 @@ export default class ChatReportModal extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({})
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  report: (data) => {
+    return (dispatch, getState, {service}) => {
+      return service.report(data)
+    }
+  }
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatReportModal)
