@@ -47,7 +47,6 @@ export default class LocalEvent {
   }
 
   emit (topic, data) {
-
     this.eventEmitter.emit(topic, data)
   }
 

@@ -26,6 +26,8 @@ import ChatParticipantsModal from './chat-participants-modal'
 import CreateSingleChat from './create-single-chat'
 import ChatReportModal from './chat-report-modal'
 import BlockGroupUserModal from './block-group-user-modal'
+import GroupUserRemoveModal from './group-user-removed-modal'
+import { EVENT_GROUP_USER_REMOVED } from '../redux/types'
 
 const Container = styled.div`
   flex-grow: 1;
@@ -42,22 +44,37 @@ const ChatMessages = styled.div`
 
 const LIMIT = 50
 let lastMessage = null
-let targetEvent = null;
+let targetEvent = null
 
 class Chat extends React.Component {
 
   state = {
     files: [],
     gif: '',
-    modal: null,
+    modal: '',
     emoji: null,
     edit: null,
     isLoadingMore: false,
+    removeBy: null,
   }
 
   componentDidMount () {
 
     this.loadMessages()
+
+    this._removedEvent = this.props.subscribeRemoved((info) => {
+      this.setState({
+        modal: 'group_user_removed',
+        removeBy: info
+      })
+    })
+
+  }
+
+  componentWillUnmount () {
+    if (this._removedEvent) {
+      this._removedEvent.remove()
+    }
 
   }
 
@@ -99,8 +116,7 @@ class Chat extends React.Component {
 
   showModal = (name, e) => {
 
-
-    targetEvent = e ? e.target.id : null;
+    targetEvent = e ? e.target.id : null
 
     this.setState({
       modal: this.state.modal === name ? null : name
@@ -288,6 +304,26 @@ class Chat extends React.Component {
         )
       }
 
+      {
+        modal === 'group_user_removed' && (
+
+          <ChatModal onClickOutSide={this.clickOutSide}>
+            <GroupUserRemoveModal
+              removeBy={this.state.removeBy}
+              onClose={() => {
+                this.setState({
+                  modal: null,
+                  removeBy: null
+                })
+              }}
+              height={height}
+              users={users}
+              dock={dock}/>
+          </ChatModal>
+
+        )
+      }
+
 
     </Fragment>
   }
@@ -441,7 +477,12 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   sendMessage,
   setActiveChat,
   updateMessage,
-  startCall
+  startCall,
+  subscribeRemoved: (cb) => {
+    return (dispatch, getState, {service, event}) => {
+      return event.subscribe(EVENT_GROUP_USER_REMOVED, cb)
+    }
+  },
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat)

@@ -63,3 +63,5 @@ export const ANSWER_CALL = 'call/answer'
 export const RECEIVE_CALLING = 'call/receive_calling'
 export const REJECT_CALL = 'call/reject'
 export const CALL_JOINED =  'call/joined'
+
+export const EVENT_GROUP_USER_REMOVED = 'group/user_removed'

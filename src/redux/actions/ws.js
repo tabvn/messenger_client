@@ -5,7 +5,7 @@ import { deleteMessage, setMessage, updateLocalMessage } from './message'
 import { addUserToGroup, removeUserFromGroup, setGroup, updateGroup } from './group'
 import { setUser } from './user'
 import { openChat } from './chat'
-import { ON_PLAY_SOUND } from '../types'
+import { EVENT_GROUP_USER_REMOVED, ON_PLAY_SOUND } from '../types'
 import { callEnd, receiveCalling } from './call'
 
 const handleReceiveUserStatus = (payload) => {
@@ -31,7 +31,6 @@ const handleReceiveUserStatus = (payload) => {
 const handleReceiveMessage = (message) => {
 
   return (dispatch, getState, {service}) => {
-
 
     // check if group is not exist so fetch it first
     const state = getState()
@@ -89,8 +88,6 @@ const handleReceiveMessage = (message) => {
         if (currentUserId !== message.user_id) {
           dispatch(openChat(g.users, g, false))
 
-
-
           if (_.get(state.chat.active, 'group_id') !== groupId && _.get(state.inbox.active, 'group.id') !== groupId) {
 
             // play sound
@@ -110,7 +107,6 @@ const handleReceiveMessage = (message) => {
 
       if (currentUserId !== _.get(message, 'user_id')) {
         // this is message send by other so we do need check if not active conversation we increase count
-
 
         if (_.get(state.chat.active, 'group_id') !== groupId && _.get(state.inbox.active, 'group.id') !== groupId) {
           // let increase it
@@ -253,6 +249,28 @@ const handleReceiveCallExchange = (payload) => {
     event.emit(topic, payload)
   }
 }
+
+export const handleReceiveRemoveGroupUser = (payload) => {
+
+  return (dispatch, getState, {service, event}) => {
+
+    const state = getState()
+
+    const userId = _.get(payload, 'user_id')
+    const currentUserId = _.get(state.app.user, 'id', null)
+
+    if (userId === currentUserId) {
+      // send notify to removed user
+
+      event.emit(EVENT_GROUP_USER_REMOVED, _.get(payload, 'delete_by'))
+
+    } else {
+      // we need remove from the group from redux store
+    }
+
+  }
+}
+
 export const handleReceiveWsMessage = (message) => {
 
   return (dispatch) => {
@@ -336,6 +354,12 @@ export const handleReceiveWsMessage = (message) => {
       case 'call_exchange':
 
         dispatch(handleReceiveCallExchange(message.payload))
+
+        break
+
+      case 'remove_group_user':
+
+        dispatch(handleReceiveRemoveGroupUser(message.payload))
 
         break
 

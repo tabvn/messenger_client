@@ -342,8 +342,8 @@ export const removeUserFromGroup = (groupId, user, callService = false) => {
       }
 
       if (callService) {
-        const q = `mutation leftGroup {
-            leftGroup(group_id: ${groupId}, user_id: ${user.id})
+        const q = `mutation removeGroupUser {
+            removeGroupUser(group_id: ${groupId}, user_id: ${user.id})
         }
       `
         service.request(q).catch((e) => {
@@ -367,3 +367,4 @@ export const updateGroup = (id, group) => {
     })
   }
 }
+
