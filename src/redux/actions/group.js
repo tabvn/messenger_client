@@ -97,6 +97,13 @@ export const searchGroups = (search, limit = 50, skip = 0) => {
                 avatar
                 status
               }
+              members {
+                user_id
+                added_by
+                blocked
+                accepted
+                created
+              }
               messages {
                 id
                 body
@@ -169,6 +176,53 @@ export const searchGroups = (search, limit = 50, skip = 0) => {
 
     })
 
+  }
+}
+
+export const responseInvite = (groupId, accept, chatId = null) => {
+
+  return (dispatch, getState, {service}) => {
+
+    const state = getState()
+    const userId = _.get(state.app.user, 'id', null)
+    const group = state.group.find((g) => g.id === groupId)
+
+    if (group) {
+      // update unread count to 0
+
+      let i = -1
+
+      if (accept) {
+        group.members.forEach((m, k) => {
+          if (m.user_id === userId) {
+            i = k
+          }
+
+        })
+
+        if (i > -1) {
+          group.members[i].accepted = accept ? 1 : 2
+        }
+        dispatch(setGroup(group))
+      } else {
+        if (chatId) {
+          dispatch(closeChat(chatId))
+        } else {
+          dispatch(removeInboxActive())
+        }
+        dispatch(removeGroup(groupId))
+      }
+
+      const q = `
+        mutation responseInvite {
+          responseInvite(group_id: ${groupId}, accept: ${accept})
+        }
+      `
+      service.request(q).catch((err) => {
+        dispatch(setError(err))
+      })
+
+    }
   }
 }
 

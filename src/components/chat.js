@@ -28,9 +28,11 @@ import ChatReportModal from './chat-report-modal'
 import BlockGroupUserModal from './block-group-user-modal'
 import GroupUserRemoveModal from './group-user-removed-modal'
 import { EVENT_GROUP_USER_REMOVED } from '../redux/types'
+import InviteNotify  from './invite-notify'
 
 const Container = styled.div`
   flex-grow: 1;
+  position: relative;
   .chat-messages{
     overflow: hidden;
   }
@@ -380,6 +382,7 @@ class Chat extends React.Component {
 
     return (
       <Container className={'chat-container'}>
+        <InviteNotify chat={tab} groupId={_.get(group, 'id')} users={users} currentUserId={this.props.currentUserId}/>
         <ChatHeader
           dock={dock}
           isNew={isNew}

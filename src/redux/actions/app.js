@@ -53,6 +53,13 @@ export const initLoad = () => {
               avatar
               status
             }
+            members {
+              user_id
+              added_by
+              blocked
+              accepted
+              created
+            }
             messages {
               id
               body

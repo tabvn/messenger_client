@@ -182,6 +182,13 @@ export const createConversation = (message, userIds = [], g = {title: '', avatar
           avatar
           status
         }
+        members {
+          user_id
+          added_by
+          blocked
+          accepted
+          created
+        }
         messages {
           id
           body
