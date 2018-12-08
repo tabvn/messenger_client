@@ -18,6 +18,7 @@ import emoji from './emoji'
 import inbox from './inbox'
 import sound from './sound'
 import call from './call'
+import blocked from './blocked'
 
 export default combineReducers({
   app,
@@ -39,4 +40,5 @@ export default combineReducers({
   emoji,
   inbox,
   call,
+  blocked
 })

@@ -1,5 +1,6 @@
 import { PUSH_USER, SET_CURRENT_USER, SET_USER } from '../types'
 import { setError } from './error'
+import { setBlockedUser } from './blocked'
 
 /**
  * Set or push user to redux
@@ -126,9 +127,8 @@ export const blockUser = (userId) => {
     if (user) {
       user.blocked = true
       dispatch(setUser(user))
+      dispatch(setBlockedUser(user))
     }
-
-
 
     const query = `mutation blockUser {
       blockUser(friend: ${userId})
@@ -137,7 +137,6 @@ export const blockUser = (userId) => {
 
     service.request(query).then((res) => {
 
-      console.log('Success blocked', res.blockUser)
     })
   }
 }

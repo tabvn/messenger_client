@@ -8,6 +8,7 @@ import { archiveGroup, searchFriends, searchGroups, setSidebarSearch } from '../
 import { getGroups } from '../redux/selector/group'
 import Friends from './friends'
 import { getFriends } from '../redux/selector/friend'
+import Blocked from './blocked'
 
 const Container = styled.div`
   flex-grow: 1;
@@ -134,6 +135,7 @@ class SidebarContent extends React.Component {
               search={search}
               searchIsDone={this.state.fetched}
               users={friends}/>
+
           )}
         </Container>
         {sidebarIsOpen && (
@@ -155,6 +157,7 @@ const mapStateToProps = (state, props) => ({
   friends: getFriends(state, props),
   search: state.sidebar.search,
   appFetched: state.app.fetched,
+  blocked: state.blocked.models.valueSeq(),
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({

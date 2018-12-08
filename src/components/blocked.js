@@ -177,7 +177,7 @@ const Button = styled.button`
   }
 `
 
-class Friends extends React.Component {
+class Blocked extends React.Component {
 
   renderUser = (user) => {
 
@@ -238,73 +238,39 @@ class Friends extends React.Component {
 
     const {users, open} = this.props
 
-    const online = users.filter((u) => u.status !== 'offline' && u.blocked === false)
-    const offline = users.filter((u) => u.status === 'offline' && u.blocked === false)
+    console.log(users)
 
     let items = [
-      {key: 'online', title: 'Online users', users: online, open: _.get(open, 'online', true)},
-      {key: 'offline', title: 'Offline users', users: offline, open: _.get(open, 'offline', true)},
+      {key: 'blocked', title: 'Blocked users', users: users, open: _.get(open, 'blocked', true)},
     ]
 
     return items.map((g, index) => {
       return (
         <Fragment key={index}>
           {
-            g.users.length ? this.renderGroup(g.key, g.title, g.users, g.open) : null
+            g.users.size ? this.renderGroup(g.key, g.title, g.users, g.open) : null
           }
         </Fragment>
       )
     })
   }
 
-  renderSearchUser = () => {
-    return (
-      <div className={'no-friend-container'}>
-        <div className={'no-friend-message'}>you don’t have any friends yet<br/><span>try using friends search:</span>
-        </div>
-        <div className={'search-user-container'}>
-          <SearchUser onSelect={(user) => {
-            if (this.props.onSelect) {
-              this.props.onSelect(user)
-            }
-          }}/>
-        </div>
-
-      </div>
-
-    )
-  }
-  renderNotFound = () => {
-
-    const {searchIsDone, search} = this.props
-
-    return (
-      <div className={'friend-not-found'}>
-        <div className={'person-icons'}>
-          <div className={'person-icon'}><i className={'md-icon'}>person</i></div>
-          <div className={'person-icon'}><i className={'md-icon'}>person_outline</i></div>
-        </div>
-        <div
-          className={'not-found-message'}>{search !== '' && searchIsDone ? 'Result not found' : this.renderSearchUser()}</div>
-      </div>
-    )
-  }
 
   render () {
-    const {appIsFetched, users, height, sidebarIsOpen, open} = this.props
+
+    const {height, sidebarIsOpen} = this.props
 
     let h = height - 250
     if (sidebarIsOpen) {
       h = height - 140
     }
+
     return (
       <Container
         h={h}
         className={'friends'}>
-        {appIsFetched && users.length === 0 ? this.renderNotFound() : this.renderFriends()}
-
         {
-          this.props.blocked.size ? this.renderGroup('blocked', 'Blocked users', this.props.blocked, _.get(open, 'blocked', true)) : null
+          this.renderFriends()
         }
       </Container>)
   }
@@ -312,7 +278,6 @@ class Friends extends React.Component {
 
 const mapStateToProps = (state) => ({
   open: state.friendGroupOpen,
-  blocked: state.blocked.models.valueSeq(),
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -320,4 +285,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   unblockFriend
 }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(Friends)
+export default connect(mapStateToProps, mapDispatchToProps)(Blocked)

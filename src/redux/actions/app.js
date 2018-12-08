@@ -8,6 +8,7 @@ import { setFriend } from './friend'
 import { SET_APP_INIT_FETCHED } from '../types'
 import { openInboxChat } from './inbox'
 import { openChat } from './chat'
+import { setBlockedUser } from './blocked'
 
 /**
  * Init load data for the app
@@ -27,6 +28,17 @@ export const initLoad = () => {
             email
             avatar
             status
+            created
+          }
+          blockedUsers(limit: 50, skip: 0) {
+            id
+            uid
+            first_name
+            last_name
+            email
+            avatar
+            status
+            blocked
             created
           }
           friends(search: "", limit: 50, skip: 0) {
@@ -88,6 +100,7 @@ export const initLoad = () => {
       const friends = _.get(res, 'friends', [])
 
       const groups = _.get(res, 'groups', [])
+      const blockedUsers = _.get(res, 'blockedUsers', [])
 
       let messages = []
 
@@ -132,6 +145,8 @@ export const initLoad = () => {
       // save groups to store
       dispatch(setGroup(groups))
 
+      dispatch(setBlockedUser(blockedUsers))
+
       dispatch({
         type: SET_APP_INIT_FETCHED,
         payload: true
@@ -144,9 +159,9 @@ export const initLoad = () => {
 
       // re-open group chat windows
       let historyTabs = localStorage.getItem('messenger_chats')
-      let openList = localStorage.getItem('messenger_chats_open');
-      if(openList){
-        openList = JSON.parse(openList);
+      let openList = localStorage.getItem('messenger_chats_open')
+      if (openList) {
+        openList = JSON.parse(openList)
       }
 
       if (historyTabs) {
@@ -156,9 +171,9 @@ export const initLoad = () => {
             const findGroup = groups.find((g) => g.id === gid)
             if (findGroup) {
 
-              const isOpen = _.get(openList, gid, false);
+              const isOpen = _.get(openList, gid, false)
 
-              dispatch(openChat(findGroup.users, {id: gid}, false, isOpen));
+              dispatch(openChat(findGroup.users, {id: gid}, false, isOpen))
 
             } else {
               historyTabs = historyTabs.filter((i) => i !== gid)

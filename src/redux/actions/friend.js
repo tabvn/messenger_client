@@ -1,5 +1,12 @@
 import _ from 'lodash'
-import { PUSH_FRIEND, SET_FRIEND, SET_SEARCH_FRIENDS_RESULTS, TOGGLE_FRIEND_GROUP } from '../types'
+import {
+  PUSH_FRIEND,
+  REMOVE_BLOCK_USER,
+  SET_BLOCKED_USER,
+  SET_FRIEND,
+  SET_SEARCH_FRIENDS_RESULTS,
+  TOGGLE_FRIEND_GROUP
+} from '../types'
 import { setError } from './error'
 
 export const setFriend = (friend) => {
@@ -76,9 +83,15 @@ export const unblockFriend = (friend) => {
 
   return (dispatch, getState, {service}) => {
 
-    friend.blocked = false
+    /*friend.blocked = false
 
     dispatch(setFriend(friend))
+    */
+
+    dispatch({
+      type: REMOVE_BLOCK_USER,
+      payload: friend.id,
+    })
 
     const query = `mutation unBlockUser {
         unBlockUser(user: 0, friend: ${friend.id})
@@ -91,8 +104,13 @@ export const unblockFriend = (friend) => {
 
       }).catch((err) => {
 
-        friend.blocked = true
-        dispatch(setFriend(friend))
+        /*friend.blocked = true
+        dispatch(setFriend(friend))*/
+
+        dispatch({
+          type: SET_BLOCKED_USER,
+          payload: friend
+        })
 
         dispatch(setError(err))
         return reject(err)

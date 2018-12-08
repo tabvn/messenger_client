@@ -71,21 +71,24 @@ class InviteNotify extends React.Component {
       addedBy = group.users.find((u) => u.id === member.added_by)
     }
     return (
-      addedBy || member ? <Container>
-        {
-          member.accepted === 0 ? <div className={'notify-message'}>
-            <strong>{_.get(addedBy, 'first_name', '')} {_.get(addedBy, 'last_name', '')}</strong> has requested to add you
-            to the group chat below
-          </div> : <div className={'notify-message'}>
-            <strong>Denied</strong>
-          </div>
-        }
+      addedBy && member.accepted === 0 ? <Container>
+
+        <div className={'notify-message'}>
+          <strong>{_.get(addedBy, 'first_name', '')} {_.get(addedBy, 'last_name', '')}</strong> has requested to add you
+          to the group chat below
+        </div>
+
         <Actions className={'remove-group-user-actions'}>
           <Button onClick={() => {
             this.props.responseInvite(groupId, true)
           }} className={'btn-color'}>Accept</Button>
 
+          <Button onClick={() => {
+            this.props.responseInvite(groupId, false, _.get(chat, 'id', null))
+          }} className={'btn-cancel'}>Deny</Button>
+
         </Actions>
+
 
       </Container> : null
     )
