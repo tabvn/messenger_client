@@ -19,6 +19,8 @@ const ImageAttachment = styled.div`
     height: auto;
     max-height: 260px;
     border-radius: 8px;
+    width: 100%;
+    object-fit: cover;
   }
   .attachment-overlay{
     z-index: 1;

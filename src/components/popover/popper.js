@@ -170,6 +170,7 @@ class Popper extends React.Component {
       ...restProps
     } = this.props
 
+
     const popperRef = node => {
       this._node = node
       if (node) {

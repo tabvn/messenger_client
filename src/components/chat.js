@@ -28,13 +28,44 @@ import ChatReportModal from './chat-report-modal'
 import BlockGroupUserModal from './block-group-user-modal'
 import GroupUserRemoveModal from './group-user-removed-modal'
 import { EVENT_GROUP_USER_REMOVED } from '../redux/types'
-import InviteNotify  from './invite-notify'
+import InviteNotify from './invite-notify'
 
 const Container = styled.div`
   flex-grow: 1;
   position: relative;
   .chat-messages{
     overflow: hidden;
+  }
+  .ar-file-drop{
+    border: 2px dashed #c4c4c4;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.9);
+    padding: 5px;
+    position: absolute;
+    top: 80px;
+    bottom: 80px;
+    right: 10px;
+    left: 10px;
+    z-index:1000;
+    display: flex;
+    .ar-file-drop-inner{
+      font-size: 15px;
+      color: #000;
+      i{
+        color: #f8c231;
+        font-size: 40px;
+      }
+      display: flex;
+      align-items: center;
+      flex-grow:1;
+      justify-content:center;
+      flex-direction: column;
+      .ar-text-center{
+        color: #000;
+        font-size: 18px;
+        font-weight: 400;
+      }
+    }
   }
 `
 
@@ -58,9 +89,50 @@ class Chat extends React.Component {
     edit: null,
     isLoadingMore: false,
     removeBy: null,
+    fileIsDrop: false,
+  }
+
+  _onDragEnter (e) {
+    e.stopPropagation()
+    e.preventDefault()
+
+    this.setState({fileIsDrop: true})
+
+
+    //return false
+  }
+
+  _onDragOver (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    // return false
+  }
+
+  _onDragLeave (e) {
+    //this.setState({fileIsDrop: false})
+
+    e.stopPropagation()
+    e.preventDefault()
+    //return false
+  }
+
+  _onDrop (e) {
+    e.preventDefault()
+
+    let files = e.dataTransfer.files
+    // Upload files
+
+    this.setState({fileIsDrop: false}, () => {
+
+      this.onAddFiles(files)
+    })
+
+    // return false
   }
 
   componentDidMount () {
+
+    document.addEventListener('mouseup', this._onDragLeave.bind(this))
 
     this.loadMessages()
 
@@ -78,6 +150,7 @@ class Chat extends React.Component {
       this._removedEvent.remove()
     }
 
+    document.removeEventListener('mouseup', this._onDragLeave.bind(this))
   }
 
   loadMessages = () => {
@@ -380,9 +453,22 @@ class Chat extends React.Component {
       isOpen = false
     }
 
+
     return (
-      <Container className={'chat-container'}>
+      <Container
+        onDrop={this._onDrop.bind(this)}
+        onDragEnter={this._onDragEnter.bind(this)}
+        onDragOver={this._onDragOver.bind(this)}
+        onDragLeave={this._onDragLeave}
+        id={'ar-file-drop-zone'}
+        className={'chat-container'}>
         <InviteNotify chat={tab} groupId={_.get(group, 'id')} users={users} currentUserId={this.props.currentUserId}/>
+        <div id={'ar-file-drop'} style={{display: this.state.fileIsDrop ? 'flex' : 'none'}} className={'ar-file-drop'}>
+          <div className={'ar-file-drop-inner'}>
+            <div><i className={'md-icon'}>insert_drive_file</i></div>
+            <div className={'ar-text-center'}>drop to attach files</div>
+          </div>
+        </div>
         <ChatHeader
           dock={dock}
           isNew={isNew}

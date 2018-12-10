@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ON_CLOSE_POPOVER } from '../../redux/types'
+import classNames from 'classnames'
 
 const Content = styled.div`
     box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
@@ -83,8 +84,8 @@ class Popover extends Component {
   }
 
   _handleTargetClick = () => {
-    const {showOnHover} = this.props
-    if (!showOnHover) {
+    const {showOnHover, disabled} = this.props
+    if (!showOnHover && !disabled) {
       if (this.props.onOpen) {
         this.props.onOpen()
       }
@@ -97,10 +98,10 @@ class Popover extends Component {
 
     const {isOpen} = this.state
 
-    const {target, content, placement, showOnHover} = this.props
+    const {target, content, placement, showOnHover, className, disabled, modifiers} = this.props
     return (
       <Manager onMouseLeave={() => {
-        if (showOnHover) {
+        if (showOnHover && !disabled) {
 
           this.setState({isOpen: false})
         }
@@ -110,8 +111,7 @@ class Popover extends Component {
           {({targetProps}) => (
             <div
               onMouseOver={() => {
-
-                if (showOnHover) {
+                if (showOnHover && !disabled) {
                   this.setState({isOpen: true})
                 }
               }}
@@ -121,10 +121,11 @@ class Popover extends Component {
           )}
         </Target>
         {isOpen && (
-          <Popper innerRef={(popper) => this.popper = popper} placement={placement ? placement : 'bottom'}>
+          <Popper modifiers={modifiers} innerRef={(popper) => this.popper = popper}
+                  placement={placement ? placement : 'bottom'}>
             {({popperProps, restProps}) => (
               <div
-                className={`messenger-popover popper popover-${placement}`}
+                className={classNames(`messenger-popover popper popover-${placement}`, className)}
                 {...popperProps}
               >
                 <Content className={'popover-content'}>
@@ -155,6 +156,9 @@ Popover.propTypes = {
   content: PropTypes.any,
   showOnHover: PropTypes.bool,
   includePopper: PropTypes.bool,
+  className: PropTypes.any,
+  disabled: PropTypes.bool,
+  modifiers: PropTypes.object,
 }
 
 const mapStateToProps = (state, props) => ({

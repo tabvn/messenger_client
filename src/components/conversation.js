@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import { getGroupUsers, getLastMessage, groupIsActive } from '../redux/selector/group'
 import ConversationAvatar from './conversation-avatar'
 import ConversationTitle from './conversation-title'
+import ConversationHover from './conversation-hover'
+import Popover from './popover'
 
 const Container = styled.div`
   min-height: 50px;
@@ -24,8 +26,7 @@ const Container = styled.div`
     ${props => !props.sidebarIsOpen ? 'justify-content: center;' : null}
     background: ${props => props.bg};
   }
-  
-  
+    
 `
 
 const Button = styled.button`
@@ -55,39 +56,50 @@ class Conversation extends React.Component {
 
     const {users, group, lastMessage, sidebarIsOpen, active, dock} = this.props
 
-    let background = "none"
-    if(active && !dock){
-      background = "#FFF"
+    let background = 'none'
+    if (active && !dock) {
+      background = '#FFF'
     }
-    if(active && dock){
-      background = "#ebebeb"
+    if (active && dock) {
+      background = '#ebebeb'
     }
 
     return (
-      <Container
-        bg={background}
-        active={active}
-        sidebarIsOpen={sidebarIsOpen} className={'conversation'}>
-        <div onClick={() => {
-          if (this.props.onSelect) {
-            this.props.onSelect(group, users)
-          }
-        }} className={'inner'}>
-          <ConversationAvatar avatar={group.avatar} unread={_.get(group, 'unread', 0)} users={users}/>
-          {sidebarIsOpen && (
-            <ConversationTitle message={lastMessage} title={_.get(group, 'title', '')} users={users}/>
-          )}
-        </div>
-        {sidebarIsOpen && (
-          <Button onClick={() => {
-            if (this.props.onClose) {
-              this.props.onClose(group)
+
+      <Popover
+        disabled={this.props.sidebarIsOpen || !users.length}
+        modifiers={{preventOverflow: {enabled: false}}}
+        placement={'left'} className={'conversation-popover'} target={(
+        <Container
+          bg={background}
+          active={active}
+          sidebarIsOpen={sidebarIsOpen} className={'conversation'}>
+
+
+          <div onClick={() => {
+            if (this.props.onSelect) {
+              this.props.onSelect(group, users)
             }
-          }} className={'close-conversation'}>
-            <i className={'md-icon md-16'}>close</i>
-          </Button>
-        )}
-      </Container>
+          }} className={'inner'}>
+            <ConversationAvatar avatar={group.avatar} unread={_.get(group, 'unread', 0)} users={users}/>
+            {sidebarIsOpen && (
+              <ConversationTitle message={lastMessage} title={_.get(group, 'title', '')} users={users}/>
+            )}
+          </div>
+
+          {sidebarIsOpen && (
+            <Button onClick={() => {
+              if (this.props.onClose) {
+                this.props.onClose(group)
+              }
+            }} className={'close-conversation'}>
+              <i className={'md-icon md-16'}>close</i>
+            </Button>
+          )}
+        </Container>
+
+      )} showOnHover={true} content={<ConversationHover users={users}/>}/>
+
     )
   }
 }

@@ -18,6 +18,11 @@ body.messenger {
   z-index: 100000;
 }
 
+.conversation-popover .popover-content {
+  border: 0 none;
+  box-shadow: none;
+}
+
 #messenger *,
 #messenger-inbox * {
   box-sizing: border-box;
