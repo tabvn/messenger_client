@@ -67,10 +67,23 @@ const Image = styled.img`
 
 class CreateGroupHeader extends React.Component {
 
-  state = {
-    avatar: '',
-    value: '',
-    uploading: false
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      avatar: '',
+      value: '',
+      uploading: false
+    }
+
+
+    this.avatarUrl = this.avatarUrl.bind(this)
+    this.onChange = this.onChange.bind(this)
+    this.onAddAvatar = this.onAddAvatar.bind(this)
+    this.onAddFile = this.onAddFile.bind(this)
+
+    this._onchange = _.debounce(this.onChange, 400)
+
   }
 
   componentDidMount () {
@@ -91,13 +104,11 @@ class CreateGroupHeader extends React.Component {
     return `${api}/group/avatar?name=${name}`
   }
 
-  onChange = () => {
+
+  onChange = (value) => {
 
     if (this.props.onChange) {
-      this.props.onChange({
-        name: this.state.value,
-        avatar: this.state.avatar,
-      })
+      this.props.onChange(value)
     }
 
   }
@@ -108,7 +119,11 @@ class CreateGroupHeader extends React.Component {
       avatar: name,
       uploading: false
     }, () => {
-      this.onChange()
+
+      this._onchange({
+        avatar: name,
+        name: this.state.value
+      })
     })
   }
 
@@ -185,11 +200,15 @@ class CreateGroupHeader extends React.Component {
         <Input
           dock={dock}
           onChange={(e) => {
+            const v = e.target.value
             this.setState({
-              value: e.target.value,
+              value: v,
             }, () => {
 
-              this.onChange()
+              this._onchange({
+                name: v,
+                avatar: this.state.avatar
+              })
             })
           }} placeholder={placeholder} value={this.state.value}/>
       </Container>)

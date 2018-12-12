@@ -246,7 +246,7 @@ export default class ChatHeader extends React.Component {
     const {avatar, users} = this.props
     return (
       !avatar ? <GroupAvatar users={users}/> : <div className={'group-avatar'}>
-        <img src={this.getFileUrl(avatar)} alt={''}/>}
+        <img src={this.getFileUrl(avatar)} alt={''}/>
       </div>
     )
   }

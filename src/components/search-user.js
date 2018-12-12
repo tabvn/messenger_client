@@ -4,7 +4,7 @@ import _ from 'lodash'
 import SearchUserResult from './search-user-result'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { searchUsers, setUser } from '../redux/actions'
+import { searchUsers, setUser, requestAddFriend } from '../redux/actions'
 
 const Container = styled.div`
   .search-input-container{
@@ -129,6 +129,21 @@ class SearchUser extends React.Component {
               this.props.onSelect(user)
             }
           }}
+          onRequestAddFriend={(user) => {
+            let data = users.map((u) => {
+              if (u.id === user.id) {
+                u.friend_request_sent = true
+              }
+              return u
+            })
+
+            this.setState({
+              users: data
+            }, () => {
+
+              this.props.requestAddFriend(user)
+            })
+          }}
           users={users}/>
 
       </Container>
@@ -142,7 +157,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   searchUsers,
-  setUser
+  setUser,
+  requestAddFriend
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchUser)

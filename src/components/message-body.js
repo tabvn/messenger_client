@@ -52,12 +52,12 @@ const EmojiContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end; 
+  justify-content: flex-start; 
   
 `
 const Emoji = styled.div`
   vertical-align: middle;
-  font-size: 50px;
+  font-size: 70px;
   text-align: right;
   transition: -webkit-transform 60ms ease-out;
   transition: transform 60ms ease-out;
@@ -247,7 +247,7 @@ class MessageBody extends React.Component {
         {
           _.trim(_.get(message, 'body', '')) !== '' ?
             isEmoji ?
-              <EmojiContainer>
+              <EmojiContainer className={'ar-emoji-message'}>
                 <Emoji className={'message-emoticon'}>
                   {message.body}
                 </Emoji>

@@ -11,7 +11,8 @@ import {
   closeChat,
   leaveGroupChat,
   removeUserFromChat,
-  removeUserFromGroup
+  removeUserFromGroup,
+  updateGroup
 } from '../redux/actions'
 import _ from 'lodash'
 
@@ -161,13 +162,18 @@ class ChatParticipantsModal extends React.Component {
 
   render () {
     const {activeTab} = this.state
-    const {group, users, dock,height} = this.props
+    const {users, dock, height} = this.props
+
+    let group = this.props.group
 
     let h = height - 400
     if (dock) {
       h = 240
     }
 
+    if (users.length < 2) {
+      h += 100;
+    }
     return (
       <Container className={'participants'}>
         <Close onClick={() => {
@@ -177,13 +183,16 @@ class ChatParticipantsModal extends React.Component {
         }} className={'close-modal'}><i className={'md-icon'}>close</i></Close>
         <Inner className={'participants-inner'}>
           <div className={'participants-header'}>
-            <CreateGroupHeader
+            {users.length > 1 && <CreateGroupHeader
               dock={dock}
               placeholder={'Add a name to this chat'}
               group={group}
               onChange={(info) => {
-                console.log('change', info)
-              }}/>
+                group.title = info.name
+                group.avatar = info.avatar
+                this.props.updateGroup(group.id, group, true)
+
+              }}/>}
           </div>
           <Tabs className={'participants-tabs'}>
             <Tab
@@ -218,14 +227,16 @@ class ChatParticipantsModal extends React.Component {
                   onRemoveUser={this.handleRemoveUser}
                   users={users}/>
               ) : <UserList
-                height={`${h - 70 }px`}
+                height={`${h - 70}px`}
                 onSelect={this.handleSelectUser}
                 selected={users}
                 placeholder={'Search people to add...'}/>
             }
           </TabContent>
+          {users.length > 1 &&
           <LeaveGroup onClick={this.handleLeaveChat}><i className={'md-icon'}>directions_run</i> leave
-            group</LeaveGroup>
+            group</LeaveGroup>}
+
         </Inner>
       </Container>
     )
@@ -240,7 +251,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   removeUserFromChat,
   removeUserFromGroup,
   addUserToGroup,
-  addUserToChat
+  addUserToChat,
+  updateGroup
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatParticipantsModal)

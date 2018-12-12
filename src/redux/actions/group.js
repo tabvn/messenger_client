@@ -410,15 +410,29 @@ export const removeUserFromGroup = (groupId, user, callService = false) => {
   }
 }
 
-export const updateGroup = (id, group) => {
-  return (dispatch) => {
-    dispatch({
-      type: UPDATE_GROUP,
-      payload: {
-        id: id,
-        group
-      }
-    })
+export const updateGroup = (id, group, useService = false) => {
+
+  return (dispatch, getState, {service}) => {
+
+    if (useService) {
+      const q = `mutation updateGroup {
+            updateGroup(id: ${id}, title: "${group.title}", avatar: "${group.avatar}")
+        }
+      `
+      service.request(q).then(() => {
+
+        dispatch({
+          type: UPDATE_GROUP,
+          payload: {
+            id: id,
+            group
+          }
+        })
+
+      }).catch(e => {
+        dispatch(setError(e))
+      })
+    }
   }
 }
 

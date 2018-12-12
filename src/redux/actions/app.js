@@ -39,6 +39,7 @@ export const initLoad = () => {
             avatar
             status
             blocked
+            friend
             created
           }
           friends(search: "", limit: 50, skip: 0) {
@@ -47,6 +48,7 @@ export const initLoad = () => {
             first_name
             last_name
             avatar
+            friend
             blocked
             status
           }

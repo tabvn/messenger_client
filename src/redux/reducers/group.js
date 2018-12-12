@@ -11,9 +11,10 @@ export default (state = [], action) => {
       nState = nState.map((g) => {
 
         if (g.id === action.payload.id) {
+
           return {
             ...g,
-            ...action.payload
+            ...action.payload.group
           }
         }
 

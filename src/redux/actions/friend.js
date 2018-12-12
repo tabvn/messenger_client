@@ -8,6 +8,7 @@ import {
   TOGGLE_FRIEND_GROUP
 } from '../types'
 import { setError } from './error'
+import axios from 'axios'
 
 export const setFriend = (friend) => {
 
@@ -83,10 +84,10 @@ export const unblockFriend = (friend) => {
 
   return (dispatch, getState, {service}) => {
 
-    /*friend.blocked = false
-
-    dispatch(setFriend(friend))
-    */
+    if (friend.friend) {
+      friend.blocked = false
+      dispatch(setFriend(friend))
+    }
 
     dispatch({
       type: REMOVE_BLOCK_USER,
@@ -170,3 +171,23 @@ export const addFriend = (user) => {
 
   }
 }
+
+export const requestAddFriend = (user) => {
+
+  return (dispatch, getState, {service}) => {
+
+    axios.get(`/messenger/request-friend/${user.uid}`).catch((e) => {
+      dispatch(setError(e))
+    })
+    // request service
+    const query = `mutation addFriend {
+        addFriend(friend: ${user.id})
+      }
+    `
+    service.request(query).catch((e) => {
+      dispatch(setError(e))
+    })
+
+  }
+}
+

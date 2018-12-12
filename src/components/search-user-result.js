@@ -27,14 +27,14 @@ const User = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
+    width: 29px;
+    height: 29px;
     background: #2397e8;
     color: #FFF;
     border-radius: 50%;
     img{
-      width: 40px;
-      height: 40px;
+      width: 29px;
+      height: 29px;
       max-width: 100%;
       border-radius: 50%;
     }
@@ -53,11 +53,39 @@ const User = styled.div`
   }
 `
 
+const Actions = styled.div`
+  button {
+    border-radius: 5px;
+    border: 0 none;
+    padding: 3px 5px;
+    margin: 0;
+    i{
+      font-size: 18px;
+    }
+    &:hover,&:active{
+      outline: 0 none;
+    }
+  }
+`
+
+const RequestSent = styled.button`
+  background: #00a4f9;
+  color: #FFF;
+  
+`
+
+const InviteButton = styled.button`
+  background: #f8c231;
+  color: #FFF;
+  cursor: pointer;
+
+`
+
 export default class SearchUserResult extends React.Component {
 
   render () {
 
-    const {users} = this.props
+    let {users} = this.props
 
     return (
       <Container className={'search-user-result'}>
@@ -65,19 +93,34 @@ export default class SearchUserResult extends React.Component {
           {users.map((user, index) => {
             const avatar = _.get(user, 'avatar', null)
             const name = `${_.get(user, 'first_name', '')} ${_.get(user, 'last_name', '')}`
+
+            let requestSent = _.get(user, 'friend_request_sent', false)
+
             return (
               <User
-                onClick={() => {
-                  if(this.props.onSelect){
+                key={index} className={'user-result'}>
+                <div onClick={() => {
+                  if (this.props.onSelect) {
                     this.props.onSelect(user)
                   }
 
-                }}
-                key={index} className={'user-result'}>
-                <div className={'search-user-avatar'}>
+                }} className={'search-user-avatar'}>
                   {avatar ? <img src={avatar} alt={''}/> : <i className={'md-icon'}>person_outline</i>}
                 </div>
-                <div className={'search-user-name'}>{name}</div>
+                <div onClick={() => {
+                  if (this.props.onSelect) {
+                    this.props.onSelect(user)
+                  }
+
+                }} className={'search-user-name'}>{name}</div>
+                <Actions className={'add-friend-actions'}>
+                  {requestSent && <RequestSent><i className={'md-icon'}>access_time</i></RequestSent>}
+                  {!requestSent && <InviteButton onClick={() => {
+                    if (this.props.onRequestAddFriend) {
+                      this.props.onRequestAddFriend(user)
+                    }
+                  }}><i className={'md-icon'}>person_add</i></InviteButton>}
+                </Actions>
               </User>
             )
           })}

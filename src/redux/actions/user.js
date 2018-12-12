@@ -92,6 +92,7 @@ export const searchUsers = (search = '', limit = 50, skip = 0) => {
           id
           uid
           friend
+          friend_request_sent
           first_name
           last_name
           avatar
@@ -122,8 +123,8 @@ export const blockUser = (userId) => {
 
     const state = getState()
 
-    const user = state.user.find((u) => u.id === userId)
-
+    const user = state.user.find((u) => u.id === parseInt(userId))
+    
     if (user) {
       user.blocked = true
       dispatch(setUser(user))
@@ -135,8 +136,8 @@ export const blockUser = (userId) => {
     }
     `
 
-    service.request(query).then((res) => {
-
+    service.request(query).catch((e) => {
+      dispatch(setError(e))
     })
   }
 }
