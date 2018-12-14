@@ -453,7 +453,6 @@ class Chat extends React.Component {
       isOpen = false
     }
 
-    console.log("avatar", avatar)
 
 
     return (

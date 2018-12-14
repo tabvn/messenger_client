@@ -47,8 +47,12 @@ const User = styled.div`
     text-align: left;
     flex-grow: 1;
     color: #484848;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 113px;
       
   }
 `
@@ -65,6 +69,9 @@ const Actions = styled.div`
     &:hover,&:active{
       outline: 0 none;
     }
+    &.ar-open-conversation{
+      margin-left: 5px;
+    }
   }
 `
 
@@ -79,6 +86,13 @@ const InviteButton = styled.button`
   color: #FFF;
   cursor: pointer;
 
+`
+
+const MessageButton = styled.button`
+  background: #b0b0b0;
+  color: #FFF;
+  cursor: pointer;
+  margin-left: 5px;
 `
 
 export default class SearchUserResult extends React.Component {
@@ -114,12 +128,20 @@ export default class SearchUserResult extends React.Component {
 
                 }} className={'search-user-name'}>{name}</div>
                 <Actions className={'add-friend-actions'}>
-                  {requestSent && <RequestSent><i className={'md-icon'}>access_time</i></RequestSent>}
-                  {!requestSent && <InviteButton onClick={() => {
+                  {requestSent && <RequestSent className={'ar-friend-request-sent'}><i
+                    className={'md-icon'}>access_time</i></RequestSent>}
+                  {!requestSent && <InviteButton className={'ar-friend-add'} onClick={() => {
                     if (this.props.onRequestAddFriend) {
                       this.props.onRequestAddFriend(user)
                     }
                   }}><i className={'md-icon'}>person_add</i></InviteButton>}
+                  <MessageButton
+                    onClick={() => {
+                      if (this.props.onSelect) {
+                        this.props.onSelect(user)
+                      }
+                    }}
+                    className={'ar-open-conversation'}><i className={'md-icon'}>edit</i></MessageButton>
                 </Actions>
               </User>
             )

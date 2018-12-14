@@ -83,18 +83,57 @@ const Thumbnail = styled.div`
   }
 
 `
+const Arrows = styled.div`
+  
+  button {
+    cursor: pointer;
+    position: absolute;
+    top: 45%;
+    border: 0 none;
+    background: none;
+    i{
+      color: #FFF;
+    }
+    &:hover{
+      opacity: 0.8;
+    }
+  }
+`
+
+const ArrowLeft = styled.button`
+ 
+  left: 10px;
+  
+`
+
+const ArrowRight = styled.button`
+  right: 10px;
+`
 
 class AttachmentModal extends React.Component {
 
   state = {
     w: window.innerWidth,
-    h: window.innerHeight
+    h: window.innerHeight,
+    activeIndex: 0,
   }
 
   componentDidMount () {
-    window.addEventListener('resize', this.resize)
+    window.addEventListener('resize', this.resize.bind(this))
+    window.addEventListener('keydown', this.onkeydown.bind(this))
   }
 
+  onkeydown = (e) => {
+    if (e.key === 'Escape') {
+      this.props.closeAttachmentModal()
+    }
+    if (e.key === 'ArrowRight') {
+      this.onNext()
+    }
+    if (e.key === 'ArrowLeft') {
+      this.onPrev()
+    }
+  }
   resize = () => {
     this.setState({
       w: window.innerWidth,
@@ -103,12 +142,39 @@ class AttachmentModal extends React.Component {
   }
 
   componentWillUnmount () {
-    window.removeEventListener('resize', this.resize)
+    window.removeEventListener('resize', this.resize.bind(this))
+    window.removeEventListener('keydown', this.onkeydown.bind(this))
   }
 
   getFileUrl = (attachment) => {
     const api = this.props.getApiUrl()
     return `${api}/attachment?name=${attachment.name}`
+  }
+
+  onPrev = () => {
+
+    const {attachments} = this.props
+    let nextIndex = this.state.activeIndex - 1
+    if (nextIndex < 0) {
+      nextIndex = attachments.length - 1
+    }
+    this.setState({
+      activeIndex: nextIndex
+    }, () => {
+      this.props.setAttachmentModalSelected(_.get(attachments, `[${nextIndex}]`))
+    })
+  }
+  onNext = () => {
+    const {attachments} = this.props
+    let nextIndex = this.state.activeIndex + 1
+    if (nextIndex >= attachments.length) {
+      nextIndex = 0
+    }
+    this.setState({
+      activeIndex: nextIndex
+    }, () => {
+      this.props.setAttachmentModalSelected(_.get(attachments, `[${nextIndex}]`))
+    })
   }
 
   render () {
@@ -129,6 +195,12 @@ class AttachmentModal extends React.Component {
           }}>
             <i className={'md-icon'}>close</i>
           </CloseButton>
+          {
+            attachments.length > 1 && <Arrows>
+              <ArrowLeft onClick={this.onPrev}><i className={'md-icon'}>chevron_left</i></ArrowLeft>
+              <ArrowRight onClick={this.onNext}><i className={'md-icon'}>chevron_right</i></ArrowRight>
+            </Arrows>
+          }
 
           <ModalInner
             w={w}
@@ -143,11 +215,16 @@ class AttachmentModal extends React.Component {
             </MainImage>
             <Thumbnails className={'thumbnails'}>
               {
-                attachments.filter((a) => _.includes(a.type, 'image/')).map((a, index) => {
+                attachments.map((a, index) => {
                   return (
                     <Thumbnail
                       onClick={() => {
-                        this.props.setAttachmentModalSelected(a)
+                        this.setState({
+                          activeIndex: index
+                        }, () => {
+                          this.props.setAttachmentModalSelected(a)
+                        })
+
                       }}
                       active={selected.id === a.id}
                       key={index} className={'attachment-thumbnail'}>
@@ -168,7 +245,7 @@ class AttachmentModal extends React.Component {
 
 const mapStateToProps = (state) => ({
   open: state.attachmentModal.open,
-  attachments: state.attachmentModal.attachments,
+  attachments: state.attachmentModal.attachments.filter((a) => _.includes(a.type, 'image/')),
   selected: state.attachmentModal.selected
 })
 

@@ -21,7 +21,11 @@ const Container = styled.div`
     font-weight: 100;
     color: #FFF;
     text-align: left;
-    
+    a{
+      color: #FFF;
+      font-size: 21px;
+      text-decoration: none;
+    }
   }
   .chat-title{
     font-size: 28px;
@@ -212,8 +216,7 @@ const GroupMoreUser = styled.div`
    }
 `
 
-
-const GroupBottomInfo = styled.div `
+const GroupBottomInfo = styled.div`
   display: flex;
   flex-direction: row;
 `
@@ -279,7 +282,7 @@ export default class ChatHeader extends React.Component {
 
     return (
       <div className={'ar-user-name'}>
-        {name}
+        <a href={`/member/${_.get(firstUser, 'uid')}`}>{name}</a>
         {users.length > 1 ? ',...' : null}
       </div>
     )
@@ -315,14 +318,14 @@ export default class ChatHeader extends React.Component {
           {
             users.length > 1 && (
               <GroupBottomInfo>
-              <GroupMoreUser onClick={() => {
-                if (this.props.onOpenModal) {
-                  this.props.onOpenModal('participants')
-                }
-              }}>
-                <i className={'md-icon'}>group</i>
-                <span>+{users.length} more...</span>
-              </GroupMoreUser>
+                <GroupMoreUser onClick={() => {
+                  if (this.props.onOpenModal) {
+                    this.props.onOpenModal('participants')
+                  }
+                }}>
+                  <i className={'md-icon'}>group</i>
+                  <span>+{users.length} more...</span>
+                </GroupMoreUser>
                 <CallButton
                   onClick={() => {
                     if (this.props.onVideoCall) {

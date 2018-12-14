@@ -125,7 +125,6 @@ export default class ConversationAvatar extends React.Component {
 
   render () {
     const {users, unread} = this.props
-
     return (
 
       <Container className={'conversation-avatar'}>
