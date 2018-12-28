@@ -67,11 +67,24 @@ const AddFriend = styled.button`
   }
 `
 
+const MessageButton = styled.button`
+  border: 0 none;
+  border-radius: 3px;
+  padding: 3px 10px;
+  background: #b0b0b0;
+  color: #FFF;
+  cursor: pointer;
+  margin-left: 5px;
+  &:hover,&:active{
+    outline: 0 none;
+  }
+`
+
 export default class FriendSearchResult extends React.Component {
 
   render () {
 
-    const {users, friends} = this.props
+    const {users} = this.props
 
     return (
       <Container className={'search-user-result'}>
@@ -80,7 +93,7 @@ export default class FriendSearchResult extends React.Component {
             const avatar = _.get(user, 'avatar', null)
             const name = `${_.get(user, 'first_name', '')} ${_.get(user, 'last_name', '')}`
 
-            const isFriend = friends.find((f) => f.id === user.id)
+            let isRequestFriend = _.get(user, 'friend_request_sent', false)
 
             return (
               <User
@@ -97,13 +110,21 @@ export default class FriendSearchResult extends React.Component {
                 <div className={'search-user-name'}>{name}</div>
                 <AddFriend
                   onClick={() => {
-                    if (!isFriend && this.props.onAddFriend) {
+                    if (!isRequestFriend && this.props.onAddFriend) {
                       this.props.onAddFriend(user)
                     }
                   }}
-                  className={isFriend ? 'is-friend' : 'add-f'}>
-                  <i className={'md-icon'}>{isFriend ? 'access_time' : 'person_add'}</i>
+                  className={isRequestFriend ? 'is-friend' : 'add-f'}>
+                  <i className={'md-icon'}>{isRequestFriend ? 'access_time' : 'person_add'}</i>
                 </AddFriend>
+                <MessageButton
+                  onClick={() => {
+                    if(this.props.onOpenChatWithUser){
+                      this.props.onOpenChatWithUser(user)
+                    }
+                  }}
+                  className={'ar-open-conversation'}><i className={'md-icon'}>edit</i></MessageButton>
+
               </User>
             )
           })}

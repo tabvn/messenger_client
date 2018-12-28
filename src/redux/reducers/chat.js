@@ -1,39 +1,45 @@
 import _ from 'lodash'
-import { CLOSE_CHAT_TAB, OPEN_CHAT_TAB, SET_ACTIVE_CHAT_TAB, TOGGLE_CHAT_TAB, UPDATE_CHAT_TAB } from '../types'
+import {
+  CLOSE_CHAT_TAB,
+  OPEN_CHAT_TAB,
+  REMOVE_ACTIVE_CHAT,
+  SET_ACTIVE_CHAT_TAB, SET_INBOX_ACTIVE,
+  TOGGLE_CHAT_TAB,
+  UPDATE_CHAT_TAB
+} from '../types'
 
-let saveGroupIds = [];
+let saveGroupIds = []
 
-const listChats = localStorage.getItem('messenger_chats');
-let openList = localStorage.getItem('messenger_chats_open');
+const listChats = localStorage.getItem('messenger_chats')
+let openList = localStorage.getItem('messenger_chats_open')
 
-if(listChats){
-  saveGroupIds = JSON.parse(listChats);
+if (listChats) {
+  saveGroupIds = JSON.parse(listChats)
 }
-if(openList){
-  openList = JSON.parse(openList);
+if (openList) {
+  openList = JSON.parse(openList)
 }
-
 
 const save = (gid, open = true) => {
   saveGroupIds.push(gid)
   saveGroupIds = _.uniq(saveGroupIds)
 
-  if(!openList){
-    openList = {};
+  if (!openList) {
+    openList = {}
   }
-  openList[gid] = open;
+  openList[gid] = open
 
-  localStorage.setItem('messenger_chats_open', JSON.stringify(openList));
+  localStorage.setItem('messenger_chats_open', JSON.stringify(openList))
   localStorage.setItem('messenger_chats', JSON.stringify(saveGroupIds))
 }
 const remove = (gid) => {
   saveGroupIds = saveGroupIds.filter((id) => id !== gid)
   localStorage.setItem('messenger_chats', JSON.stringify(saveGroupIds))
 
-  if(typeof openList[gid] !== 'undefined'){
-    delete openList[gid];
+  if (typeof openList[gid] !== 'undefined') {
+    delete openList[gid]
 
-    localStorage.setItem('messenger_chats_open', JSON.stringify(openList));
+    localStorage.setItem('messenger_chats_open', JSON.stringify(openList))
   }
 }
 
@@ -44,6 +50,17 @@ export default (state = {
 
   switch (action.type) {
 
+    case SET_INBOX_ACTIVE:
+
+      return {
+        ...state,
+        active: null
+      }
+    case REMOVE_ACTIVE_CHAT:
+      return {
+        ...state,
+        active: null
+      }
     case SET_ACTIVE_CHAT_TAB:
 
       let tabs = [...state.tabs]
@@ -67,9 +84,8 @@ export default (state = {
 
       const ggid = _.get(action.payload.chat, 'group_id')
 
-
       if (ggid) {
-        save(ggid, action.payload.chat.open);
+        save(ggid, action.payload.chat.open)
       }
       return {
         ...state,
@@ -86,18 +102,14 @@ export default (state = {
         if (i.id === action.payload.id) {
           i.open = action.payload.open
 
-          if(i.group_id){
-            save(i.group_id, action.payload.open);
+          if (i.group_id) {
+            save(i.group_id, action.payload.open)
           }
 
         }
 
         return i
       })
-
-
-
-
 
       return {
         ...state,
@@ -113,8 +125,6 @@ export default (state = {
       }
 
       let tt = state.tabs.filter((t) => t.id !== action.payload)
-
-
 
       return {
         ...state,

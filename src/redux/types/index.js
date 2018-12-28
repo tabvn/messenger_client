@@ -37,6 +37,7 @@ export const SET_ACTIVE_CHAT_TAB = 'chat/active_chat_tab'
 export const TOGGLE_CHAT_TAB = 'chat/toggle_chat'
 export const CLOSE_CHAT_TAB = 'chat/close'
 export const UPDATE_CHAT_TAB = 'chat/update'
+export const REMOVE_ACTIVE_CHAT = 'chat/remove_active'
 
 export const SET_ATTACHMENT_MODAL = 'attachment_modal/set_attachment_modal'
 export const CLOSE_ATTACHMENT_MODAL = 'attachment_modal/close'

@@ -22,7 +22,7 @@ const Container = styled.div`
       background: transparent;
       padding: 8px 10px;
       flex-grow: 1;
-      max-width: 180px;
+      min-width: 50px;
     }
   }
 `

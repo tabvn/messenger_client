@@ -58,6 +58,9 @@ const User = styled.div`
 `
 
 const Actions = styled.div`
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
   button {
     border-radius: 5px;
     border: 0 none;

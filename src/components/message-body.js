@@ -211,7 +211,7 @@ class MessageBody extends React.Component {
 
       {
 
-        title: 'Delete',
+        title: currentUserId === _.get(message, 'user_id') ? 'Delete' : 'Hide',
         icon: 'delete',
         action: 'delete'
       }

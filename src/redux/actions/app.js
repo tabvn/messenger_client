@@ -5,7 +5,7 @@ import { setCurrentUser, setUser } from './user'
 import { setError } from './error'
 import { updateUserStatus } from './user-status'
 import { setFriend } from './friend'
-import { SET_APP_INIT_FETCHED } from '../types'
+import { REMOVE_ACTIVE_CHAT, REMOVE_INBOX_ACTIVE, SET_APP_INIT_FETCHED } from '../types'
 import { openInboxChat } from './inbox'
 import { openChat } from './chat'
 import { setBlockedUser } from './blocked'
@@ -41,6 +41,7 @@ export const initLoad = () => {
             blocked
             friend
             created
+            published
           }
           friends(search: "", limit: 50, skip: 0) {
             id
@@ -51,6 +52,7 @@ export const initLoad = () => {
             friend
             blocked
             status
+            published
           }
           groups(search: "", limit: 50, skip: 0) {
             id
@@ -66,6 +68,7 @@ export const initLoad = () => {
               last_name
               avatar
               status
+              published
             }
             members {
               user_id
@@ -184,6 +187,16 @@ export const initLoad = () => {
           })
         }
       }
+
+      dispatch({
+        type: REMOVE_INBOX_ACTIVE,
+        payload: null
+      })
+
+      dispatch({
+        type: REMOVE_ACTIVE_CHAT,
+        payload: null
+      })
 
     }).catch((err) => {
       console.log('err', err)

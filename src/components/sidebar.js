@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import { bindActionCreators } from 'redux'
-import { toggleSidebar } from '../redux/actions'
+import { openChat, toggleSidebar } from '../redux/actions'
 import connect from 'react-redux/es/connect/connect'
 import SidebarHeader from './sidebar-header'
 import SidebarTabs from './sidebar-tabs'
@@ -38,6 +38,9 @@ const Container = styled.div`
         display: none;
       }
      }
+  }
+  @media (max-width: 768px) {
+    ${props => props.open ? 'width: 100%;' : null
   }
     
   
@@ -195,12 +198,21 @@ class Sidebar extends React.Component {
                 title={'Add friends'}
                 open={this.state.friendSearch}>
 
-                <FriendSearch goBack={() => {
-                  this.setState({
-                    friendSearch: false,
-                    createGroup: true,
-                  })
-                }}/>
+                <FriendSearch
+                  onOpenChatWithUser={(user) => {
+                    this.setState({
+                      createGroup: null,
+                      friendSearch: null
+                    }, () => {
+                      this.props.openChat([user], null)
+                    })
+                  }}
+                  goBack={() => {
+                    this.setState({
+                      friendSearch: false,
+                      createGroup: true,
+                    })
+                  }}/>
               </Modal>
             )
           }
@@ -236,7 +248,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  toggleSidebar
+  toggleSidebar,
+  openChat
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)

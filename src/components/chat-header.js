@@ -280,9 +280,12 @@ export default class ChatHeader extends React.Component {
     const firstUser = _.get(users, '[0]')
     const name = `${_.get(firstUser, 'first_name', '')} ${_.get(firstUser, 'last_name', '')}`
 
+    const isPublished = _.get(firstUser, 'published', null)
+
+
     return (
       <div className={'ar-user-name'}>
-        <a href={`/member/${_.get(firstUser, 'uid')}`}>{name}</a>
+        {isPublished != null && isPublished === 1 ? <a href={`/member/${_.get(firstUser, 'uid')}`}>{name}</a> : name}
         {users.length > 1 ? ',...' : null}
       </div>
     )

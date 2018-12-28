@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 import { bindActionCreators } from 'redux'
-import { searchUsers, setUser, addFriend } from '../redux/actions'
+import { searchUsers, setUser, requestAddFriend } from '../redux/actions'
 import { connect } from 'react-redux'
 import FriendSearchResult from './friend-search-result'
 
@@ -17,6 +17,7 @@ const Container = styled.div`
     padding: 0 10px;
     border-radius: 5px;
     input{
+      min-width: 50px;
       font-size: 15px;
       font-style: italic;
       color: #b0b0b0;
@@ -210,9 +211,27 @@ class FriendSearch extends React.Component {
             }
             {users.length ? (
               <FriendSearchResult
+                onOpenChatWithUser={(user) => {
+                  if(this.props.onOpenChatWithUser){
+                    this.props.onOpenChatWithUser(user)
+                  }
+                }}
                 onAddFriend={(user) => {
 
-                  this.props.addFriend(user)
+                  let data = users.map((u) => {
+                    if (u.id === user.id) {
+                      u.friend_request_sent = true
+                    }
+                    return u
+                  })
+
+                  this.setState({
+                    users: data,
+                  }, () => {
+
+                    this.props.requestAddFriend(user)
+                  })
+
                 }}
 
                 friends={friends} users={users}/>
@@ -241,7 +260,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   searchUsers,
   setUser,
-  addFriend
+  requestAddFriend
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendSearch)
