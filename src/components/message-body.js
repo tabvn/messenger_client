@@ -257,7 +257,7 @@ class MessageBody extends React.Component {
                 hrefColor={linkColor}
                 color={messageColor} background={messageBackground} className={'message-text'}>
                 {this.renderText()}
-                {isSent && <Menu onClick={this.handleMenuAction} items={actionItems}/>}
+                {isSent && <Menu placement={'top'} onClick={this.handleMenuAction} items={actionItems}/>}
               </Text> : null
         }
         {

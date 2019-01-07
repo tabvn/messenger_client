@@ -13,12 +13,14 @@ const Container = styled.div`
   justify-content: center;
   i{
     color: #FFF;
+    cursor: pointer;
   }
   img{
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
   }
   &:hover{
     .messenger-user-tooltip{
@@ -76,6 +78,16 @@ const ToolTip = styled.div`
 `
 
 export default class MessageUserAvatar extends React.Component {
+
+  onClick = () => {
+    const {user} = this.props
+    const isPublished = _.get(user, 'published', null)
+    const uid = _.get(user, 'uid')
+    if (uid && isPublished !== null && isPublished === 1) {
+      window.location = `/member/${uid}`
+    }
+  }
+
   render () {
     const {user, hide, tooltipMessage} = this.props
     const avatar = _.get(user, 'avatar', '')
@@ -88,7 +100,9 @@ export default class MessageUserAvatar extends React.Component {
         {!hide ?
           (
             <Container title={`${firstName} ${lastName}`} className={'message-user-avatar'}>
-              {avatar ? <img src={avatar} alt={''}/> : <i className={'md-icon md-24'}>person_outline</i>}
+
+              {avatar ? <img onClick={this.onClick} src={avatar} alt={''}/> : <i onClick={this.onClick}
+                                                                                 className={'md-icon md-24'}>person_outline</i>}
               <ToolTip
                 className={'messenger-user-tooltip'}>
                 <ArrowBox>

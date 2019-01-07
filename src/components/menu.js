@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 
 const Container = styled.div`
   width: 20px;
+  position: relative;
+  z-index: 100000;
 `
 
 const Button = styled.button`

@@ -86,6 +86,7 @@ class Message extends React.Component {
 
     const tooltipMessage = `${firstName} - ${lastName} ${timeDisplay}`
 
+
     return (
       <Fragment>
         {

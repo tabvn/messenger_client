@@ -6,7 +6,7 @@ import WebShot from './webshot'
 
 const NETWORK_STATUS = 'network_status'
 
-let lastStatus = true
+let lastStatus = false
 
 export default class Service {
   constructor (url) {
@@ -50,6 +50,7 @@ export default class Service {
   }
 
   subScribeNetworkInfo (cb) {
+
     if (lastStatus !== this._connected) {
       cb(this._connected)
     }
