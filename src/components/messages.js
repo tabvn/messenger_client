@@ -2,6 +2,7 @@ import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import Message from './message'
 import _ from 'lodash'
+import UserTyping from './user-typing'
 
 const Container = styled.div`
   flex-grow: 1;
@@ -119,9 +120,9 @@ export default class Messages extends React.Component {
   }
 
   componentDidUpdate (prevProps) {
-    const {isLoadingMore} = this.props
+    const {isLoadingMore, userTypings} = this.props
 
-    if (this.props.messages.length > prevProps.messages.length) {
+    if (this.props.messages.length > prevProps.messages.length || this.props.userTypings.length > prevProps.userTypings.length) {
       if (isLoadingMore) {
 
         if (this.ref && sessionScrollTop) {
@@ -210,7 +211,8 @@ export default class Messages extends React.Component {
 
   render () {
 
-    const {messages, hasFile, height} = this.props
+    const {messages, hasFile, height, userTypings} = this.props
+
 
     let h = height
 
@@ -239,6 +241,13 @@ export default class Messages extends React.Component {
           </Loading> : null}
           {
             messages.length ? this.renderMessages() : this.renderEmpty()
+          }
+
+          {
+            userTypings.length ? userTypings.map((user, key) => {
+
+              return <UserTyping key={key} a={user}/>
+            }) : null
           }
         </div>
 

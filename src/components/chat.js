@@ -7,6 +7,7 @@ import ChatHeader from './chat-header'
 import { getGroupUnreadCount, getGroupUsers } from '../redux/selector/group'
 import Messages from './messages'
 import { getGroupMessages } from '../redux/selector/message'
+
 import {
   closeChat,
   loadMessages,
@@ -14,7 +15,9 @@ import {
   setActiveChat,
   toggleChat,
   updateMessage,
-  startCall
+  startCall,
+  userIsTyping,
+  userIsEndTyping
 } from '../redux/actions'
 import Composer from './composer'
 import { maxUploadSize } from '../config'
@@ -92,12 +95,29 @@ class Chat extends React.Component {
     fileIsDrop: false,
   }
 
+  handleOnTyping = () => {
+
+    const {currentUserId, group} = this.props
+
+    if (_.get(group, 'id')) {
+
+      this.props.userIsTyping(currentUserId, group.id, true)
+    }
+
+  }
+  handleOnEndTyping = () => {
+    const {currentUserId, group} = this.props
+    if (_.get(group, 'id')) {
+
+      this.props.userIsEndTyping(currentUserId, group.id, true)
+    }
+  }
+
   _onDragEnter (e) {
     e.stopPropagation()
     e.preventDefault()
 
     this.setState({fileIsDrop: true})
-
 
     //return false
   }
@@ -235,6 +255,8 @@ class Chat extends React.Component {
       files: [],
       edit: null
     })
+
+    this.handleOnEndTyping();
   }
   onAddFiles = (files) => {
 
@@ -444,7 +466,7 @@ class Chat extends React.Component {
 
   render () {
 
-    const {dock, group, users, messages, active, avatar, unread, isNew} = this.props
+    const {dock, group, users, messages, active, avatar, unread, isNew, userTypings} = this.props
 
     let isOpen = true
     const tab = _.get(this.props, 'tab')
@@ -453,7 +475,17 @@ class Chat extends React.Component {
       isOpen = false
     }
 
+    let listTypingUsers = []
 
+    userTypings.forEach((item) => {
+
+      if (users.length) {
+        const user = users.find((u) => u.id === item.userId)
+        if (user) {
+          listTypingUsers.push(user)
+        }
+      }
+    })
 
     return (
       <Container
@@ -512,12 +544,15 @@ class Chat extends React.Component {
               dock={dock}
               height={dock ? 500 : this.getMessageHeight()}
               hasFile={!!this.state.files.length}
+              userTypings={listTypingUsers}
               messages={messages}/>
           </ChatMessages>
         )}
 
         {isOpen && (
           <Composer
+            onTyping={this.handleOnTyping}
+            onEndTyping={this.handleOnEndTyping}
             onPressArrowUp={() => {
               if (lastMessage) {
                 if (lastMessage.body) {
@@ -557,7 +592,8 @@ const mapStateToProps = (state, props) => ({
   active: props.dock && _.get(state.chat.active, 'id') === _.get(props, 'tab.id'),
   avatar: _.get(state.group.find((g) => g.id === props.group.id), 'avatar', ''),
   currentUserId: _.get(state.app.user, 'id', null),
-  unread: getGroupUnreadCount(state, _.get(props, 'group.id', null))
+  unread: getGroupUnreadCount(state, _.get(props, 'group.id', null)),
+  userTypings: state.typing.filter((i) => i.groupId === _.get(props, 'group.id')).valueSeq()
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -568,6 +604,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   setActiveChat,
   updateMessage,
   startCall,
+  userIsEndTyping,
+  userIsTyping,
   subscribeRemoved: (cb) => {
     return (dispatch, getState, {service, event}) => {
       return event.subscribe(EVENT_GROUP_USER_REMOVED, cb)

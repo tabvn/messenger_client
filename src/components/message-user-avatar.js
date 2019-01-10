@@ -4,8 +4,8 @@ import _ from 'lodash'
 
 const Container = styled.div`
 
-  width: 40px;
-  height: 40px;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
   border-radius: 50%;
   background: #009beb;
   display: flex;
@@ -16,8 +16,8 @@ const Container = styled.div`
     cursor: pointer;
   }
   img{
-    width: 40px;
-    height: 40px;
+    width: ${props => props.size}px;
+    height: ${props => props.size}px;
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
@@ -89,26 +89,29 @@ export default class MessageUserAvatar extends React.Component {
   }
 
   render () {
-    const {user, hide, tooltipMessage} = this.props
+    const {user, hide, tooltipMessage,size} = this.props
     const avatar = _.get(user, 'avatar', '')
 
     const firstName = _.get(user, 'first_name', '')
     const lastName = _.get(user, 'last_name', '')
 
+
     return (
       <Fragment>
         {!hide ?
           (
-            <Container title={`${firstName} ${lastName}`} className={'message-user-avatar'}>
+            <Container size={size ? size : 40} title={`${firstName} ${lastName}`} className={'message-user-avatar'}>
 
               {avatar ? <img onClick={this.onClick} src={avatar} alt={''}/> : <i onClick={this.onClick}
                                                                                  className={'md-icon md-24'}>person_outline</i>}
-              <ToolTip
-                className={'messenger-user-tooltip'}>
-                <ArrowBox>
-                  {tooltipMessage}
-                </ArrowBox>
-              </ToolTip>
+              {
+                tooltipMessage ? <ToolTip
+                  className={'messenger-user-tooltip'}>
+                  <ArrowBox>
+                    {tooltipMessage}
+                  </ArrowBox>
+                </ToolTip> : null
+              }
             </Container>
 
           ) : <Empty/>}

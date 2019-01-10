@@ -123,7 +123,10 @@ const _groupIsActive = (state, groupId, dock = false) => {
 
 }
 
+
+
 export const groupIsActive = createSelector(
   [_groupIsActive],
   (r) => r,
 )
+

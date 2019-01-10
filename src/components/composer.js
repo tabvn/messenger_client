@@ -206,6 +206,8 @@ const lists = emotions.map((e) => {
   return e.r
 })
 
+const typingTimeOut = 2500
+
 export default class Composer extends React.Component {
 
   state = {
@@ -213,7 +215,51 @@ export default class Composer extends React.Component {
     gif: '',
     message: '',
     emoji: false,
+    isTyping: false
+  }
 
+  componentDidMount () {
+    window.addEventListener('click', this.finishTyping)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('click', this.finishTyping)
+  }
+
+  finishTyping = () => {
+
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
+    if (this.state.isTyping) {
+      this.setState({
+        isTyping: false,
+      }, () => {
+        if (this.props.onEndTyping) {
+          this.props.onEndTyping()
+        }
+      })
+    }
+  }
+
+  handleOnKeyUp = (e) => {
+
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
+    this.timer = setTimeout(this.finishTyping.bind(this), typingTimeOut)
+
+    if (!this.state.isTyping) {
+      this.setState({
+        isTyping: true
+      }, () => {
+
+        if (this.props.onTyping) {
+          this.props.onTyping()
+        }
+
+      })
+    }
   }
   replaceEmoji = (message) => {
 
@@ -339,6 +385,7 @@ export default class Composer extends React.Component {
           <div className={'composer-input-container'}>
             <pre>{message}</pre>
             <textarea
+              onKeyUp={this.handleOnKeyUp}
               value={message}
               onChange={this.onChange}
               onKeyDown={(e) => {

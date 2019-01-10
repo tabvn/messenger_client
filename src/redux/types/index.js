@@ -69,3 +69,8 @@ export const EVENT_GROUP_USER_REMOVED = 'group/user_removed'
 
 export const SET_BLOCKED_USER = 'set_blocked_user'
 export const REMOVE_BLOCK_USER = 'remove_blocked_user'
+
+// userTyping
+
+export const ONTYPING =  'typing/on_typing';
+export const ENDTYPING = 'typing/end_typing'

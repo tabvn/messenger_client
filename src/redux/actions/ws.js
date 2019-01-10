@@ -7,6 +7,7 @@ import { setUser } from './user'
 import { openChat } from './chat'
 import { EVENT_GROUP_USER_REMOVED, ON_PLAY_SOUND } from '../types'
 import { callEnd, receiveCalling } from './call'
+import { userIsTyping, userIsEndTyping } from './typing'
 
 const handleReceiveUserStatus = (payload) => {
   return (dispatch, getState) => {
@@ -278,6 +279,16 @@ export const handleReceiveRemoveGroupUser = (payload) => {
   }
 }
 
+export const handleReceiveUserTyping = (payload) => {
+  return (dispatch) => {
+    if (payload.isTyping) {
+      dispatch(userIsTyping(payload.user_id, payload.group_id))
+    } else {
+      dispatch(userIsEndTyping(payload.user_id, payload.group_id))
+    }
+  }
+}
+
 export const handleReceiveWsMessage = (message) => {
 
   return (dispatch) => {
@@ -370,6 +381,9 @@ export const handleReceiveWsMessage = (message) => {
 
         break
 
+      case 'userTyping':
+        dispatch(handleReceiveUserTyping(message.payload))
+        break
       default:
 
         break
