@@ -5,9 +5,10 @@ import { deleteMessage, setMessage, updateLocalMessage } from './message'
 import { addUserToGroup, removeUserFromGroup, setGroup, updateGroup } from './group'
 import { setUser } from './user'
 import { openChat } from './chat'
-import { EVENT_GROUP_USER_REMOVED, ON_PLAY_SOUND } from '../types'
+import { EVENT_GROUP_USER_REMOVED, ON_PLAY_SOUND, PUSH_FRIEND, REMOVE_FRIEND } from '../types'
 import { callEnd, receiveCalling } from './call'
 import { userIsTyping, userIsEndTyping } from './typing'
+import { setFriend } from './friend'
 
 const handleReceiveUserStatus = (payload) => {
   return (dispatch, getState) => {
@@ -205,6 +206,7 @@ const handleReceiveMessageUpdated = (payload) => {
 const handelReceiveAddFriend = (payload) => {
   return (dispatch) => {
     dispatch(setUser(payload.friend))
+    dispatch(setFriend([payload.friend]))
 
   }
 }
@@ -217,6 +219,10 @@ const handelReceiveUnFriend = (payload) => {
     if (user) {
       user = _.setWith(user, 'friend', false)
       dispatch(setUser(user))
+      dispatch({
+        type: REMOVE_FRIEND,
+        payload: payload.friend_id
+      })
     }
   }
 }

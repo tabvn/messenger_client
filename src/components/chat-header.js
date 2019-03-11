@@ -95,7 +95,7 @@ const Status = styled.div`
 `
 
 const UserStatus = styled.div`
-
+    cursor: ${props=>props.haveLink ? 'pointer': 'none'};
     position: relative;
     width: 45px;
     height: 45px;
@@ -257,10 +257,21 @@ export default class ChatHeader extends React.Component {
 
     const {users} = this.props
 
+    const user = _.get(users, '[0]');
     const avatar = _.get(users, '[0].avatar', '')
     const status = _.get(users, '[0].status', 'offline')
+
+    const isPublished = _.get(user, 'published', null)
+    const uid = _.get(user, 'uid')
+
+    const haveLink = uid && isPublished !== null && isPublished === 1
+
     return (
-      <UserStatus
+      <UserStatus haveLink={haveLink} onClick={() => {
+        if(haveLink){
+          window.location = `/member/${uid}`
+        }
+      }}
         noUser={users.length === 0}
         className={'user-avatar'}>
         {

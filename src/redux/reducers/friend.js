@@ -1,4 +1,4 @@
-import { PUSH_FRIEND, SET_FRIEND } from '../types'
+import { PUSH_FRIEND, REMOVE_FRIEND, SET_FRIEND } from '../types'
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -25,6 +25,14 @@ export default (state = [], action) => {
       }
 
       return state
+
+    case REMOVE_FRIEND:
+
+      let newStateOfFriend = [...state]
+
+      newStateOfFriend = newStateOfFriend.filter((m) => m.id !== action.payload)
+
+      return newStateOfFriend
 
     default:
 

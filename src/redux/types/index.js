@@ -16,6 +16,7 @@ export const SET_USER = 'user/set'
 
 export const PUSH_FRIEND = 'friend/push'
 export const SET_FRIEND = 'friend/set'
+export const REMOVE_FRIEND = 'friend/remove'
 
 export const SET_ERROR = 'error/set'
 export const REMOVE_ERROR = 'error/remove'
