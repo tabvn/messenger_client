@@ -2,10 +2,10 @@ import _ from 'lodash'
 import {
   CLOSE_CHAT_TAB,
   OPEN_CHAT_TAB,
-  REMOVE_ACTIVE_CHAT,
+  REMOVE_ACTIVE_CHAT, REMOVE_ACTIVE_CHAT_TAB,
   SET_ACTIVE_CHAT_TAB, SET_INBOX_ACTIVE,
   TOGGLE_CHAT_TAB,
-  UPDATE_CHAT_TAB
+  UPDATE_CHAT_TAB,
 } from '../types'
 
 let saveGroupIds = []
@@ -61,6 +61,14 @@ export default (state = {
         ...state,
         active: null
       }
+
+    case REMOVE_ACTIVE_CHAT_TAB:
+
+      return {
+        ...state,
+        active: null
+      }
+
     case SET_ACTIVE_CHAT_TAB:
 
       let tabs = [...state.tabs]

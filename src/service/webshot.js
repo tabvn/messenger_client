@@ -1,97 +1,99 @@
-import _ from 'lodash'
-import { EventEmitter } from 'fbemitter'
-import axios from 'axios'
+import {EventEmitter} from 'fbemitter';
+import axios from 'axios';
+import _ from 'lodash';
 
-let shots = {}
-let queue = []
-let shotEvent = new EventEmitter()
-let isRuning = false
+let shots = {};
+let queue = [];
+let shotEvent = new EventEmitter();
+let isRuning = false;
 
 export default class Webshot {
 
-  constructor () {
-    setInterval(() => {this.run()}, 500)
+  constructor() {
+    setInterval(() => {
+      this.run();
+    }, 500);
   }
 
-  shot (url) {
+  shot(url) {
 
     return new Promise((resolve, reject) => {
-      url = _.trim(url)
+      url = _.trim(url);
       if (!url || url === '') {
-        reject('Invalid url')
+        reject('Invalid url');
       }
-      const shot = _.get(shots, url)
+      const shot = _.get(shots, url);
       if (shot) {
-        resolve(shot)
+        resolve(shot);
       }
 
       // add to que
-      this.addQueue(url)
+      this.addQueue(url);
       // subscribe to queue
 
       shotEvent.addListener(`shot_${url}`, (data) => {
 
         if (data.error) {
-          reject(data.error)
+          reject(data.error);
         }
-        resolve(data.shot)
+        resolve(data.shot);
 
-      })
+      });
 
-    })
+    });
   }
 
-  addQueue (url) {
+  addQueue(url) {
     if (!queue.find((_url) => _url === url)) {
-      queue.push(url)
+      queue.push(url);
     }
   }
 
-  run () {
+  run() {
 
     if (!isRuning && queue.length) {
-      const url = _.get(queue, '[0]')
-      isRuning = true
+      const url = _.get(queue, '[0]');
+      isRuning = true;
       // begin take new screenshot
-      const requestUrl = `https://www.googleapis.com/pagespeedonline/v4/runPagespeed?screenshot=true&url=${url}`
+      const requestUrl = `https://www.googleapis.com/pagespeedonline/v4/runPagespeed?screenshot=true&url=${url}`;
 
       axios.get(requestUrl).then((res) => {
 
-        const data = res.data
+        const data = res.data;
 
         let shot = {
           title: _.get(data, 'title', ''),
-          screenshot: _.get(data, 'screenshot', null)
-        }
+          screenshot: _.get(data, 'screenshot', null),
+        };
 
         // cache shot
-        shots[url] = shot
+        shots[url] = shot;
 
-        let encodedData = shot.screenshot.data
+        let encodedData = shot.screenshot.data;
 
-        encodedData = _.replace(encodedData, /_/g, '/')
+        encodedData = _.replace(encodedData, /_/g, '/');
 
-        encodedData = _.replace(encodedData, /-/g, '+')
+        encodedData = _.replace(encodedData, /-/g, '+');
 
-        shot.screenshot.data = encodedData //window.atob(encodedData)
+        shot.screenshot.data = encodedData; //window.atob(encodedData)
 
-        shotEvent.emit(`shot_${url}`, {error: null, shot: shot})
-        isRuning = false
+        shotEvent.emit(`shot_${url}`, {error: null, shot: shot});
+        isRuning = false;
 
-        queue.splice(0,1);
+        queue.splice(0, 1);
 
         if (shots.length) {
-          this.run()
+          this.run();
         }
 
       }).catch((e) => {
-        shotEvent.emit(`shot_${url}`, {error: e, shot: null})
-        isRuning = false
-        queue.splice(0,1);
+        shotEvent.emit(`shot_${url}`, {error: e, shot: null});
+        isRuning = false;
+        queue.splice(0, 1);
         if (shots.length) {
-          this.run()
+          this.run();
         }
-      })
+      });
     }
 
   }

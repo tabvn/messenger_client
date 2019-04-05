@@ -1,5 +1,12 @@
 import _ from 'lodash'
-import { CLOSE_CHAT_TAB, OPEN_CHAT_TAB, SET_ACTIVE_CHAT_TAB, TOGGLE_CHAT_TAB, UPDATE_CHAT_TAB } from '../types'
+import {
+  CLOSE_CHAT_TAB,
+  OPEN_CHAT_TAB,
+  REMOVE_ACTIVE_CHAT_TAB,
+  SET_ACTIVE_CHAT_TAB,
+  TOGGLE_CHAT_TAB,
+  UPDATE_CHAT_TAB,
+} from '../types'
 import { removeUnreadCount } from './group'
 
 const ID = () => {
@@ -29,6 +36,7 @@ export const openChat = (users = [], group = {id: null, title: '', avatar: ''}, 
     if (group_id) {
 
       tab = tabs.find((t) => t.group_id === group_id)
+
 
       if (tab) {
         // found
@@ -62,6 +70,7 @@ export const openChat = (users = [], group = {id: null, title: '', avatar: ''}, 
     }
 
     if (tab) {
+
       if (setActive) {
         dispatch(setActiveChat(tab))
       }
@@ -178,6 +187,16 @@ export const closeChat = (id) => {
     dispatch({
       type: CLOSE_CHAT_TAB,
       payload: id
+    })
+  }
+}
+
+export const removeActiveChat = () => {
+
+  return (dispatch) => {
+    dispatch({
+      type: REMOVE_ACTIVE_CHAT_TAB,
+      payload: null
     })
   }
 }

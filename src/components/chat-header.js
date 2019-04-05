@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React, {Fragment} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { api } from '../config'
+import {api} from '../config'
 import GroupAvatar from './group-avatar'
 
 const Container = styled.div`
@@ -95,7 +95,7 @@ const Status = styled.div`
 `
 
 const UserStatus = styled.div`
-    cursor: ${props=>props.haveLink ? 'pointer': 'none'};
+    cursor: ${props => props.haveLink ? 'pointer' : 'none'};
     position: relative;
     width: 45px;
     height: 45px;
@@ -248,39 +248,43 @@ export default class ChatHeader extends React.Component {
   renderGroupAvatar = () => {
     const {avatar, users} = this.props
     return (
-      !avatar ? <GroupAvatar users={users}/> : <div className={'group-avatar'}>
-        <img src={this.getFileUrl(avatar)} alt={''}/>
-      </div>
+        !avatar ?
+            <GroupAvatar users={users}/> :
+            <div className={'group-avatar'}>
+              <img src={this.getFileUrl(avatar)} alt={''}/>
+            </div>
     )
   }
   renderUserAvatar = () => {
 
     const {users} = this.props
-
-    const user = _.get(users, '[0]');
+    const user = _.get(users, '[0]')
     const avatar = _.get(users, '[0].avatar', '')
     const status = _.get(users, '[0].status', 'offline')
 
     const isPublished = _.get(user, 'published', null)
+
     const uid = _.get(user, 'uid')
 
     const haveLink = uid && isPublished !== null && isPublished === 1
 
     return (
-      <UserStatus haveLink={haveLink} onClick={() => {
-        if(haveLink){
-          window.location = `/member/${uid}`
-        }
-      }}
-        noUser={users.length === 0}
-        className={'user-avatar'}>
-        {
-          users.length ? <Fragment>
-            {avatar && avatar !== '' ? <img src={avatar} alt={''}/> : <i className={'md-icon md-24'}>person_outline</i>}
-          </Fragment> : null
-        }
-        {users.length ? <Status className={`user-status ${status}`}/> : null}
-      </UserStatus>
+        <UserStatus haveLink={haveLink} onClick={() => {
+          if (haveLink) {
+            window.location = `/member/${uid}`
+          }
+        }}
+                    noUser={users.length === 0}
+                    className={'user-avatar'}>
+          {
+            users.length ? <Fragment>
+              {avatar && avatar !== '' ?
+                  <img src={avatar} alt={''}/> :
+                  <i className={'md-icon md-24'}>person_outline</i>}
+            </Fragment> : null
+          }
+          {users.length ? <Status className={`user-status ${status}`}/> : null}
+        </UserStatus>
     )
   }
 
@@ -289,74 +293,84 @@ export default class ChatHeader extends React.Component {
     const {users} = this.props
 
     const firstUser = _.get(users, '[0]')
-    const name = `${_.get(firstUser, 'first_name', '')} ${_.get(firstUser, 'last_name', '')}`
+    const name = `${_.get(firstUser, 'first_name', '')} ${_.get(firstUser,
+        'last_name', '')}`
 
     const isPublished = _.get(firstUser, 'published', null)
 
-
     return (
-      <div className={'ar-user-name'}>
-        {isPublished != null && isPublished === 1 ? <a href={`/member/${_.get(firstUser, 'uid')}`}>{name}</a> : name}
-        {users.length > 1 ? ',...' : null}
-      </div>
+        <div className={'ar-user-name'}>
+          {isPublished != null && isPublished === 1 ?
+              <a href={`/member/${_.get(firstUser, 'uid')}`}>{name}</a> :
+              name}
+          {users.length > 1 ? ',...' : null}
+        </div>
     )
+
   }
   renderChatInfo = () => {
 
     const {title, users, unread, isNew} = this.props
-
     return (
-      <HeaderChatInfo className={'chat-header-info'}>
-        {!isNew && <HeaderAvatar className={'chat-header-avatar'}>
-          {
-            unread > 0 && (
-              <UnreadCount className={'unread-count'}>
-                <span>{unread}</span>
-              </UnreadCount>
-            )
-          }
-          {users.length > 1 ? this.renderGroupAvatar() : this.renderUserAvatar()}
-        </HeaderAvatar>}
+        <HeaderChatInfo className={'chat-header-info'}>
+          {!isNew && <HeaderAvatar className={'chat-header-avatar'}>
+            {
+              unread > 0 && (
+                  <UnreadCount className={'unread-count'}>
+                    <span>{unread}</span>
+                  </UnreadCount>
+              )
+            }
+            {users.length > 1 ?
+                this.renderGroupAvatar() :
+                this.renderUserAvatar()}
+          </HeaderAvatar>}
 
-        {isNew ? <div style={{width: '100%'}} className={'chat-title'}>New Message</div> : <div
-          className={'chat-title'}>
-          {title ? title : this.renderChatTitle()}
-          {users.length === 1 && <div
-            className={'user-status'}>{_.upperFirst(_.get(users, '[0].status', 'offline'))} <CallButton
-            onClick={() => {
-              if (this.props.onVideoCall) {
-                this.props.onVideoCall()
-              }
-            }}
-            title={'Video call'}><i className={'md-icon'}>videocam</i></CallButton></div>}
-          {
-            users.length > 1 && (
-              <GroupBottomInfo>
-                <GroupMoreUser onClick={() => {
-                  if (this.props.onOpenModal) {
-                    this.props.onOpenModal('participants')
-                  }
-                }}>
-                  <i className={'md-icon'}>group</i>
-                  <span>+{users.length} more...</span>
-                </GroupMoreUser>
-                <CallButton
-                  onClick={() => {
-                    if (this.props.onVideoCall) {
-                      this.props.onVideoCall()
-                    }
-                  }}
-                  title={'Video call'}><i className={'md-icon'}>videocam</i></CallButton>
-              </GroupBottomInfo>
-            )
-          }
+          {isNew ?
+              <div style={{width: '100%'}} className={'chat-title'}>New
+                Message</div> :
+              <div
+                  className={'chat-title'}>
+                {title ? title : this.renderChatTitle()}
+                {users.length === 1 && <div
+                    className={'user-status'}>{_.upperFirst(
+                    _.get(users, '[0].status', 'offline'))} <CallButton
+                    onClick={() => {
+                      if (this.props.onVideoCall) {
+                        this.props.onVideoCall()
+                      }
+                    }}
+                    title={'Video call'}><i
+                    className={'md-icon'}>videocam</i></CallButton></div>}
+                {
+                  users.length > 1 && (
+                      <GroupBottomInfo>
+                        <GroupMoreUser onClick={() => {
+                          if (this.props.onOpenModal) {
+                            this.props.onOpenModal('participants')
+                          }
+                        }}>
+                          <i className={'md-icon'}>group</i>
+                          <span>+{users.length} more...</span>
+                        </GroupMoreUser>
+                        <CallButton
+                            onClick={() => {
+                              if (this.props.onVideoCall) {
+                                this.props.onVideoCall()
+                              }
+                            }}
+                            title={'Video call'}><i
+                            className={'md-icon'}>videocam</i></CallButton>
+                      </GroupBottomInfo>
+                  )
+                }
 
-        </div>}
-      </HeaderChatInfo>
+              </div>}
+        </HeaderChatInfo>
     )
   }
 
-  render () {
+  render() {
     const {dock, open} = this.props
     let active = false
 
@@ -364,36 +378,39 @@ export default class ChatHeader extends React.Component {
       active = true
     }
     return (
-      <Container active={active} dock={dock} className={`chat-header ${dock ? 'is-dock' : 'not-dock'}`}>
-        {dock === true && <ToggleButton onClick={() => {
-          if (this.props.onToggle) {
-            this.props.onToggle()
-          }
-        }} className={'toggle-icon'}><i
-          className={'md-icon'}>{open ? 'photo_size_select_small' : 'open_in_new'}</i></ToggleButton>}
-        <div
-          onClick={(e) => {
-            if (this.props.onClick) {
-              this.props.onClick(e)
+        <Container active={active} dock={dock}
+                   className={`chat-header ${dock ? 'is-dock' : 'not-dock'}`}>
+          {dock === true && <ToggleButton onClick={() => {
+            if (this.props.onToggle) {
+              this.props.onToggle()
             }
-          }}
-          className={'header-chat-info-container'}>
+          }} className={'toggle-icon'}><i
+              className={'md-icon'}>{open ?
+              'photo_size_select_small' :
+              'open_in_new'}</i></ToggleButton>}
+          <div
+              onClick={(e) => {
+                if (this.props.onClick) {
+                  this.props.onClick(e)
+                }
+              }}
+              className={'header-chat-info-container'}>
+            {
+              this.renderChatInfo()
+            }
+          </div>
           {
-            this.renderChatInfo()
+            dock ? (
+                <CloseButton onClick={() => {
+                  if (this.props.onClose) {
+                    this.props.onClose()
+                  }
+                }}>
+                  <i className={'md-icon'}>close</i>
+                </CloseButton>
+            ) : null
           }
-        </div>
-        {
-          dock ? (
-            <CloseButton onClick={() => {
-              if (this.props.onClose) {
-                this.props.onClose()
-              }
-            }}>
-              <i className={'md-icon'}>close</i>
-            </CloseButton>
-          ) : null
-        }
-      </Container>
+        </Container>
     )
   }
 }

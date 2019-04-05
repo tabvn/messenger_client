@@ -33,5 +33,9 @@
     "drupal": "./replace.sh",
     "deploy": "./deploy.sh",
     "commit": "git add -A && git commit -m \"updated\" && git push"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.12.4"
   }
 }

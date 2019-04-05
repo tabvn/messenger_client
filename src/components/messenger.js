@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import Sidebar from './sidebar'
-import Chats from './chats'
-import { openChat, createChat, removeInboxActive } from '../redux/actions'
+import React from 'react';
+import styled from 'styled-components';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import Sidebar from './sidebar';
+import Chats from './chats';
+import {openChat, createChat, removeInboxActive} from '../redux/actions';
 
 const Dock = styled.div`
   position: fixed;
@@ -21,78 +21,80 @@ const Dock = styled.div`
     flex-direction: row;
     overflow: auto;
   }
-`
+`;
 
 class Messenger extends React.Component {
 
   state = {
     wH: window.innerHeight,
+  };
+
+  componentDidMount() {
+
+    window.addEventListener('resize', this.resize.bind(this));
+
+    document.body.classList.add('ar-messenger');
+    this.props.removeInboxActive();
   }
 
-  componentDidMount () {
-
-    window.addEventListener('resize', this.resize.bind(this))
-
-    document.body.classList.add('ar-messenger')
-    this.props.removeInboxActive()
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resize.bind(this));
   }
 
-  componentWillUnmount () {
-    window.removeEventListener('resize', this.resize.bind(this))
-  }
-
-  resize () {
+  resize() {
 
     this.setState({
-      wH: window.innerHeight
-    })
+      wH: window.innerHeight,
+    });
   }
 
-  render () {
+  render() {
 
-    const {wH} = this.state
-    const {sidebarIsOpen, tabs} = this.props
-    let px = sidebarIsOpen ? 275 : 80
+    const {wH} = this.state;
+    const {sidebarIsOpen, tabs} = this.props;
+    let px = sidebarIsOpen ? 275 : 80;
 
     return (
-      <div className={'messenger-container'}>
-        <Sidebar
-          height={wH}
-          dock={true}
-          onCreateConversation={() => {
-            this.props.createChat()
-          }}
-          onCreateGroup={(g) => {
+        <div className={'messenger-container'}>
+          <Sidebar
+              height={wH}
+              dock={true}
+              onCreateConversation={() => {
+                this.props.createChat();
+              }}
+              onCreateGroup={(g) => {
 
-            this.props.openChat(g.users, g)
-          }}
-          onSelect={(group, users) => {
-            this.props.openChat(users, group)
-          }}/>
-        {
-          tabs.length ? (
-            <Dock right={px} className={`dock-container ${sidebarIsOpen ? 'is-open' : 'is-closed'}`}>
-              <div className={'dock-inner'}>
-                <Chats/>
-              </div>
+                this.props.openChat(g.users, g);
+              }}
+              onSelect={(group, users) => {
+                this.props.openChat(users, group);
+              }}/>
+          {
+            tabs.length ? (
+                <Dock right={px} className={`dock-container ${sidebarIsOpen ?
+                    'is-open' :
+                    'is-closed'}`}>
+                  <div className={'dock-inner'}>
+                    <Chats/>
+                  </div>
 
-            </Dock>
-          ) : null
-        }
-      </div>
-    )
+                </Dock>
+            ) : null
+          }
+        </div>
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
   sidebarIsOpen: state.sidebar.open,
   tabs: state.chat.tabs,
-})
+});
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   openChat,
   createChat,
-  removeInboxActive
-}, dispatch)
+  removeInboxActive,
+}, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Messenger)
+export default connect(mapStateToProps, mapDispatchToProps)(Messenger);

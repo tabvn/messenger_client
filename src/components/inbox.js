@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import Sidebar from './sidebar'
 import InboxChat from './inbox-chat'
-import { openInboxChat } from '../redux/actions'
+import {openInboxChat} from '../redux/actions'
 
 const Container = styled.div`
   display: flex;
@@ -28,23 +28,23 @@ class Inbox extends React.Component {
     wH: window.innerHeight,
   }
 
-  componentDidMount () {
+  componentDidMount() {
 
     window.addEventListener('resize', this.resize.bind(this))
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('resize', this.resize.bind(this))
   }
 
-  resize () {
+  resize() {
 
     this.setState({
-      wH: window.innerHeight
+      wH: window.innerHeight,
     })
   }
 
-  render () {
+  render() {
 
     const {wH} = this.state
     const {sidebarIsOpen, offset} = this.props
@@ -54,34 +54,34 @@ class Inbox extends React.Component {
     const containerH = wH - offset
 
     return (
-      <Container
-        h={containerH}
-        className={'messenger-inbox'}>
-        <LeftPanel
-          w={w}
-          className={'inbox-left-panel'}>
-          <Sidebar
-            height={containerH}
-            dock={false}
-            onCreateConversation={() => {
+        <Container
+            h={containerH}
+            className={'messenger-inbox'}>
+          <LeftPanel
+              w={w}
+              className={'inbox-left-panel'}>
+            <Sidebar
+                height={containerH}
+                dock={false}
+                onCreateConversation={() => {
 
-              this.props.openInboxChat([], null, true)
-            }}
-            onCreateGroup={(g) => {
-              
-              this.props.openInboxChat(g.users, g)
-            }}
-            onSelect={(group, users) => {
-              this.props.openInboxChat(users, group)
+                  this.props.openInboxChat([], null, true)
+                }}
+                onCreateGroup={(g) => {
 
-            }}
-          />
-        </LeftPanel>
-        <Main className={'inbox-main'}>
-          <InboxChat height={containerH}/>
-        </Main>
+                  this.props.openInboxChat(g.users, g)
+                }}
+                onSelect={(group, users) => {
+                  this.props.openInboxChat(users, group)
 
-      </Container>
+                }}
+            />
+          </LeftPanel>
+          <Main className={'inbox-main'}>
+            <InboxChat height={containerH}/>
+          </Main>
+
+        </Container>
     )
   }
 
@@ -89,11 +89,11 @@ class Inbox extends React.Component {
 
 const mapStateToProps = (state) => ({
   sidebarIsOpen: state.sidebar.open,
-  offset: _.get(state.app, 'theme.offset', 0)
+  offset: _.get(state.app, 'theme.offset', 0),
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  openInboxChat
+  openInboxChat,
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Inbox)

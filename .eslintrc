@@ -1,0 +1,15 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "semi": [
+      1,
+      "never"
+    ],
+    "no-undef": [
+      1
+    ]
+  }
+}

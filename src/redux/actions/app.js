@@ -1,14 +1,18 @@
 import _ from 'lodash'
-import { setGroup } from './group'
-import { setMessage } from './message'
-import { setCurrentUser, setUser } from './user'
-import { setError } from './error'
-import { updateUserStatus } from './user-status'
-import { setFriend } from './friend'
-import { REMOVE_ACTIVE_CHAT, REMOVE_INBOX_ACTIVE, SET_APP_INIT_FETCHED } from '../types'
-import { openInboxChat } from './inbox'
-import { openChat } from './chat'
-import { setBlockedUser } from './blocked'
+import {setGroup} from './group'
+import {setMessage} from './message'
+import {setCurrentUser, setUser} from './user'
+import {setError} from './error'
+import {updateUserStatus} from './user-status'
+import {setFriend} from './friend'
+import {
+  REMOVE_ACTIVE_CHAT,
+  REMOVE_INBOX_ACTIVE,
+  SET_APP_INIT_FETCHED,
+} from '../types'
+import {openInboxChat} from './inbox'
+import {openChat} from './chat'
+import {setBlockedUser} from './blocked'
 
 /**
  * Init load data for the app
@@ -154,7 +158,7 @@ export const initLoad = () => {
 
       dispatch({
         type: SET_APP_INIT_FETCHED,
-        payload: true
+        payload: true,
       })
 
       const group = _.get(groups, '[0]')
@@ -165,6 +169,8 @@ export const initLoad = () => {
       // re-open group chat windows
       let historyTabs = localStorage.getItem('messenger_chats')
       let openList = localStorage.getItem('messenger_chats_open')
+
+
       if (openList) {
         openList = JSON.parse(openList)
       }
@@ -178,11 +184,14 @@ export const initLoad = () => {
 
               const isOpen = _.get(openList, gid, false)
 
-              dispatch(openChat(findGroup.users, {id: gid}, false, isOpen))
+
+              const title = _.get(findGroup, 'title', null)
+              dispatch(openChat(findGroup.users, {id: gid, title}, false, isOpen))
 
             } else {
               historyTabs = historyTabs.filter((i) => i !== gid)
-              localStorage.setItem('messenger_chats', JSON.stringify(historyTabs))
+              localStorage.setItem('messenger_chats',
+                  JSON.stringify(historyTabs))
             }
           })
         }
@@ -190,12 +199,12 @@ export const initLoad = () => {
 
       dispatch({
         type: REMOVE_INBOX_ACTIVE,
-        payload: null
+        payload: null,
       })
 
       dispatch({
         type: REMOVE_ACTIVE_CHAT,
-        payload: null
+        payload: null,
       })
 
     }).catch((err) => {

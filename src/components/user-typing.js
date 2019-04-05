@@ -23,6 +23,7 @@ const Text = styled.div `
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding-left: 10px;
   .ar-w-circle{
     width: 10px;
     height: 10px;
@@ -42,7 +43,7 @@ export default class UserTyping extends React.Component{
       opacity={1}
       className={'ar-is-tying'}>
       <div className={'m-inner'}>
-        <MessageUserAvatar size={25} user={user}/>
+        <MessageUserAvatar size={40} user={user}/>
         <Text>
           <div className={'ar-w-circle'}/>
           <div className={'ar-w-circle'}/>

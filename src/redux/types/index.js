@@ -35,6 +35,7 @@ export const SET_APP_INIT_FETCHED = 'app/set_init_fetched'
 
 export const OPEN_CHAT_TAB = 'chat/open'
 export const SET_ACTIVE_CHAT_TAB = 'chat/active_chat_tab'
+export const REMOVE_ACTIVE_CHAT_TAB = 'chat/remove_active_chat_tab'
 export const TOGGLE_CHAT_TAB = 'chat/toggle_chat'
 export const CLOSE_CHAT_TAB = 'chat/close'
 export const UPDATE_CHAT_TAB = 'chat/update'

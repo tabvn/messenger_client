@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react'
+import React, {Fragment} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import ChatHeader from './chat-header'
-import { getGroupUnreadCount, getGroupUsers } from '../redux/selector/group'
+import {getGroupUnreadCount, getGroupUsers} from '../redux/selector/group'
 import Messages from './messages'
-import { getGroupMessages } from '../redux/selector/message'
+import {getGroupMessages} from '../redux/selector/message'
 
 import {
   closeChat,
@@ -17,10 +17,11 @@ import {
   updateMessage,
   startCall,
   userIsTyping,
-  userIsEndTyping
+  userIsEndTyping,
+  removeActiveChat,
 } from '../redux/actions'
 import Composer from './composer'
-import { maxUploadSize } from '../config'
+import {maxUploadSize} from '../config'
 import ChatModal from './chat-modal'
 import GifModal from './gif-modal'
 import EmojiModal from './emoji-modal'
@@ -30,8 +31,9 @@ import CreateSingleChat from './create-single-chat'
 import ChatReportModal from './chat-report-modal'
 import BlockGroupUserModal from './block-group-user-modal'
 import GroupUserRemoveModal from './group-user-removed-modal'
-import { EVENT_GROUP_USER_REMOVED } from '../redux/types'
+import {EVENT_GROUP_USER_REMOVED} from '../redux/types'
 import InviteNotify from './invite-notify'
+import ClickOutside from './click-outside'
 
 const Container = styled.div`
   flex-grow: 1;
@@ -113,7 +115,7 @@ class Chat extends React.Component {
     }
   }
 
-  _onDragEnter (e) {
+  _onDragEnter(e) {
     e.stopPropagation()
     e.preventDefault()
 
@@ -122,13 +124,13 @@ class Chat extends React.Component {
     //return false
   }
 
-  _onDragOver (e) {
+  _onDragOver(e) {
     e.preventDefault()
     e.stopPropagation()
     // return false
   }
 
-  _onDragLeave (e) {
+  _onDragLeave(e) {
     //this.setState({fileIsDrop: false})
 
     e.stopPropagation()
@@ -136,7 +138,7 @@ class Chat extends React.Component {
     //return false
   }
 
-  _onDrop (e) {
+  _onDrop(e) {
     e.preventDefault()
 
     let files = e.dataTransfer.files
@@ -150,7 +152,7 @@ class Chat extends React.Component {
     // return false
   }
 
-  componentDidMount () {
+  componentDidMount() {
 
     document.addEventListener('mouseup', this._onDragLeave.bind(this))
 
@@ -159,13 +161,13 @@ class Chat extends React.Component {
     this._removedEvent = this.props.subscribeRemoved((info) => {
       this.setState({
         modal: 'group_user_removed',
-        removeBy: info
+        removeBy: info,
       })
     })
 
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this._removedEvent) {
       this._removedEvent.remove()
     }
@@ -182,9 +184,10 @@ class Chat extends React.Component {
     }
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
 
-    if (this.props.messages.length < 2 && _.get(this.props.group, 'id') && _.get(this.props, 'group.id') !== _.get(prevProps, 'group.id')
+    if (this.props.messages.length < 2 && _.get(this.props.group, 'id') &&
+        _.get(this.props, 'group.id') !== _.get(prevProps, 'group.id')
     ) {
       this.loadMessages()
     }
@@ -193,7 +196,7 @@ class Chat extends React.Component {
   handleOnEditMessage = (message) => {
 
     this.setState({
-      edit: message
+      edit: message,
     })
 
   }
@@ -209,12 +212,23 @@ class Chat extends React.Component {
 
   }
 
+  removeActiveChat = () => {
+
+    const {active} = this.props
+    if (!active) {
+      return
+    }
+    if (this.props.dock && this.props.tab) {
+      this.props.removeActiveChat()
+    }
+  }
+
   showModal = (name, e) => {
 
     targetEvent = e ? e.target.id : null
 
     this.setState({
-      modal: this.state.modal === name ? null : name
+      modal: this.state.modal === name ? null : name,
     })
   }
 
@@ -253,10 +267,10 @@ class Chat extends React.Component {
     this.setState({
       gif: '',
       files: [],
-      edit: null
+      edit: null,
     })
 
-    this.handleOnEndTyping();
+    this.handleOnEndTyping()
   }
   onAddFiles = (files) => {
 
@@ -281,7 +295,7 @@ class Chat extends React.Component {
     _files = _.uniqBy(_files, 'name')
 
     this.setState({
-      files: _files
+      files: _files,
     })
 
   }
@@ -290,7 +304,7 @@ class Chat extends React.Component {
 
     let files = this.state.files.filter((f) => f.name !== file.name)
     this.setState({
-      files: files
+      files: files,
     })
   }
 
@@ -304,119 +318,119 @@ class Chat extends React.Component {
     return <Fragment>
       {
         modal === 'gif' && (
-          <ChatModal
-            clickedTarget={targetEvent}
-            onClickOutSide={this.clickOutSide}>
-            <GifModal
-              height={height}
-              dock={dock}
-              onSelect={(g) => {
-                this.setState({
-                  gif: g.id,
-                  modal: null,
-                }, () => this.send({gif: g.id, files: [], body: ''}))
-              }}/>
-          </ChatModal>)
+            <ChatModal
+                clickedTarget={targetEvent}
+                onClickOutSide={this.clickOutSide}>
+              <GifModal
+                  height={height}
+                  dock={dock}
+                  onSelect={(g) => {
+                    this.setState({
+                      gif: g.id,
+                      modal: null,
+                    }, () => this.send({gif: g.id, files: [], body: ''}))
+                  }}/>
+            </ChatModal>)
 
       }
 
       {
         modal === 'emoji' && (
-          <ChatModal
-            clickedTarget={targetEvent}
-            onClickOutSide={this.clickOutSide}>
-            <EmojiModal
-              height={height}
-              dock={dock}
-              onSelect={(emoji) => {
-                this.setState({
-                  emoji: emoji.emoji,
-                  modal: null,
-                })
-              }}/>
-          </ChatModal>)
+            <ChatModal
+                clickedTarget={targetEvent}
+                onClickOutSide={this.clickOutSide}>
+              <EmojiModal
+                  height={height}
+                  dock={dock}
+                  onSelect={(emoji) => {
+                    this.setState({
+                      emoji: emoji.emoji,
+                      modal: null,
+                    })
+                  }}/>
+            </ChatModal>)
 
       }
 
       {
         modal === 'options' && (
-          <ChatModal
-            clickedTarget={targetEvent}
-            background={'none'}
-            onClickOutSide={this.clickOutSide}
-          >
-            <ChatOptionsModal
-              dock={this.props.dock}
-              tab={this.props.tab}
-              group={group}
-              onOpenModal={this.showModal}
-              users={users}/>
-          </ChatModal>)
+            <ChatModal
+                clickedTarget={targetEvent}
+                background={'none'}
+                onClickOutSide={this.clickOutSide}
+            >
+              <ChatOptionsModal
+                  dock={this.props.dock}
+                  tab={this.props.tab}
+                  group={group}
+                  onOpenModal={this.showModal}
+                  users={users}/>
+            </ChatModal>)
 
       }
 
       {
         modal === 'block' && (
-          <ChatModal
-            onClickOutSide={this.clickOutSide}
-          >
-            <BlockGroupUserModal
-              height={height}
-              dock={dock}
-              users={users}
-              onClose={() => this.setState({modal: null})}
-            />
-          </ChatModal>
+            <ChatModal
+                onClickOutSide={this.clickOutSide}
+            >
+              <BlockGroupUserModal
+                  height={height}
+                  dock={dock}
+                  users={users}
+                  onClose={() => this.setState({modal: null})}
+              />
+            </ChatModal>
 
         )
       }
 
       {
         modal === 'participants' && (
-          <ChatModal
-            onClickOutSide={this.clickOutSide}
-          ><ChatParticipantsModal
-            height={this.props.height}
-            tab={this.props.tab}
-            dock={this.props.dock}
-            onClose={() => this.setState({modal: null})}
-            users={users} group={group}/>
-          </ChatModal>
+            <ChatModal
+                onClickOutSide={this.clickOutSide}
+            ><ChatParticipantsModal
+                height={this.props.height}
+                tab={this.props.tab}
+                dock={this.props.dock}
+                onClose={() => this.setState({modal: null})}
+                users={users} group={group}/>
+            </ChatModal>
         )
       }
 
       {
         modal === 'flag' && (
-          <ChatModal onClickOutSide={this.clickOutSide}>
-            <ChatReportModal
-              onClose={() => {
-                this.setState({
-                  modal: null
-                })
-              }}
-              height={height}
-              users={users}
-              dock={dock}/>
-          </ChatModal>
+            <ChatModal onClickOutSide={this.clickOutSide}>
+              <ChatReportModal
+                  onClose={() => {
+                    this.setState({
+                      modal: null,
+                    })
+                  }}
+                  height={height}
+                  users={users}
+                  dock={dock}/>
+            </ChatModal>
         )
       }
 
       {
         modal === 'group_user_removed' && (
 
-          <ChatModal onClickOutSide={this.clickOutSide}>
-            <GroupUserRemoveModal
-              removeBy={this.state.removeBy}
-              onClose={() => {
-                this.setState({
-                  modal: null,
-                  removeBy: null
-                })
-              }}
-              height={height}
-              users={users}
-              dock={dock}/>
-          </ChatModal>
+            <ChatModal onClickOutSide={this.clickOutSide}>
+              <GroupUserRemoveModal
+                  removeBy={this.state.removeBy}
+                  onClose={() => {
+                    this.setState({
+                      modal: null,
+                      removeBy: null,
+                    })
+                  }}
+                  height={height}
+                  users={users}
+                  dock={dock}/>
+            </ChatModal>
 
         )
       }
@@ -440,18 +454,18 @@ class Chat extends React.Component {
       if (groupId) {
 
         this.setState({
-          isLoadingMore: true
+          isLoadingMore: true,
         }, () => {
 
           this.props.loadMessages(groupId, LIMIT, messages.length).then(() => {
             this.setState({
-              isLoadingMore: false
+              isLoadingMore: false,
             })
 
           }).catch((e) => {
 
             this.setState({
-              isLoadingMore: false
+              isLoadingMore: false,
             })
 
           })
@@ -464,7 +478,7 @@ class Chat extends React.Component {
     this.props.startCall(this.props.users, this.props.group)
   }
 
-  render () {
+  render() {
 
     const {dock, group, users, messages, active, avatar, unread, isNew, userTypings} = this.props
 
@@ -488,100 +502,104 @@ class Chat extends React.Component {
     })
 
     return (
-      <Container
-        onDrop={this._onDrop.bind(this)}
-        onDragEnter={this._onDragEnter.bind(this)}
-        onDragOver={this._onDragOver.bind(this)}
-        onDragLeave={this._onDragLeave}
-        id={'ar-file-drop-zone'}
-        className={'chat-container'}>
-        <InviteNotify chat={tab} groupId={_.get(group, 'id')} users={users} currentUserId={this.props.currentUserId}/>
-        <div id={'ar-file-drop'} style={{display: this.state.fileIsDrop ? 'flex' : 'none'}} className={'ar-file-drop'}>
-          <div className={'ar-file-drop-inner'}>
-            <div><i className={'md-icon'}>insert_drive_file</i></div>
-            <div className={'ar-text-center'}>drop to attach files</div>
+        <ClickOutside onClickOutside={this.removeActiveChat}><Container
+            onDrop={this._onDrop.bind(this)}
+            onDragEnter={this._onDragEnter.bind(this)}
+            onDragOver={this._onDragOver.bind(this)}
+            onDragLeave={this._onDragLeave}
+            id={'ar-file-drop-zone'}
+            className={'chat-container'}>
+          <InviteNotify chat={tab} groupId={_.get(group, 'id')} users={users}
+                        currentUserId={this.props.currentUserId}/>
+          <div id={'ar-file-drop'}
+               style={{display: this.state.fileIsDrop ? 'flex' : 'none'}}
+               className={'ar-file-drop'}>
+            <div className={'ar-file-drop-inner'}>
+              <div><i className={'md-icon'}>insert_drive_file</i></div>
+              <div className={'ar-text-center'}>drop to attach files</div>
+            </div>
           </div>
-        </div>
-        <ChatHeader
-          dock={dock}
-          isNew={isNew}
-          avatar={avatar}
-          onClick={() => this.activeChat()}
-          active={active}
-          onOpenModal={this.showModal}
-          onVideoCall={this.handleStartVideoCall}
-          onClose={() => {
-            if (dock && this.props.tab) {
-              this.props.closeChat(this.props.tab.id)
-            }
-          }}
-          onToggle={() => {
-            if (dock && this.props.tab) {
-              this.props.toggleChat(this.props.tab.id, !isOpen)
-            }
-          }} title={_.get(group, 'title', '')}
-          unread={unread}
-          users={users}
-          open={isOpen}/>
-
-        {isNew ? (
-          <CreateSingleChat
-            tab={tab}
-            dock={dock}
-            hide={!isOpen}
-            height={dock ? '450px' : `${this.props.height - 190}px`}/>
-        ) : (
-          <ChatMessages
-            onClick={() => this.activeChat()}
-            hide={!isOpen} className={'chat-messages'}>
-            {
-              this.renderModal()
-            }
-            <Messages
-              isLoadingMore={this.state.isLoadingMore}
-              onLoadMore={this.handleLoadMoreMessages}
-              onEdit={this.handleOnEditMessage}
+          <ChatHeader
               dock={dock}
-              height={dock ? 500 : this.getMessageHeight()}
-              hasFile={!!this.state.files.length}
-              userTypings={listTypingUsers}
-              messages={messages}/>
-          </ChatMessages>
-        )}
-
-        {isOpen && (
-          <Composer
-            onTyping={this.handleOnTyping}
-            onEndTyping={this.handleOnEndTyping}
-            onPressArrowUp={() => {
-              if (lastMessage) {
-                if (lastMessage.body) {
-                  this.handleOnEditMessage(lastMessage)
+              isNew={isNew}
+              avatar={avatar}
+              onClick={() => this.activeChat()}
+              active={active}
+              onOpenModal={this.showModal}
+              onVideoCall={this.handleStartVideoCall}
+              onClose={() => {
+                if (dock && this.props.tab) {
+                  this.props.closeChat(this.props.tab.id)
                 }
+              }}
+              onToggle={() => {
+                if (dock && this.props.tab) {
+                  this.props.toggleChat(this.props.tab.id, !isOpen)
+                }
+              }} title={_.get(group, 'title', '')}
+              unread={unread}
+              users={users}
+              open={isOpen}/>
 
-              }
-            }}
-            onClearEmoji={() => {
-              this.setState({
-                emoji: null
-              })
-            }}
-            edit={this.state.edit}
-            isNew={isNew}
-            onOpenModal={this.showModal}
-            onRemoveFile={this.onRemoveFile}
-            onAddFiles={(files) => {
-              this.onAddFiles(files)
-            }}
-            files={this.state.files}
-            emoji={this.state.emoji}
-            onClick={() => {
-              this.activeChat()
-            }}
-            onSend={this.send}/>
-        )}
+          {isNew ? (
+              <CreateSingleChat
+                  tab={tab}
+                  dock={dock}
+                  hide={!isOpen}
+                  height={dock ? '450px' : `${this.props.height - 190}px`}/>
+          ) : (
+              <ChatMessages
+                  onClick={() => this.activeChat()}
+                  hide={!isOpen} className={'chat-messages'}>
+                {
+                  this.renderModal()
+                }
+                <Messages
+                    isLoadingMore={this.state.isLoadingMore}
+                    onLoadMore={this.handleLoadMoreMessages}
+                    onEdit={this.handleOnEditMessage}
+                    dock={dock}
+                    height={dock ? 500 : this.getMessageHeight()}
+                    hasFile={!!this.state.files.length}
+                    userTypings={listTypingUsers}
+                    messages={messages}/>
+              </ChatMessages>
+          )}
 
-      </Container>
+          {isOpen && (
+              <Composer
+                  onTyping={this.handleOnTyping}
+                  onEndTyping={this.handleOnEndTyping}
+                  onPressArrowUp={() => {
+                    if (lastMessage) {
+                      if (lastMessage.body) {
+                        this.handleOnEditMessage(lastMessage)
+                      }
+
+                    }
+                  }}
+                  onClearEmoji={() => {
+                    this.setState({
+                      emoji: null,
+                    })
+                  }}
+                  edit={this.state.edit}
+                  isNew={isNew}
+                  onOpenModal={this.showModal}
+                  onRemoveFile={this.onRemoveFile}
+                  onAddFiles={(files) => {
+                    this.onAddFiles(files)
+                  }}
+                  files={this.state.files}
+                  emoji={this.state.emoji}
+                  onClick={() => {
+                    this.activeChat()
+                  }}
+                  onSend={this.send}/>
+          )}
+
+        </Container>
+        </ClickOutside>
     )
   }
 }
@@ -589,11 +607,13 @@ class Chat extends React.Component {
 const mapStateToProps = (state, props) => ({
   users: getGroupUsers(state, props),
   messages: getGroupMessages(state, props),
-  active: props.dock && _.get(state.chat.active, 'id') === _.get(props, 'tab.id'),
+  active: props.dock && _.get(state.chat.active, 'id') ===
+      _.get(props, 'tab.id'),
   avatar: _.get(state.group.find((g) => g.id === props.group.id), 'avatar', ''),
   currentUserId: _.get(state.app.user, 'id', null),
   unread: getGroupUnreadCount(state, _.get(props, 'group.id', null)),
-  userTypings: state.typing.filter((i) => i.groupId === _.get(props, 'group.id')).valueSeq()
+  userTypings: state.typing.filter(
+      (i) => i.groupId === _.get(props, 'group.id')).valueSeq(),
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -606,6 +626,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   startCall,
   userIsEndTyping,
   userIsTyping,
+  removeActiveChat,
   subscribeRemoved: (cb) => {
     return (dispatch, getState, {service, event}) => {
       return event.subscribe(EVENT_GROUP_USER_REMOVED, cb)

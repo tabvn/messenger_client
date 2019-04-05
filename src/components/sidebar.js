@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React, {Fragment} from 'react'
 import styled from 'styled-components'
-import { bindActionCreators } from 'redux'
-import { openChat, toggleSidebar } from '../redux/actions'
+import {bindActionCreators} from 'redux'
+import {openChat, toggleSidebar} from '../redux/actions'
 import connect from 'react-redux/es/connect/connect'
 import SidebarHeader from './sidebar-header'
 import SidebarTabs from './sidebar-tabs'
@@ -11,7 +11,7 @@ import SidebarFooter from './sidebar-footer'
 import Modal from './modal'
 import CreateGroup from './create-group'
 import PropTypes from 'prop-types'
-import { ON_CREATE_GROUP } from '../redux/types'
+import {ON_CREATE_GROUP} from '../redux/types'
 import FriendSearch from './friend-search'
 
 const Container = styled.div`
@@ -41,7 +41,7 @@ const Container = styled.div`
   }
   @media (max-width: 768px) {
     ${props => props.open ? 'width: 100%;' : null
-  }
+    }
     
   
 `
@@ -60,7 +60,7 @@ const MobileButton = styled.button`
   z-index: 100000;
   height: 60px;
   border: 0 none;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 6px 10px 0px rgba(0, 0, 0, 0.14),0px 1px 18px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 6px 10px 0px rgba(0, 0, 0, 0.14),0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   transition: all 0.3s ease 0s;
   cursor: pointer;
   padding: 0;
@@ -87,147 +87,149 @@ class Sidebar extends React.Component {
 
   state = {
     createGroup: false,
-    friendSearch: false
+    friendSearch: false,
   }
 
-  componentDidMount () {
+  componentDidMount() {
 
     this.onCreateGroup = this.props.event.addListener(ON_CREATE_GROUP, () => {
       this.setState({
-        createGroup: true
+        createGroup: true,
       })
     })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.onCreateGroup) {
       this.onCreateGroup.remove()
     }
 
   }
 
-  render () {
+  render() {
     const {open, dock, height} = this.props
 
     return (
-      <Fragment>
-        <Container
-          dock={dock}
-          open={this.props.open}
-          className={`sidebar-container${dock ? ' dock' : ' not-dock'}${open ? ' is-open' : ' is-closed'}`}>
-          <SidebarHeader
-            dock={dock}
-            onCreateConversation={() => {
-              if (this.props.onCreateConversation) {
-                this.props.onCreateConversation()
-              }
-            }}
-            onCreateGroup={() => {
-              this.setState({
-                createGroup: true
-              })
-            }}
-          />
-          {!open && <SidebarUnread dock={dock}/>}
-          {open && <SidebarTabs dock={dock}/>}
-          <SidebarContent
-            height={height}
-            onCreateConversation={() => {
-              if (this.props.onCreateConversation) {
-                this.props.onCreateConversation()
-              }
-            }}
-            dock={dock}
-            onSelect={(group, users) => {
-              if (this.props.onSelect) {
-                this.props.onSelect(group, users)
-              }
-            }}/>
-          <SidebarFooter
-            dock={dock}
-            onCreateConversation={() => {
-              if (this.props.onCreateConversation) {
-                this.props.onCreateConversation()
-              }
-            }}
-            onCreateGroup={() => {
-              this.setState({
-                createGroup: true
-              })
-            }}/>
-
-          {
-            this.onCreateGroup && (
-              <Modal
-                onClose={() => {
+        <Fragment>
+          <Container
+              dock={dock}
+              open={this.props.open}
+              className={`sidebar-container${dock ?
+                  ' dock' :
+                  ' not-dock'}${open ? ' is-open' : ' is-closed'}`}>
+            <SidebarHeader
+                dock={dock}
+                onCreateConversation={() => {
+                  if (this.props.onCreateConversation) {
+                    this.props.onCreateConversation()
+                  }
+                }}
+                onCreateGroup={() => {
                   this.setState({
-                    createGroup: false
+                    createGroup: true,
                   })
                 }}
-                title={'Create group'}
-                open={this.state.createGroup}>
+            />
+            {!open && <SidebarUnread dock={dock}/>}
+            {open && <SidebarTabs dock={dock}/>}
+            <SidebarContent
+                height={height}
+                onCreateConversation={() => {
+                  if (this.props.onCreateConversation) {
+                    this.props.onCreateConversation()
+                  }
+                }}
+                dock={dock}
+                onSelect={(group, users) => {
+                  if (this.props.onSelect) {
+                    this.props.onSelect(group, users)
+                  }
+                }}/>
+            <SidebarFooter
+                dock={dock}
+                onCreateConversation={() => {
+                  if (this.props.onCreateConversation) {
+                    this.props.onCreateConversation()
+                  }
+                }}
+                onCreateGroup={() => {
+                  this.setState({
+                    createGroup: true,
+                  })
+                }}/>
 
-                <CreateGroup
-                  onOpenFriendSearch={() => {
-                    this.setState({
-                      friendSearch: true,
-                      createGroup: false,
-                    })
-                  }}
-                  onCreate={(e) => {
-                    if (this.props.onCreateGroup) {
-                      this.props.onCreateGroup(e)
-                    }
-                    // close modal
-                    this.setState({
-                      createGroup: false
-                    })
-                  }}
-                  onClose={() => {
-                    this.setState({
-                      createGroup: false,
-                    })
-                  }}/>
-              </Modal>
-            )
-          }
+            {
+              this.onCreateGroup && (
+                  <Modal
+                      onClose={() => {
+                        this.setState({
+                          createGroup: false,
+                        })
+                      }}
+                      title={'Create group'}
+                      open={this.state.createGroup}>
 
+                    <CreateGroup
+                        onOpenFriendSearch={() => {
+                          this.setState({
+                            friendSearch: true,
+                            createGroup: false,
+                          })
+                        }}
+                        onCreate={(e) => {
+                          if (this.props.onCreateGroup) {
+                            this.props.onCreateGroup(e)
+                          }
+                          // close modal
+                          this.setState({
+                            createGroup: false,
+                          })
+                        }}
+                        onClose={() => {
+                          this.setState({
+                            createGroup: false,
+                          })
+                        }}/>
+                  </Modal>
+              )
+            }
+
+            {
+              this.state.friendSearch && (
+                  <Modal
+                      title={'Add friends'}
+                      open={this.state.friendSearch}>
+
+                    <FriendSearch
+                        onOpenChatWithUser={(user) => {
+                          this.setState({
+                            createGroup: null,
+                            friendSearch: null,
+                          }, () => {
+                            this.props.openChat([user], null)
+                          })
+                        }}
+                        goBack={() => {
+                          this.setState({
+                            friendSearch: false,
+                            createGroup: true,
+                          })
+                        }}/>
+                  </Modal>
+              )
+            }
+
+          </Container>
           {
-            this.state.friendSearch && (
-              <Modal
-                title={'Add friends'}
-                open={this.state.friendSearch}>
-
-                <FriendSearch
-                  onOpenChatWithUser={(user) => {
-                    this.setState({
-                      createGroup: null,
-                      friendSearch: null
-                    }, () => {
-                      this.props.openChat([user], null)
-                    })
-                  }}
-                  goBack={() => {
-                    this.setState({
-                      friendSearch: false,
-                      createGroup: true,
-                    })
-                  }}/>
-              </Modal>
-            )
+            dock && !open ? <MobileButton
+                onClick={() => {
+                  this.props.toggleSidebar(!open)
+                }}
+                className={'messenger-mobile-toggle'}>
+              <i className={'md-icon'}>chat_bubble</i>
+            </MobileButton> : null
           }
-
-        </Container>
-        {
-          dock && !open ? <MobileButton
-            onClick={() => {
-              this.props.toggleSidebar(!open)
-            }}
-            className={'messenger-mobile-toggle'}>
-            <i className={'md-icon'}>chat_bubble</i>
-          </MobileButton> : null
-        }
-      </Fragment>
+        </Fragment>
 
     )
   }
@@ -249,7 +251,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   toggleSidebar,
-  openChat
+  openChat,
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)
