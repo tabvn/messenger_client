@@ -97,6 +97,7 @@ class Chat extends React.Component {
     fileIsDrop: false,
   }
 
+  dragCounter = 0
   handleOnTyping = () => {
 
     const {currentUserId, group} = this.props
@@ -119,7 +120,10 @@ class Chat extends React.Component {
     e.stopPropagation()
     e.preventDefault()
 
-    this.setState({fileIsDrop: true})
+    this.dragCounter++
+    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+      this.setState({fileIsDrop: true})
+    }
 
     //return false
   }
@@ -131,10 +135,17 @@ class Chat extends React.Component {
   }
 
   _onDragLeave(e) {
-    //this.setState({fileIsDrop: false})
+
+    this.dragCounter--
 
     e.stopPropagation()
     e.preventDefault()
+
+    if (this.dragCounter === 0) {
+      this.setState({
+        fileIsDrop: false,
+      })
+    }
     //return false
   }
 
@@ -144,10 +155,11 @@ class Chat extends React.Component {
     let files = e.dataTransfer.files
     // Upload files
 
-    this.setState({fileIsDrop: false}, () => {
-
+    this.setState({fileIsDrop: false})
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       this.onAddFiles(files)
-    })
+      this.dragCounter = 0
+    }
 
     // return false
   }
@@ -521,7 +533,7 @@ class Chat extends React.Component {
             onDrop={this._onDrop.bind(this)}
             onDragEnter={this._onDragEnter.bind(this)}
             onDragOver={this._onDragOver.bind(this)}
-            onDragLeave={this._onDragLeave}
+            onDragLeave={this._onDragLeave.bind(this)}
             id={'ar-file-drop-zone'}
             className={'chat-container'}>
           <InviteNotify chat={tab} groupId={_.get(group, 'id')} users={users}
