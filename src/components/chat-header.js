@@ -13,6 +13,20 @@ const Container = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
+  position: relative;
+  .chat-header-avatar, button, a, .view-participants{
+    position: relative;
+    z-index: 1;
+  }
+  .chat-header-clickable{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    background: transparent;
+  }
   &.not-dock{
     background: #12416a;
   }
@@ -346,7 +360,7 @@ export default class ChatHeader extends React.Component {
                 {
                   users.length > 1 && (
                       <GroupBottomInfo>
-                        <GroupMoreUser onClick={() => {
+                        <GroupMoreUser className={'view-participants'} onClick={() => {
                           if (this.props.onOpenModal) {
                             this.props.onOpenModal('participants')
                           }
@@ -372,7 +386,7 @@ export default class ChatHeader extends React.Component {
   }
 
   render() {
-    const {dock, open} = this.props
+    const {dock, open, onHeaderClick} = this.props
     let active = false
 
     if (this.props.active) {
@@ -381,6 +395,11 @@ export default class ChatHeader extends React.Component {
     return (
         <Container active={active} dock={dock}
                    className={`chat-header ${dock ? 'is-dock' : 'not-dock'}`}>
+          <div onClick={() => {
+            if(onHeaderClick){
+              onHeaderClick()
+            }
+          }} className='chat-header-clickable'/>
           {dock === true && <ToggleButton onClick={() => {
             if (this.props.onToggle) {
               this.props.onToggle()

@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1f4f5dc0-d582-4105-9b06-f97ef1947856" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/delete-message-confirmation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/message-body.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/message-body.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/message.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/message.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/chat-header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/chat-header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/chat.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,10 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/chat.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-8433">
+            <state relative-caret-position="509">
+              <caret line="537" column="42" selection-start-line="537" selection-start-column="42" selection-end-line="537" selection-end-column="42" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -80,7 +79,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/chat-header.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="399" column="27" selection-start-line="399" selection-start-column="27" selection-end-line="399" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/message-body.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="419">
@@ -203,12 +211,10 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/components/chats.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/group.js" />
-        <option value="$PROJECT_DIR$/src/components/chat-header.js" />
         <option value="$PROJECT_DIR$/src/components/bottom-notification.js" />
         <option value="$PROJECT_DIR$/src/redux/types/index.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/index.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/ws.js" />
-        <option value="$PROJECT_DIR$/src/components/chat.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/app.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/group-notification.js" />
         <option value="$PROJECT_DIR$/src/components/messages.js" />
@@ -216,6 +222,8 @@
         <option value="$PROJECT_DIR$/src/components/message.js" />
         <option value="$PROJECT_DIR$/src/components/delete-message-confirmation.js" />
         <option value="$PROJECT_DIR$/src/components/message-body.js" />
+        <option value="$PROJECT_DIR$/src/components/chat-header.js" />
+        <option value="$PROJECT_DIR$/src/components/chat.js" />
       </list>
     </option>
   </component>
@@ -424,12 +432,12 @@
       <workItem from="1554429635517" duration="170000" />
       <workItem from="1554429819043" duration="720000" />
       <workItem from="1554430589408" duration="5545000" />
-      <workItem from="1554518198284" duration="7672000" />
+      <workItem from="1554518198284" duration="8700000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="488945000" />
+    <option name="totallyTimeSpent" value="489973000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="972" extended-state="0" />
@@ -437,10 +445,10 @@
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="npm" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17045455" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17045455" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50030136" side_tool="true" weight="0.32921347" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32921347" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -693,13 +701,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/chat-header.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="313" selection-start-line="313" selection-end-line="313" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/service/local-event.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -784,15 +785,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/chat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8433">
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/deploy.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -871,6 +863,23 @@
           <caret line="182" column="50" selection-start-line="182" selection-start-column="50" selection-end-line="182" selection-end-column="50" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/chat-header.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="399" column="27" selection-start-line="399" selection-start-column="27" selection-end-line="399" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/chat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="509">
+          <caret line="537" column="42" selection-start-line="537" selection-start-column="42" selection-end-line="537" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>

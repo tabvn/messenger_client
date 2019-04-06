@@ -165,8 +165,6 @@ class Chat extends React.Component {
       })
     })
 
-
-
   }
 
   componentWillUnmount() {
@@ -480,6 +478,21 @@ class Chat extends React.Component {
     this.props.startCall(this.props.users, this.props.group)
   }
 
+  onToggle = () => {
+    const {dock} = this.props
+
+    let isOpen = true
+    const tab = _.get(this.props, 'tab')
+
+    if (dock && !_.get(tab, 'open')) {
+      isOpen = false
+    }
+
+    if (dock && this.props.tab) {
+      this.props.toggleChat(this.props.tab.id, !isOpen)
+    }
+  }
+
   render() {
 
     const {dock, group, users, messages, active, avatar, unread, isNew, userTypings, notifications} = this.props
@@ -522,6 +535,7 @@ class Chat extends React.Component {
             </div>
           </div>
           <ChatHeader
+              onHeaderClick={this.onToggle}
               dock={dock}
               isNew={isNew}
               avatar={avatar}
@@ -534,11 +548,7 @@ class Chat extends React.Component {
                   this.props.closeChat(this.props.tab.id)
                 }
               }}
-              onToggle={() => {
-                if (dock && this.props.tab) {
-                  this.props.toggleChat(this.props.tab.id, !isOpen)
-                }
-              }} title={_.get(group, 'title', '')}
+              onToggle={this.onToggle} title={_.get(group, 'title', '')}
               unread={unread}
               users={users}
               open={isOpen}/>
