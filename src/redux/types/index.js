@@ -76,3 +76,7 @@ export const REMOVE_BLOCK_USER = 'remove_blocked_user'
 
 export const ONTYPING =  'typing/on_typing';
 export const ENDTYPING = 'typing/end_typing'
+
+
+// Bottom notification
+export const ADD_GROUP_NOTIFICATION =  '/add-bottom-notification'

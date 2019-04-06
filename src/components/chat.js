@@ -31,7 +31,7 @@ import CreateSingleChat from './create-single-chat'
 import ChatReportModal from './chat-report-modal'
 import BlockGroupUserModal from './block-group-user-modal'
 import GroupUserRemoveModal from './group-user-removed-modal'
-import {EVENT_GROUP_USER_REMOVED} from '../redux/types'
+import {ADD_GROUP_NOTIFICATION, EVENT_GROUP_USER_REMOVED} from '../redux/types'
 import InviteNotify from './invite-notify'
 import ClickOutside from './click-outside'
 
@@ -164,6 +164,8 @@ class Chat extends React.Component {
         removeBy: info,
       })
     })
+
+
 
   }
 
@@ -480,7 +482,7 @@ class Chat extends React.Component {
 
   render() {
 
-    const {dock, group, users, messages, active, avatar, unread, isNew, userTypings} = this.props
+    const {dock, group, users, messages, active, avatar, unread, isNew, userTypings, notifications} = this.props
 
     let isOpen = true
     const tab = _.get(this.props, 'tab')
@@ -562,6 +564,7 @@ class Chat extends React.Component {
                     height={dock ? 500 : this.getMessageHeight()}
                     hasFile={!!this.state.files.length}
                     userTypings={listTypingUsers}
+                    notifications={notifications}
                     messages={messages}/>
               </ChatMessages>
           )}
@@ -614,6 +617,8 @@ const mapStateToProps = (state, props) => ({
   unread: getGroupUnreadCount(state, _.get(props, 'group.id', null)),
   userTypings: state.typing.filter(
       (i) => i.groupId === _.get(props, 'group.id')).valueSeq(),
+  notifications: state.groupNotification.filter(
+      (n) => n.group_id === props.group.id),
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({

@@ -1,4 +1,4 @@
-import { PUSH_GROUP, REMOVE_GROUP, SET_GROUP, UPDATE_GROUP } from '../types'
+import {PUSH_GROUP, REMOVE_GROUP, SET_GROUP, UPDATE_GROUP} from '../types'
 
 export default (state = [], action) => {
 
@@ -14,7 +14,7 @@ export default (state = [], action) => {
 
           return {
             ...g,
-            ...action.payload.group
+            ...action.payload.group,
           }
         }
 

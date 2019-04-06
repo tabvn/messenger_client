@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux'
+import {combineReducers} from 'redux'
 import user from './user'
 import app from './app'
 import popover from './popover'
@@ -20,6 +20,7 @@ import sound from './sound'
 import call from './call'
 import blocked from './blocked'
 import typing from './typing'
+import groupNotification from './group-notification'
 
 export default combineReducers({
   app,
@@ -43,4 +44,6 @@ export default combineReducers({
   call,
   blocked,
   typing,
+  groupNotification,
+
 })

@@ -311,6 +311,7 @@ export default class ChatHeader extends React.Component {
   renderChatInfo = () => {
 
     const {title, users, unread, isNew} = this.props
+
     return (
         <HeaderChatInfo className={'chat-header-info'}>
           {!isNew && <HeaderAvatar className={'chat-header-avatar'}>

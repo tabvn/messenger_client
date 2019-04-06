@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import Chat from './chat'
 
 const Container = styled.div`
@@ -26,35 +26,38 @@ const Tab = styled.div`
 
 class Chats extends React.Component {
 
-  render () {
+  render() {
 
-    const {tabs} = this.props
+    const {tabs, groups} = this.props
 
     return (
-      tabs.length ? (
-        <Container className={'chat-tabs'}>
-          {
+        tabs.length ? (
+            <Container className={'chat-tabs'}>
+              {
 
-            tabs.map((tab, index) => {
-              const isNew = tab.isNew
+                tabs.map((tab, index) => {
+                  const isNew = tab.isNew
 
-              return (
-                <Tab key={index} className={'chat-tab'}>
-                  <Chat isNew={isNew} tab={tab} group={tab.group} dock={true}/>
-                </Tab>
-              )
-            })
-          }
+                  const group = groups.find((g) => g.id === tab.group.id)
+                  return (
+                      <Tab key={index} className={'chat-tab'}>
+                        <Chat isNew={isNew} tab={tab} group={group}
+                              dock={true}/>
+                      </Tab>
+                  )
+                })
+              }
 
 
-        </Container>
-      ) : null
+            </Container>
+        ) : null
     )
   }
 }
 
 const mapStateToProps = (state) => ({
   tabs: state.chat.tabs,
+  groups: state.group,
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch)

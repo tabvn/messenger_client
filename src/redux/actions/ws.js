@@ -1,14 +1,25 @@
-import { setError } from './error'
-import { updateUserStatus } from './user-status'
+import {setError} from './error'
+import {updateUserStatus} from './user-status'
 import _ from 'lodash'
-import { deleteMessage, setMessage, updateLocalMessage } from './message'
-import { addUserToGroup, removeUserFromGroup, setGroup, updateGroup } from './group'
-import { setUser } from './user'
-import { openChat } from './chat'
-import { EVENT_GROUP_USER_REMOVED, ON_PLAY_SOUND, PUSH_FRIEND, REMOVE_FRIEND } from '../types'
-import { callEnd, receiveCalling } from './call'
-import { userIsTyping, userIsEndTyping } from './typing'
-import { setFriend } from './friend'
+import {deleteMessage, setMessage, updateLocalMessage} from './message'
+import {
+  addUserToGroup,
+  removeUserFromGroup,
+  setGroup,
+  updateGroup,
+} from './group'
+import {setUser} from './user'
+import {openChat} from './chat'
+import {
+  ADD_GROUP_NOTIFICATION,
+  EVENT_GROUP_USER_REMOVED,
+  ON_PLAY_SOUND,
+  PUSH_FRIEND,
+  REMOVE_FRIEND, UPDATE_GROUP,
+} from '../types'
+import {callEnd, receiveCalling} from './call'
+import {userIsTyping, userIsEndTyping} from './typing'
+import {setFriend} from './friend'
 
 const handleReceiveUserStatus = (payload) => {
   return (dispatch, getState) => {
@@ -97,13 +108,14 @@ const handleReceiveMessage = (message) => {
         if (currentUserId !== message.user_id) {
           dispatch(openChat(g.users, g, false))
 
-          if (_.get(state.chat.active, 'group_id') !== groupId && _.get(state.inbox.active, 'group.id') !== groupId) {
+          if (_.get(state.chat.active, 'group_id') !== groupId &&
+              _.get(state.inbox.active, 'group.id') !== groupId) {
 
             // play sound
 
             dispatch({
               type: ON_PLAY_SOUND,
-              payload: true
+              payload: true,
             })
 
           }
@@ -117,7 +129,8 @@ const handleReceiveMessage = (message) => {
       if (currentUserId !== _.get(message, 'user_id')) {
         // this is message send by other so we do need check if not active conversation we increase count
 
-        if (_.get(state.chat.active, 'group_id') !== groupId && _.get(state.inbox.active, 'group.id') !== groupId) {
+        if (_.get(state.chat.active, 'group_id') !== groupId &&
+            _.get(state.inbox.active, 'group.id') !== groupId) {
           // let increase it
           group = _.setWith(group, 'unread', (group.unread + 1))
 
@@ -125,7 +138,7 @@ const handleReceiveMessage = (message) => {
 
           dispatch({
             type: ON_PLAY_SOUND,
-            payload: true
+            payload: true,
           })
 
         } else {
@@ -152,13 +165,28 @@ const handleReceiveMessage = (message) => {
 
 const handleReceiveUserLeftGroup = (payload) => {
 
-  return (dispatch) => {
+  return (dispatch, getState) => {
 
+    const state = getState()
     const group_id = _.get(payload, 'group_id')
     const userId = _.get(payload, 'user_id')
 
+    const user = state.user.find((u) => u.id === userId)
+
     // remove user in group
     dispatch(removeUserFromGroup(group_id, {id: userId}, false))
+
+    if (user) {
+      const msg = `${_.get(user, 'first_name', '')} has left the group`
+      dispatch({
+        type: ADD_GROUP_NOTIFICATION,
+        payload: {
+          group_id: group_id,
+          user_id: userId,
+          message: msg,
+        },
+      })
+    }
 
   }
 }
@@ -221,7 +249,7 @@ const handelReceiveUnFriend = (payload) => {
       dispatch(setUser(user))
       dispatch({
         type: REMOVE_FRIEND,
-        payload: payload.friend_id
+        payload: payload.friend_id,
       })
     }
   }
@@ -235,7 +263,7 @@ const handleReceiveCalling = (payload) => {
       users: payload.group.users,
       group: payload.group,
       caller: payload.caller,
-      accepted: false
+      accepted: false,
     }
 
     dispatch(receiveCalling(p))
@@ -292,6 +320,34 @@ export const handleReceiveUserTyping = (payload) => {
     } else {
       dispatch(userIsEndTyping(payload.user_id, payload.group_id))
     }
+  }
+}
+
+export const handleGroupUpdated = (payload) => {
+  return (dispatch, getState) => {
+
+    const state = getState()
+
+    const id = _.get(payload, 'id')
+
+    let group = state.group.find((g) => g.id === id)
+
+    if (group) {
+      group.title = _.get(payload, 'title')
+      group.avatar = _.get(payload, 'avatar')
+
+      dispatch({
+        type: UPDATE_GROUP,
+        payload: {
+          id: id,
+          group,
+        },
+      })
+
+      //dispatch(updateGroup(id, group, false))
+
+    }
+
   }
 }
 
@@ -390,6 +446,13 @@ export const handleReceiveWsMessage = (message) => {
       case 'userTyping':
         dispatch(handleReceiveUserTyping(message.payload))
         break
+
+      case 'groupUpdated':
+
+        dispatch(handleGroupUpdated(message.payload))
+
+        break
+
       default:
 
         break

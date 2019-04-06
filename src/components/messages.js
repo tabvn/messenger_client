@@ -1,8 +1,9 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import Message from './message'
 import _ from 'lodash'
 import UserTyping from './user-typing'
+import BottomNotification from './bottom-notification'
 
 const Container = styled.div`
   flex-grow: 1;
@@ -114,15 +115,16 @@ export default class Messages extends React.Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.scrollToBottom()
 
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     const {isLoadingMore, userTypings} = this.props
 
-    if (this.props.messages.length > prevProps.messages.length || this.props.userTypings.length > prevProps.userTypings.length) {
+    if (this.props.messages.length > prevProps.messages.length ||
+        this.props.userTypings.length > prevProps.userTypings.length) {
       if (isLoadingMore) {
 
         if (this.ref && sessionScrollTop) {
@@ -151,7 +153,8 @@ export default class Messages extends React.Component {
           this.props.onEdit(message)
         }
 
-      }} dock={dock} hideAvatar={author === message.user_id} key={index} message={message}/>)
+      }} dock={dock} hideAvatar={author === message.user_id} key={index}
+                         message={message}/>)
 
       author = message.user_id
 
@@ -164,16 +167,16 @@ export default class Messages extends React.Component {
   renderEmpty = () => {
 
     return (
-      <div className={'no-message'}>
+        <div className={'no-message'}>
 
-        <div className={'no-message-icons'}>
-          <i className={'md-icon'}>tag_faces</i>
-          <i className={'md-icon'}>tag_faces</i>
+          <div className={'no-message-icons'}>
+            <i className={'md-icon'}>tag_faces</i>
+            <i className={'md-icon'}>tag_faces</i>
+          </div>
+          <div className={'no-message-help'}>
+            start your conversation here
+          </div>
         </div>
-        <div className={'no-message-help'}>
-          start your conversation here
-        </div>
-      </div>
     )
   }
 
@@ -195,7 +198,7 @@ export default class Messages extends React.Component {
 
   }
 
-  getMaxHeight () {
+  getMaxHeight() {
 
     const {dock} = this.props
 
@@ -209,10 +212,9 @@ export default class Messages extends React.Component {
     return '100%'
   }
 
-  render () {
+  render() {
 
-    const {messages, hasFile, height, userTypings} = this.props
-
+    const {messages, hasFile, height, userTypings, notifications} = this.props
 
     let h = height
 
@@ -221,37 +223,44 @@ export default class Messages extends React.Component {
     }
     const maxHeight = this.getMaxHeight()
     return (
-      <Container
-        maxHeight={maxHeight}
-        h={h}
-        onClick={(e) => {
-          if (this.props.onClick) {
-            this.props.onClick(e)
-          }
-        }}
-        className={'ar-messages'}>
-        <div onScroll={this.handleOnScroll} ref={(ref) => this.ref = ref} className={'inner'}>
-          {this.props.isLoadingMore ? <Loading>
-            <div className={'messenger-loading'}>
-              <div className={'messenger-loading-circle'}/>
-              <div className={'messenger-loading-circle'}/>
-              <div className={'messenger-loading-circle'}/>
-              <div className={'messenger-loading-circle'}/>
-            </div>
-          </Loading> : null}
-          {
-            messages.length ? this.renderMessages() : this.renderEmpty()
-          }
+        <Container
+            maxHeight={maxHeight}
+            h={h}
+            onClick={(e) => {
+              if (this.props.onClick) {
+                this.props.onClick(e)
+              }
+            }}
+            className={'ar-messages'}>
+          <div onScroll={this.handleOnScroll} ref={(ref) => this.ref = ref}
+               className={'inner'}>
+            {this.props.isLoadingMore ? <Loading>
+              <div className={'messenger-loading'}>
+                <div className={'messenger-loading-circle'}/>
+                <div className={'messenger-loading-circle'}/>
+                <div className={'messenger-loading-circle'}/>
+                <div className={'messenger-loading-circle'}/>
+              </div>
+            </Loading> : null}
+            {
+              messages.length ? this.renderMessages() : this.renderEmpty()
+            }
 
-          {
-            userTypings.length ? userTypings.map((user, key) => {
+            {
+              userTypings.length ? userTypings.map((user, key) => {
 
-              return <UserTyping key={key} a={user}/>
-            }) : null
-          }
-        </div>
+                return <UserTyping key={key} a={user}/>
+              }) : null
+            }
+            {
+              notifications.map((n, i) => {
+                return <BottomNotification key={i} message={n.message}/>
+              })
+            }
 
-      </Container>
+          </div>
+
+        </Container>
     )
   }
 }
