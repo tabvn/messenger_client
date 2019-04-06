@@ -8,6 +8,7 @@ import MessageBody from './message-body'
 import _ from 'lodash'
 import { sendMessage } from '../redux/actions'
 import moment from 'moment'
+import DeleteMessageConfirmation from './delete-message-confirmation'
 
 const Container = styled.div`
   height: min-content;
@@ -116,6 +117,7 @@ class Message extends React.Component {
                   </Actions>
                 ) : null
               }
+
 
             </Container>
           )

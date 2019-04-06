@@ -1,14 +1,15 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import MessageAttachment from './message-attachment'
-import { deleteMessage, replaceUrls, setAttachmentModal } from '../redux/actions'
+import {deleteMessage, replaceUrls, setAttachmentModal} from '../redux/actions'
 import MessageFiles from './message-files'
 import MessageGif from './message-gif'
 import Menu from './menu'
 import WebScreenshot from './web-screenshot'
+import DeleteMessageConfirmation from './delete-message-confirmation'
 
 const Container = styled.div`
   position: relative;
@@ -121,7 +122,11 @@ const ToolTip = styled.div`
 
 class MessageBody extends React.Component {
 
-  renderText () {
+  state = {
+    deleteMessageConfirm: false,
+  }
+
+  renderText() {
 
     const {message} = this.props
     let body = _.get(message, 'body', '')
@@ -148,7 +153,8 @@ class MessageBody extends React.Component {
       text = `${text} <span class="message-edited">(edited)</span>`
     }
 
-    return text ? <BodyInner className={'message-text-inner'} dangerouslySetInnerHTML={{__html: text}}/> : null
+    return text ? <BodyInner className={'message-text-inner'}
+                             dangerouslySetInnerHTML={{__html: text}}/> : null
   }
 
   handleOpenAttachmentModal = (attachments, selected) => {
@@ -165,6 +171,14 @@ class MessageBody extends React.Component {
     switch (select.action) {
 
       case 'delete':
+
+        this.setState({
+          deleteMessageConfirm: true,
+        })
+
+        break
+
+      case 'hide':
 
         this.props.deleteMessage(message.id, true)
 
@@ -184,14 +198,18 @@ class MessageBody extends React.Component {
     }
   }
 
-  render () {
+  render() {
 
     const {message, currentUser, dock, tooltipMessage} = this.props
 
     const currentUserId = _.get(currentUser, 'id')
-    const messageBackground = currentUserId === message.user_id ? '#12416a' : '#e1e1e1'
+    const messageBackground = currentUserId === message.user_id
+        ? '#12416a'
+        : '#e1e1e1'
     const messageColor = currentUserId === message.user_id ? '#FFF' : '#4b4b4b'
-    const linkColor = currentUserId === message.user_id ? 'rgb(248, 194, 49)' : 'rgb(18, 65, 106)'
+    const linkColor = currentUserId === message.user_id
+        ? 'rgb(248, 194, 49)'
+        : 'rgb(18, 65, 106)'
     const status = _.get(message, 'status')
     const isSent = status !== 'sending' && status !== 'error'
 
@@ -213,8 +231,8 @@ class MessageBody extends React.Component {
 
         title: currentUserId === _.get(message, 'user_id') ? 'Delete' : 'Hide',
         icon: 'delete',
-        action: 'delete'
-      }
+        action: 'hide',
+      },
     ]
 
     if (currentUserId === message.user_id) {
@@ -223,72 +241,105 @@ class MessageBody extends React.Component {
 
           title: 'Edit',
           icon: 'edit',
-          action: 'edit'
+          action: 'edit',
         },
         {
           title: 'Delete',
           icon: 'delete',
-          action: 'delete'
-        }
+          action: 'delete',
+        },
       ]
     }
 
     return (
-      <Container
-        dock={dock}
-        className={'message-body'}>
-        <ToolTip className={'messenger-body-tooltip'}>
-          <ArrowBox>
-            {
-              tooltipMessage
-            }
-          </ArrowBox>
-        </ToolTip>
-        {
-          _.trim(_.get(message, 'body', '')) !== '' ?
-            isEmoji ?
-              <EmojiContainer className={'ar-emoji-message'}>
-                <Emoji className={'message-emoticon'}>
-                  {message.body}
-                </Emoji>
-                {isSent && <Menu onClick={this.handleMenuAction} items={actionItems}/>}
-              </EmojiContainer> :
-              <Text
-                hrefColor={linkColor}
-                color={messageColor} background={messageBackground} className={'message-text'}>
-                {this.renderText()}
-                {isSent && <Menu placement={'top'} onClick={this.handleMenuAction} items={actionItems}/>}
-              </Text> : null
-        }
-        {
-          gif !== '' && (
-            <MessageGif sent={isSent} onDelete={this.handleMenuAction} gif={gif}/>
-          )
-        }
+        <Container
+            dock={dock}
+            className={'message-body'}>
 
-        {
-          attachments.map((attachment, index) => {
-            return (
-              <MessageAttachment
-                onClick={() => {
-                  this.handleOpenAttachmentModal(attachments, attachment)
-                }}
-                attachment={attachment} key={index}/>
+
+          {
+            this.state.deleteMessageConfirm ? (
+                <DeleteMessageConfirmation
+                    onCancel={() => {
+                      this.setState({
+                        deleteMessageConfirm: false,
+                      })
+                    }}
+                    onDelete={() => {
+                      this.setState({
+                        deleteMessageConfirm: false,
+                      }, () => {
+                        this.props.deleteMessage(message.id, true)
+                      })
+
+                    }}
+                />
+            ) : (
+                <Fragment>
+                  <ToolTip className={'messenger-body-tooltip'}>
+                    <ArrowBox>
+                      {
+                        tooltipMessage
+                      }
+                    </ArrowBox>
+                  </ToolTip>
+                  {
+                    _.trim(_.get(message, 'body', '')) !== '' ?
+                        isEmoji ?
+                            <EmojiContainer className={'ar-emoji-message'}>
+                              <Emoji className={'message-emoticon'}>
+                                {message.body}
+                              </Emoji>
+                              {isSent && <Menu onClick={this.handleMenuAction}
+                                               items={actionItems}/>}
+                            </EmojiContainer> :
+                            <Text
+                                hrefColor={linkColor}
+                                color={messageColor}
+                                background={messageBackground}
+                                className={'message-text'}>
+                              {this.renderText()}
+                              {isSent &&
+                              <Menu placement={'top'}
+                                    onClick={this.handleMenuAction}
+                                    items={actionItems}/>}
+                            </Text> : null
+                  }
+                  {
+                    gif !== '' && (
+                        <MessageGif
+                            sent={isSent}
+                            onDelete={this.handleMenuAction}
+                            gif={gif}/>
+                    )
+                  }
+
+                  {
+                    attachments.map((attachment, index) => {
+                      return (
+                          <MessageAttachment
+                              onClick={() => {
+                                this.handleOpenAttachmentModal(attachments,
+                                    attachment)
+                              }}
+                              attachment={attachment} key={index}/>
+                      )
+                    })
+                  }
+                  {
+                    files.length ? <MessageFiles files={files}/> : null
+
+                  }
+
+                  {
+                    urls.map((url, index) => {
+                      return <WebScreenshot key={index} url={url}/>
+                    })
+                  }
+                </Fragment>
             )
-          })
-        }
-        {
-          files.length ? <MessageFiles files={files}/> : null
-
-        }
-
-        {
-          urls.map((url, index) => {
-            return <WebScreenshot key={index} url={url}/>
-          })
-        }
-
-      </Container>
+          }
+        </Container>
     )
   }
 }
