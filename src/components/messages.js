@@ -124,7 +124,8 @@ export default class Messages extends React.Component {
     const {isLoadingMore, userTypings} = this.props
 
     if (this.props.messages.length > prevProps.messages.length ||
-        this.props.userTypings.length > prevProps.userTypings.length) {
+        this.props.userTypings.length > prevProps.userTypings.length ||
+        this.props.notifications.length > prevProps.notifications.length) {
       if (isLoadingMore) {
 
         if (this.ref && sessionScrollTop) {
