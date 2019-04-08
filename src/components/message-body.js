@@ -41,6 +41,8 @@ const Text = styled.div`
     flex-grow: 1;
     color: ${props => props.color};
     font-weight: 300;
+    max-width: 100%;
+    word-break: break-all;
     a{
       color: ${props => props.hrefColor};
       word-break: break-all; 
