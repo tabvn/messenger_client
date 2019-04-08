@@ -250,7 +250,7 @@ export default class Messages extends React.Component {
             {
               userTypings.length ? userTypings.map((user, key) => {
 
-                return <UserTyping key={key} a={user}/>
+                return <UserTyping key={key} user={user}/>
               }) : null
             }
             {
