@@ -579,6 +579,8 @@ class Chat extends React.Component {
                   this.renderModal()
                 }
                 <Messages
+                    unread={unread}
+                    active={active}
                     isLoadingMore={this.state.isLoadingMore}
                     onLoadMore={this.handleLoadMoreMessages}
                     onEdit={this.handleOnEditMessage}

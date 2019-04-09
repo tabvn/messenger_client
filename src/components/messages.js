@@ -35,6 +35,22 @@ const Container = styled.div`
     color: #b0bdc9;
     font-size: 21px;
   }
+  .unread-notify-box{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      cursor: pointer;
+    .unread-notify-box-inner{
+      background: #f8c231;
+      color: #484848;
+      font-weight: 700;
+      text-align: center;
+      padding: 5px 8px;
+      flex-grow: 1;
+    }
+  }
 `
 
 const messengerLoading1 = keyframes`
@@ -109,6 +125,10 @@ let sessionScrollTop = null
 
 export default class Messages extends React.Component {
 
+  state = {
+    autoScroll: true,
+  }
+
   scrollToBottom = () => {
     if (this.ref) {
       this.ref.scrollTop = this.ref.scrollHeight
@@ -118,12 +138,16 @@ export default class Messages extends React.Component {
   componentDidMount() {
     this.scrollToBottom()
 
+    _.delay(() => {
+      this.scrollToBottom()
+    }, 2000)
+
   }
 
   componentDidUpdate(prevProps) {
-    const {isLoadingMore, userTypings} = this.props
+    const {isLoadingMore, active} = this.props
 
-    if (this.props.messages.length > prevProps.messages.length ||
+    if (active && this.props.messages.length > prevProps.messages.length ||
         this.props.userTypings.length > prevProps.userTypings.length ||
         this.props.notifications.length > prevProps.notifications.length) {
       if (isLoadingMore) {
@@ -215,7 +239,7 @@ export default class Messages extends React.Component {
 
   render() {
 
-    const {messages, hasFile, height, userTypings, notifications} = this.props
+    const {messages, hasFile, height, userTypings, notifications, unread, active} = this.props
 
     let h = height
 
@@ -259,7 +283,18 @@ export default class Messages extends React.Component {
               })
             }
 
+            {unread > 0 ? (
+                <div
+                    onClick={() => {
+                      this.scrollToBottom()
+                    }}
+                    className={'unread-notify-box'}>
+                  <div
+                      className={'unread-notify-box-inner'}> {`${unread} new/unread messages`}</div>
+                </div>
+            ) : null}
           </div>
+
 
         </Container>
     )
