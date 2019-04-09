@@ -329,6 +329,7 @@ export default class ChatHeader extends React.Component {
 
     const {title, users, unread, isNew} = this.props
 
+    const w = window.innerWidth
     return (
         <HeaderChatInfo className={'chat-header-info'}>
           {!isNew && <HeaderAvatar className={'chat-header-avatar'}>
@@ -373,14 +374,16 @@ export default class ChatHeader extends React.Component {
                           <i className={'md-icon'}>group</i>
                           <span>+{users.length} more...</span>
                         </GroupMoreUser>
-                        <CallButton
-                            onClick={() => {
-                              if (this.props.onVideoCall) {
-                                this.props.onVideoCall()
-                              }
-                            }}
-                            title={'Video call'}><i
-                            className={'md-icon'}>videocam</i></CallButton>
+                        {
+                          w > 375 && <CallButton
+                              onClick={() => {
+                                if (this.props.onVideoCall) {
+                                  this.props.onVideoCall()
+                                }
+                              }}
+                              title={'Video call'}><i
+                              className={'md-icon'}>videocam</i></CallButton>
+                        }
                       </GroupBottomInfo>
                   )
                 }
