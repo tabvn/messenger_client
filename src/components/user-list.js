@@ -26,6 +26,7 @@ const Container = styled.div`
       flex-grow: 1;
       height: 40px;
       line-height: 40px;
+      max-width: calc(100% - 17px);
     }
   }
   .user-list-result-container{

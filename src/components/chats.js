@@ -22,6 +22,11 @@ const Tab = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   z-index: 100000;
+  @media (max-width: 375px) {
+   width: 100%;
+   margin: 0;
+   max-height: 100%;
+  }
 `
 
 class Chats extends React.Component {

@@ -1,13 +1,16 @@
-import React, { Fragment } from 'react'
+import React, {Fragment} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import UserList from './user-list'
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
+  @media (max-width: 768px) {
+     flex-direction: column;
+  }
   .create-group-user-list{
     flex-grow: 1;
     padding-right: 10px;
@@ -31,7 +34,7 @@ const User = styled.div`
   cursor: pointer;
   padding: 8px 18px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   &:hover{
     background: #efefef;
@@ -69,7 +72,7 @@ const User = styled.div`
 class CreateGroupSearchUsers extends React.Component {
 
   state = {
-    selected: []
+    selected: [],
   }
 
   handleSelectUser = (user) => {
@@ -85,7 +88,7 @@ class CreateGroupSearchUsers extends React.Component {
     }
 
     this.setState({
-      selected: users
+      selected: users,
     }, () => {
       if (this.props.onChange) {
         this.props.onChange(users)
@@ -96,64 +99,67 @@ class CreateGroupSearchUsers extends React.Component {
   renderSelectedList = () => {
 
     return (
-      <Fragment>
-        {this.state.selected.map((user, index) => {
-          const avatar = _.get(user, 'avatar', null)
-          const name = `${_.get(user, 'first_name', '')} ${_.get(user, 'last_name', '')}`
-          return (
-            <User
-              onClick={() => {
-                this.handleSelectUser(user)
+        <Fragment>
+          {this.state.selected.map((user, index) => {
+            const avatar = _.get(user, 'avatar', null)
+            const name = `${_.get(user, 'first_name', '')} ${_.get(user,
+                'last_name', '')}`
+            return (
+                <User
+                    onClick={() => {
+                      this.handleSelectUser(user)
 
-              }}
-              key={index} className={'user-result'}>
-              <div className={'search-user-avatar'}>
-                {avatar ? <img src={avatar} alt={''}/> : <i className={'md-icon'}>person_outline</i>}
-              </div>
-              <div className={'search-user-name'}>{name}</div>
-            </User>
-          )
-        })}
-      </Fragment>
+                    }}
+                    key={index} className={'user-result'}>
+                  <div className={'search-user-avatar'}>
+                    {avatar ? <img src={avatar} alt={''}/> : <i
+                        className={'md-icon'}>person_outline</i>}
+                  </div>
+                  <div className={'search-user-name'}>{name}</div>
+                </User>
+            )
+          })}
+        </Fragment>
     )
   }
 
-  render () {
+  render() {
 
     const {selected} = this.state
 
     return (
-      <Container className={'create-group-search-users'}>
+        <Container className={'create-group-search-users'}>
 
-        <div className={'create-group-user-list'}>
-          <UserList
-            onOpenFriendSearch={() => {
-              if(this.props.onOpenFriendSearch){
-                this.props.onOpenFriendSearch()
-              }
-            }}
-            onSelect={this.handleSelectUser}
-            selected={this.state.selected}
-            placeholder={'Search people to add...'}/>
-        </div>
-        <SelectedList className={'group-user-selected'}>
-          {
-            selected.length ? (this.renderSelectedList()) : (
-              <div className={'no-selected'}>
-                Chat participants will be added here
-              </div>
-            )
-          }
-        </SelectedList>
-      </Container>
+          <div className={'create-group-user-list'}>
+            <UserList
+                onOpenFriendSearch={() => {
+                  if (this.props.onOpenFriendSearch) {
+                    this.props.onOpenFriendSearch()
+                  }
+                }}
+                onSelect={this.handleSelectUser}
+                selected={this.state.selected}
+                placeholder={'Search people to add...'}/>
+          </div>
+          <SelectedList className={'group-user-selected'}>
+            {
+              selected.length ? (this.renderSelectedList()) : (
+                  <div className={'no-selected'}>
+                    Chat participants will be added here
+                  </div>
+              )
+            }
+          </SelectedList>
+        </Container>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  users: state.user
+  users: state.user,
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateGroupSearchUsers)
+export default connect(mapStateToProps, mapDispatchToProps)(
+    CreateGroupSearchUsers)

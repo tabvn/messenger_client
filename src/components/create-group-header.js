@@ -18,7 +18,7 @@ const Container = styled.div`
     padding: 0;
     cursor: pointer;
     overflow: hidden;
-    position relative;
+    position: relative;
     width: 55px;
     height: 46px;
     border: 1px dashed #c8c8c8;
@@ -36,6 +36,7 @@ const Container = styled.div`
     input{
         position: fixed;
         top: -9999px;
+       
      }
      
    
@@ -50,6 +51,7 @@ const Input = styled.input`
     padding: 5px 8px;
     outline: 0 none;
     font-size: 20px;
+    width: calc(100% - 60px);
     &:hover,&:focus, &:active{
       outline: 0 none;
     }

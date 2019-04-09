@@ -26,7 +26,6 @@ const Container = styled.div`
     top:0;
     right: 0;
     box-shadow: -2px 0px 1px 1px rgba(0,0,0,0.05);
-    
   }
   &.not-dock{
     flex-grow: 1;
@@ -43,7 +42,7 @@ const Container = styled.div`
     ${props => props.open ? 'width: 100%;' : null
     }
     
-  
+  }
 `
 
 const MobileButton = styled.button`
@@ -143,6 +142,10 @@ class Sidebar extends React.Component {
                 onSelect={(group, users) => {
                   if (this.props.onSelect) {
                     this.props.onSelect(group, users)
+
+                    if (window.innerWidth < 768) {
+                      this.props.toggleSidebar(false)
+                    }
                   }
                 }}/>
             <SidebarFooter

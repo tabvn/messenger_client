@@ -14,6 +14,9 @@ const Container = styled.div`
     overflow-x: hidden;
     height: ${props => props.h}px;
     max-height: ${props => props.maxHeight};
+    @media (max-width: 375px) {
+      height: calc(100% - 200px);
+    }
   }
   .no-message{
     display: flex;

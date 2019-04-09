@@ -81,6 +81,9 @@ const ToggleButton = styled.button`
   }
   i{
     color: #FFF;
+    @media (max-width: 375px) {
+      font-size: 18px;
+    }
   }
 `
 
@@ -360,11 +363,13 @@ export default class ChatHeader extends React.Component {
                 {
                   users.length > 1 && (
                       <GroupBottomInfo>
-                        <GroupMoreUser className={'view-participants'} onClick={() => {
-                          if (this.props.onOpenModal) {
-                            this.props.onOpenModal('participants')
-                          }
-                        }}>
+                        <GroupMoreUser className={'view-participants'}
+                                       onClick={() => {
+                                         if (this.props.onOpenModal) {
+                                           this.props.onOpenModal(
+                                               'participants')
+                                         }
+                                       }}>
                           <i className={'md-icon'}>group</i>
                           <span>+{users.length} more...</span>
                         </GroupMoreUser>
@@ -392,15 +397,18 @@ export default class ChatHeader extends React.Component {
     if (this.props.active) {
       active = true
     }
+
+    const w = window.innerWidth
+
     return (
         <Container active={active} dock={dock}
                    className={`chat-header ${dock ? 'is-dock' : 'not-dock'}`}>
           <div onClick={() => {
-            if(onHeaderClick){
+            if (onHeaderClick) {
               onHeaderClick()
             }
           }} className='chat-header-clickable'/>
-          {dock === true && <ToggleButton onClick={() => {
+          {dock === true && w > 375 && <ToggleButton onClick={() => {
             if (this.props.onToggle) {
               this.props.onToggle()
             }
@@ -419,6 +427,15 @@ export default class ChatHeader extends React.Component {
               this.renderChatInfo()
             }
           </div>
+          {dock === true && w <= 375 && <ToggleButton onClick={() => {
+            if (this.props.onToggle) {
+              this.props.onToggle()
+            }
+          }} className={'toggle-icon'}><i
+              className={'md-icon'}>{open ?
+              'photo_size_select_small' :
+              'open_in_new'}</i></ToggleButton>}
+
           {
             dock ? (
                 <CloseButton onClick={() => {
@@ -426,7 +443,9 @@ export default class ChatHeader extends React.Component {
                     this.props.onClose()
                   }
                 }}>
-                  <i className={'md-icon'}>close</i>
+                  <i className={'md-icon'}>{w > 375
+                      ? 'close'
+                      : 'keyboard_arrow_left'}</i>
                 </CloseButton>
             ) : null
           }
