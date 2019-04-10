@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, {Fragment} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 import ComposerAttachments from './composer-attachments'
@@ -45,6 +45,8 @@ const Inner = styled.div`
     flex-grow: 1;
     position: relative;
     max-height: 150px;
+    max-width: 100%;
+    overflow: hidden;
   }
   .composer-input{
     min-height: 50px;
@@ -56,6 +58,7 @@ const Inner = styled.div`
     border: 0 none;
     width: 100%;
     height: 100%;
+    max-width: 100%;
     white-space: pre-wrap;
     word-wrap: break-word;
     outline: 0 none;
@@ -215,14 +218,14 @@ export default class Composer extends React.Component {
     gif: '',
     message: '',
     emoji: false,
-    isTyping: false
+    isTyping: false,
   }
 
-  componentDidMount () {
+  componentDidMount() {
     window.addEventListener('click', this.finishTyping)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('click', this.finishTyping)
   }
 
@@ -251,7 +254,7 @@ export default class Composer extends React.Component {
 
     if (!this.state.isTyping) {
       this.setState({
-        isTyping: true
+        isTyping: true,
       }, () => {
 
         if (this.props.onTyping) {
@@ -276,7 +279,7 @@ export default class Composer extends React.Component {
     return replacedMessage
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
 
     if (this.props.emoji && this.props.onClearEmoji) {
       this.props.onClearEmoji()
@@ -286,9 +289,10 @@ export default class Composer extends React.Component {
       this.handleAddEmoji(this.props.emoji)
     }
 
-    if (this.props.edit && prevProps.edit !== this.props.edit && _.get(prevProps.edit, 'id') !== _.get(this.props.edit, 'id')) {
+    if (this.props.edit && prevProps.edit !== this.props.edit &&
+        _.get(prevProps.edit, 'id') !== _.get(this.props.edit, 'id')) {
       this.setState({
-        message: this.props.edit.body
+        message: this.props.edit.body,
       })
     }
   }
@@ -321,7 +325,7 @@ export default class Composer extends React.Component {
     const message = {
       body: this.state.message,
       emoji: isEmojoi,
-      attachments: []
+      attachments: [],
     }
 
     if (this.props.onSend) {
@@ -335,7 +339,7 @@ export default class Composer extends React.Component {
     const v = e.target.value
     this.setState({
       message: this.replaceEmoji(v),
-      emoji: false
+      emoji: false,
     })
   }
 
@@ -352,7 +356,7 @@ export default class Composer extends React.Component {
     }
   }
 
-  render () {
+  render() {
     const {message, gif} = this.state
     const {files, isNew, edit} = this.props
 
@@ -371,104 +375,112 @@ export default class Composer extends React.Component {
     }
 
     return (
-      <Container className={'composer'}>
-        {isNew && <Overlay/>}
-        <ComposerAttachments
-          onRemove={(file) => {
-            if (this.props.onRemoveFile) {
-              this.props.onRemoveFile(file)
-            }
-          }}
-          files={files}/>
-        <Inner className={'composer-inner'} onClick={this.onClickInside}>
-          <ConnectionInfo/>
-          <div className={'composer-input-container'}>
-            <pre>{message}</pre>
-            <textarea
-              onKeyUp={this.handleOnKeyUp}
-              value={message}
-              onChange={this.onChange}
-              onKeyDown={(e) => {
-                if (message === '' && e.key === 'ArrowUp' && this.props.onPressArrowUp) {
-                  this.props.onPressArrowUp()
-
-                  e.preventDefault()
+        <Container className={'composer'}>
+          {isNew && <Overlay/>}
+          <ComposerAttachments
+              onRemove={(file) => {
+                if (this.props.onRemoveFile) {
+                  this.props.onRemoveFile(file)
                 }
               }}
-              onKeyPress={(event) => {
-                if (event.shiftKey === false && event.key === 'Enter') {
+              files={files}/>
+          <Inner className={'composer-inner'} onClick={this.onClickInside}>
+            <ConnectionInfo/>
+            <div className={'composer-input-container'}>
+              <pre>{message}</pre>
+              <textarea
+                  onKeyUp={this.handleOnKeyUp}
+                  value={message}
+                  onChange={this.onChange}
+                  onKeyDown={(e) => {
+                    if (message === '' && e.key === 'ArrowUp' &&
+                        this.props.onPressArrowUp) {
+                      this.props.onPressArrowUp()
 
-                  event.preventDefault()
-                  if (allowSend) {
-                    this.send()
-                  }
-
-                }
-              }}
-              onBlur={() => {
-                if (!message) {
-                  this.setState({
-                    placeholder: true
-                  })
-                }
-
-              }}
-              onFocus={(e) => {
-                if (!message) {
-                  this.setState({
-                    placeholder: false
-                  })
-                }
-                this.onClickInside(e)
-
-              }} className={'composer-input'} placeholder={this.state.placeholder ? 'Type a message...' : ''}/>
-          </div>
-          <Tools className={'composer-tools'}>
-            <Button
-              id={'chat-emoji-button'}
-              onClick={(e) => {
-                if (this.props.onOpenModal) {
-                  this.props.onOpenModal('emoji', e)
-                }
-              }}
-              title={'Emoji'} className={'emotion-tool'}>
-              <i className={'md-icon'}>tag_faces</i>
-            </Button>
-            {
-              allowActions &&
-              (<Fragment>
-                <Button
-                  id={'chat-gif-button'}
-                  onClick={(e) => {
-                    if (this.props.onOpenModal) {
-                      this.props.onOpenModal('gif', e)
+                      e.preventDefault()
                     }
                   }}
-                  title={'GIF'} className={'gif-tool'}>
-                  <i className={'md-icon'}>gif</i>
-                </Button>
-                <label className={'attachment-tools'} htmlFor={`attachment-input-${inputId}`}>
-                  <i className={'md-icon'}>attachment</i>
-                  <input id={`attachment-input-${inputId}`} onChange={this.onAddFiles} type={'file'} multiple={true}/>
-                </label>
-                <Button
-                  id={'chat-options-button'}
-                  onClick={(e) => {
-                    if (this.props.onOpenModal) {
-                      this.props.onOpenModal('options', e)
+                  onKeyPress={(event) => {
+                    if (event.shiftKey === false && event.key === 'Enter') {
+
+                      event.preventDefault()
+                      if (allowSend) {
+                        this.send()
+                      }
+
                     }
                   }}
-                  title={'Chat options'} className={'add-tool'}>
-                  <i className={'md-icon'}>add_circle_outline</i>
-                </Button>
-              </Fragment>)
-            }
-            {allowSend && (<Button onClick={() => this.send()} className={'send'}>
-              <i className={'md-icon'}>{edit ? 'save' : 'send'}</i>
-            </Button>)}
-          </Tools>
-        </Inner>
-      </Container>
+                  onBlur={() => {
+                    if (!message) {
+                      this.setState({
+                        placeholder: true,
+                      })
+                    }
+
+                  }}
+                  onFocus={(e) => {
+                    if (!message) {
+                      this.setState({
+                        placeholder: false,
+                      })
+                    }
+                    this.onClickInside(e)
+
+                  }} className={'composer-input'}
+                  placeholder={this.state.placeholder
+                      ? 'Type a message...'
+                      : ''}/>
+            </div>
+            <Tools className={'composer-tools'}>
+              <Button
+                  id={'chat-emoji-button'}
+                  onClick={(e) => {
+                    if (this.props.onOpenModal) {
+                      this.props.onOpenModal('emoji', e)
+                    }
+                  }}
+                  title={'Emoji'} className={'emotion-tool'}>
+                <i className={'md-icon'}>tag_faces</i>
+              </Button>
+              {
+                allowActions &&
+                (<Fragment>
+                  <Button
+                      id={'chat-gif-button'}
+                      onClick={(e) => {
+                        if (this.props.onOpenModal) {
+                          this.props.onOpenModal('gif', e)
+                        }
+                      }}
+                      title={'GIF'} className={'gif-tool'}>
+                    <i className={'md-icon'}>gif</i>
+                  </Button>
+                  <label className={'attachment-tools'}
+                         htmlFor={`attachment-input-${inputId}`}>
+                    <i className={'md-icon'}>attachment</i>
+                    <input id={`attachment-input-${inputId}`}
+                           onChange={this.onAddFiles} type={'file'}
+                           multiple={true}/>
+                  </label>
+                  <Button
+                      id={'chat-options-button'}
+                      onClick={(e) => {
+                        if (this.props.onOpenModal) {
+                          this.props.onOpenModal('options', e)
+                        }
+                      }}
+                      title={'Chat options'} className={'add-tool'}>
+                    <i className={'md-icon'}>add_circle_outline</i>
+                  </Button>
+                </Fragment>)
+              }
+              {allowSend &&
+              (<Button onClick={() => this.send()} className={'send'}>
+                <i className={'md-icon'}>{edit ? 'save' : 'send'}</i>
+              </Button>)}
+            </Tools>
+          </Inner>
+        </Container>
     )
   }
 }
