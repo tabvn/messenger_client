@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import {createSelector} from 'reselect'
 import _ from 'lodash'
 
 const _getGroupUsers = (state, props) => {
@@ -6,7 +6,7 @@ const _getGroupUsers = (state, props) => {
   const currentUser = state.app.user
 
   let group = props.group
-  if (group.id) {
+  if (group && group.id) {
     const findGroup = state.group.find((g) => g.id === group.id)
     if (findGroup) {
       group = findGroup
@@ -30,8 +30,8 @@ const _getGroupUsers = (state, props) => {
 
 }
 export const getGroupUsers = createSelector(
-  [_getGroupUsers],
-  (items) => items,
+    [_getGroupUsers],
+    (items) => items,
 )
 
 const _getLastMessage = (state, props) => {
@@ -49,8 +49,8 @@ const _getLastMessage = (state, props) => {
 }
 
 export const getLastMessage = createSelector(
-  [_getLastMessage],
-  (items) => items,
+    [_getLastMessage],
+    (items) => items,
 )
 
 const _getGroups = (state, props) => {
@@ -65,8 +65,8 @@ const _getGroups = (state, props) => {
 
 }
 export const getGroups = createSelector(
-  [_getGroups],
-  (items) => items,
+    [_getGroups],
+    (items) => items,
 )
 
 const _getUnreadCount = (state) => {
@@ -87,8 +87,8 @@ const _getUnreadCount = (state) => {
 }
 
 export const getUnreadCount = createSelector(
-  [_getUnreadCount],
-  (count) => count,
+    [_getUnreadCount],
+    (count) => count,
 )
 
 const _getGroupUnreadCount = (state, groupId) => {
@@ -105,8 +105,8 @@ const _getGroupUnreadCount = (state, groupId) => {
 }
 
 export const getGroupUnreadCount = createSelector(
-  [_getGroupUnreadCount],
-  (count) => count,
+    [_getGroupUnreadCount],
+    (count) => count,
 )
 
 const _groupIsActive = (state, groupId, dock = false) => {
@@ -123,10 +123,8 @@ const _groupIsActive = (state, groupId, dock = false) => {
 
 }
 
-
-
 export const groupIsActive = createSelector(
-  [_groupIsActive],
-  (r) => r,
+    [_groupIsActive],
+    (r) => r,
 )
 

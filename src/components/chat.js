@@ -227,10 +227,8 @@ class Chat extends React.Component {
   removeActiveChat = () => {
 
     const {active} = this.props
-    if (!active) {
-      return
-    }
-    if (this.props.dock && this.props.tab) {
+
+    if (active && this.props.dock && this.props.tab) {
       this.props.removeActiveChat()
     }
   }
@@ -636,7 +634,8 @@ const mapStateToProps = (state, props) => ({
   messages: getGroupMessages(state, props),
   active: props.dock && _.get(state.chat.active, 'id') ===
       _.get(props, 'tab.id'),
-  avatar: _.get(state.group.find((g) => g.id === props.group.id), 'avatar', ''),
+  avatar: _.get(state.group.find((g) => g.id === _.get(props.group, 'id')),
+      'avatar', ''),
   currentUserId: _.get(state.app.user, 'id', null),
   unread: getGroupUnreadCount(state, _.get(props, 'group.id', null)),
   userTypings: state.typing.filter(

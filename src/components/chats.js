@@ -44,9 +44,11 @@ class Chats extends React.Component {
                   const isNew = tab.isNew
 
                   const group = groups.find((g) => g.id === tab.group.id)
+
                   return (
                       <Tab key={index} className={'chat-tab'}>
-                        <Chat isNew={isNew} tab={tab} group={group}
+                        <Chat isNew={isNew} tab={tab}
+                              group={group ? group : tab.group}
                               dock={true}/>
                       </Tab>
                   )

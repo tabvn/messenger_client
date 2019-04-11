@@ -28,6 +28,9 @@ const SelectedList = styled.div`
     font-size: 21px;
     padding: 20px;
   }
+  .user-result{
+    flex-direction: row;
+  }
 `
 
 const User = styled.div`

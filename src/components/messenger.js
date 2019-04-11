@@ -74,6 +74,7 @@ class Messenger extends React.Component {
                 this.props.openChat(g.users, g)
               }}
               onSelect={(group, users) => {
+
                 this.props.openChat(users, group)
               }}/>
           {
