@@ -301,6 +301,22 @@ export const handleReceiveRemoveGroupUser = (payload) => {
     const userId = _.get(payload, 'user_id')
     const currentUserId = _.get(state.app.user, 'id', null)
 
+    const group_id = _.get(payload, 'group_id')
+
+    const user = state.user.find((u) => u.id === userId)
+
+    const msg = `${_.get(payload, 'delete_by.first_name')}removed ${_.get(
+        user, 'first_name', '')} from the group`
+
+    dispatch({
+      type: ADD_GROUP_NOTIFICATION,
+      payload: {
+        group_id: group_id,
+        user_id: userId,
+        message: msg,
+      },
+    })
+
     if (userId === currentUserId) {
       // send notify to removed user
 
