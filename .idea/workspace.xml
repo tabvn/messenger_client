@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1f4f5dc0-d582-4105-9b06-f97ef1947856" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/chat.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/chats.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/chats.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-group-search-user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-group-search-user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/messenger.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/messenger.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/selector/group.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/selector/group.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/messages.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/messages.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -44,7 +40,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/create-group.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="415">
-              <caret line="83" lean-forward="true" selection-start-line="83" selection-end-line="83" />
+              <caret line="83" selection-start-line="83" selection-end-line="83" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -56,7 +52,7 @@
         <entry file="file://$PROJECT_DIR$/src/redux/actions/chat.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-2217">
-              <caret line="97" column="22" lean-forward="true" selection-start-line="97" selection-start-column="22" selection-end-line="97" selection-end-column="22" />
+              <caret line="97" column="22" selection-start-line="97" selection-start-column="22" selection-end-line="97" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -74,7 +70,7 @@
         <entry file="file://$PROJECT_DIR$/src/redux/selector/group.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
-              <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+              <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -85,8 +81,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/chat.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-691">
-              <caret line="509" column="4" selection-start-line="509" selection-start-column="4" selection-end-line="509" selection-end-column="4" />
+            <state relative-caret-position="162">
+              <caret line="578" column="21" selection-start-line="578" selection-start-column="21" selection-end-line="578" selection-end-column="21" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -95,10 +91,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/messages.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="293">
+              <caret line="162" column="43" selection-start-line="162" selection-start-column="43" selection-end-line="162" selection-end-column="43" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/chats.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="46" column="18" selection-start-line="46" selection-start-column="18" selection-end-line="46" selection-end-column="18" />
+            <state relative-caret-position="348">
+              <caret line="49" column="28" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -117,7 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>searc</find>
       <find>toggle</find>
       <find>&lt;stat</find>
       <find>.user-name</find>
@@ -147,6 +154,7 @@
       <find>this.props.to</find>
       <find>composer-input-container</find>
       <find>remove_group_user</find>
+      <find>unread-notify-box-inner</find>
     </findStrings>
     <replaceStrings>
       <replace>messenger-loading</replace>
@@ -199,7 +207,6 @@
         <option value="$PROJECT_DIR$/src/components/message-body.js" />
         <option value="$PROJECT_DIR$/src/components/user-list.js" />
         <option value="$PROJECT_DIR$/src/components/create-group-header.js" />
-        <option value="$PROJECT_DIR$/src/components/messages.js" />
         <option value="$PROJECT_DIR$/src/components/sidebar.js" />
         <option value="$PROJECT_DIR$/src/components/chat-header.js" />
         <option value="$PROJECT_DIR$/src/components/composer.js" />
@@ -209,6 +216,7 @@
         <option value="$PROJECT_DIR$/src/components/chat.js" />
         <option value="$PROJECT_DIR$/src/components/messenger.js" />
         <option value="$PROJECT_DIR$/src/components/chats.js" />
+        <option value="$PROJECT_DIR$/src/components/messages.js" />
       </list>
     </option>
   </component>
@@ -436,12 +444,12 @@
       <workItem from="1554710235650" duration="2240000" />
       <workItem from="1554795049119" duration="5091000" />
       <workItem from="1554886267508" duration="1361000" />
-      <workItem from="1554950224748" duration="3080000" />
+      <workItem from="1554950224748" duration="4446000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="503440000" />
+    <option name="totallyTimeSpent" value="504806000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="972" extended-state="0" />
@@ -449,10 +457,10 @@
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="npm" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.24954791" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17045455" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.17045455" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50030136" side_tool="true" weight="0.32921347" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32921347" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -748,16 +756,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/messages.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/user-list.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -820,16 +818,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/chat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-691">
-          <caret line="509" column="4" selection-start-line="509" selection-start-column="4" selection-end-line="509" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/create-group-search-user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="379">
@@ -850,7 +838,7 @@
     <entry file="file://$PROJECT_DIR$/src/redux/selector/group.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
@@ -860,7 +848,7 @@
     <entry file="file://$PROJECT_DIR$/src/redux/actions/chat.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2217">
-          <caret line="97" column="22" lean-forward="true" selection-start-line="97" selection-start-column="22" selection-end-line="97" selection-end-column="22" />
+          <caret line="97" column="22" selection-start-line="97" selection-start-column="22" selection-end-line="97" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -874,7 +862,7 @@
     <entry file="file://$PROJECT_DIR$/src/components/create-group.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="415">
-          <caret line="83" lean-forward="true" selection-start-line="83" selection-end-line="83" />
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
@@ -883,8 +871,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/chats.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="46" column="18" selection-start-line="46" selection-start-column="18" selection-end-line="46" selection-end-column="18" />
+        <state relative-caret-position="348">
+          <caret line="49" column="28" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/chat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="578" column="21" selection-start-line="578" selection-start-column="21" selection-end-line="578" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/messages.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="162" column="43" selection-start-line="162" selection-start-column="43" selection-end-line="162" selection-end-column="43" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>

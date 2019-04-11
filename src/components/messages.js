@@ -44,14 +44,21 @@ const Container = styled.div`
       left: 0;
       right: 0;
       display: flex;
-      cursor: pointer;
-    .unread-notify-box-inner{
+      padding: 5px 8px;
       background: #f8c231;
+      align-items: center;
+    .unread-notify-box-inner{
       color: #484848;
       font-weight: 700;
       text-align: center;
-      padding: 5px 8px;
       flex-grow: 1;
+    }
+    .close-unread-notify{
+      cursor: pointer;
+      padding: 3px 5px;
+      i{
+      font-size: 18px;
+      }
     }
   }
 `
@@ -130,6 +137,7 @@ export default class Messages extends React.Component {
 
   state = {
     autoScroll: true,
+    showUnreadNotify: false,
   }
 
   scrollToBottom = () => {
@@ -150,6 +158,11 @@ export default class Messages extends React.Component {
   componentDidUpdate(prevProps) {
     const {isLoadingMore, active} = this.props
 
+    if (!active && this.props.unread > prevProps.unread) {
+      this.setState({
+        showUnreadNotify: this.props.unread,
+      })
+    }
     if (active && this.props.messages.length > prevProps.messages.length ||
         this.props.userTypings.length > prevProps.userTypings.length ||
         this.props.notifications.length > prevProps.notifications.length) {
@@ -210,6 +223,7 @@ export default class Messages extends React.Component {
 
   handleOnScroll = (event) => {
 
+    const {showUnreadNotify} = this.state
     const scrollViewOffsetY = _.get(event.target, 'scrollTop', 0)
     const scrollViewFrameHeight = _.get(event.target, 'clientHeight', 0)
 
@@ -222,6 +236,16 @@ export default class Messages extends React.Component {
       if (this.props.onLoadMore) {
         this.props.onLoadMore()
       }
+    }
+
+    if (sum >= _.get(event.target, 'scrollHeight', 0) - 10) {
+      // scroll to the bottom
+      if (showUnreadNotify) {
+        this.setState({
+          showUnreadNotify: 0,
+        })
+      }
+
     }
 
   }
@@ -242,7 +266,8 @@ export default class Messages extends React.Component {
 
   render() {
 
-    const {messages, hasFile, height, userTypings, notifications, unread, active} = this.props
+    const {messages, hasFile, height, userTypings, notifications} = this.props
+    const {showUnreadNotify} = this.state
 
     let h = height
 
@@ -286,14 +311,18 @@ export default class Messages extends React.Component {
               })
             }
 
-            {unread > 0 ? (
+            {showUnreadNotify > 0 ? (
                 <div
-                    onClick={() => {
-                      this.scrollToBottom()
-                    }}
                     className={'unread-notify-box'}>
                   <div
-                      className={'unread-notify-box-inner'}> {`${unread} new/unread messages`}</div>
+                      className={'unread-notify-box-inner'}> {`${showUnreadNotify} new/unread messages`}</div>
+                  <div onClick={() => {
+                    this.setState({
+                      showUnreadNotify: 0,
+                    })
+                  }}
+                       className={'close-unread-notify'}><i
+                      className={'md-icon'}>close</i></div>
                 </div>
             ) : null}
           </div>
