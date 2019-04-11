@@ -318,7 +318,11 @@ export default class ChatHeader extends React.Component {
     return (
         <div className={'ar-user-name'}>
           {isPublished != null && isPublished === 1 ?
-              <a href={`/member/${_.get(firstUser, 'uid')}`}>{name}</a> :
+              <a onClick={(e) => {
+                if (window.innerWidth <= 375) {
+                  e.preventDefault()
+                }
+              }} href={`/member/${_.get(firstUser, 'uid')}`}>{name}</a> :
               name}
           {users.length > 1 ? ',...' : null}
         </div>
@@ -430,14 +434,7 @@ export default class ChatHeader extends React.Component {
               this.renderChatInfo()
             }
           </div>
-          {dock === true && w <= 375 && <ToggleButton onClick={() => {
-            if (this.props.onToggle) {
-              this.props.onToggle()
-            }
-          }} className={'toggle-icon'}><i
-              className={'md-icon'}>{open ?
-              'photo_size_select_small' :
-              'open_in_new'}</i></ToggleButton>}
+
 
           {
             dock ? (

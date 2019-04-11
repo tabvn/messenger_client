@@ -510,7 +510,7 @@ class Chat extends React.Component {
     let isOpen = true
     const tab = _.get(this.props, 'tab')
 
-    if (dock && !_.get(tab, 'open')) {
+    if (dock && window.innerWidth > 375 && !_.get(tab, 'open')) {
       isOpen = false
     }
 
