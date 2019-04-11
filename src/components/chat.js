@@ -9,6 +9,7 @@ import Messages from './messages'
 import {getGroupMessages} from '../redux/selector/message'
 
 import {
+  toggleSidebar,
   closeChat,
   loadMessages,
   sendMessage,
@@ -31,7 +32,7 @@ import CreateSingleChat from './create-single-chat'
 import ChatReportModal from './chat-report-modal'
 import BlockGroupUserModal from './block-group-user-modal'
 import GroupUserRemoveModal from './group-user-removed-modal'
-import {ADD_GROUP_NOTIFICATION, EVENT_GROUP_USER_REMOVED} from '../redux/types'
+import {EVENT_GROUP_USER_REMOVED} from '../redux/types'
 import InviteNotify from './invite-notify'
 import ClickOutside from './click-outside'
 
@@ -545,6 +546,9 @@ class Chat extends React.Component {
             </div>
           </div>
           <ChatHeader
+              onOpenSidebar={() => {
+                this.props.toggleSidebar(true)
+              }}
               onHeaderClick={this.onToggle}
               dock={dock}
               isNew={isNew}
@@ -655,6 +659,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   userIsEndTyping,
   userIsTyping,
   removeActiveChat,
+  toggleSidebar,
   subscribeRemoved: (cb) => {
     return (dispatch, getState, {service, event}) => {
       return event.subscribe(EVENT_GROUP_USER_REMOVED, cb)

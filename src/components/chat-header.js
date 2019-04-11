@@ -441,6 +441,12 @@ export default class ChatHeader extends React.Component {
                 <CloseButton onClick={() => {
                   if (this.props.onClose) {
                     this.props.onClose()
+                    if(w <= 375){
+                      if(this.props.onOpenSidebar){
+                        this.props.onOpenSidebar()
+                      }
+
+                    }
                   }
                 }}>
                   <i className={'md-icon'}>{w > 375
