@@ -11,6 +11,7 @@ const Dock = styled.div`
   bottom: 0;
   left: auto;
   right: ${props => props.right}px;
+  height: 100%;
   @media (max-width: 991px) {
     &.is-closed{
       right: -10px;
@@ -27,6 +28,7 @@ const Dock = styled.div`
     display: flex;
     flex-direction: row;
     overflow: auto;
+    height: 100%;
   }
 `
 

@@ -10,6 +10,7 @@ const Container = styled.div`
     flex-direction: row;
     justify-content: flex-end;
     align-items: flex-end;
+    height: 100%;
  
 `
 
@@ -22,10 +23,14 @@ const Tab = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   z-index: 100000;
+  .chat-main-wrapper{
+    height: 100%;
+  }
   @media (max-width: 375px) {
    width: 100%;
    margin: 0;
    max-height: 100%;
+   height: 100%;
   }
 `
 

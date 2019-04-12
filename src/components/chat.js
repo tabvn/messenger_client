@@ -39,8 +39,12 @@ import ClickOutside from './click-outside'
 const Container = styled.div`
   flex-grow: 1;
   position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   .chat-messages{
     overflow: hidden;
+    flex-grow: 1;
   }
   .ar-file-drop{
     border: 2px dashed #c4c4c4;
@@ -528,7 +532,8 @@ class Chat extends React.Component {
     })
 
     return (
-        <ClickOutside onClickOutside={this.removeActiveChat}><Container
+        <ClickOutside className={'chat-main-wrapper'}
+                      onClickOutside={this.removeActiveChat}><Container
             onDrop={this._onDrop.bind(this)}
             onDragEnter={this._onDragEnter.bind(this)}
             onDragOver={this._onDragOver.bind(this)}
