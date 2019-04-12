@@ -4,24 +4,27 @@ import {
   SET_ATTACHMENT_MODAL, SET_INBOX_ACTIVE,
   SET_MESSAGE,
   SET_SELECTED_ATTACHMENT_MODAL,
-  UPDATE_CHAT_TAB, UPDATE_MESSAGE
+  UPDATE_CHAT_TAB, UPDATE_MESSAGE,
 } from '../types'
-import { setError } from './error'
+import {setError} from './error'
 import _ from 'lodash'
-import { setGroup } from './group'
+import {setGroup} from './group'
 
 export const replaceUrls = (body) => {
 
   let replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
-  let replacedText = body.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>')
+  let replacedText = body.replace(replacePattern1,
+      '<a href="$1" target="_blank">$1</a>')
 
   //URLs starting with www. (without // before it, or it'd re-link the ones done above)
   const replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim
-  replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>')
+  replacedText = replacedText.replace(replacePattern2,
+      '$1<a href="http://$2" target="_blank">$2</a>')
 
   //Change email addresses to mailto:: links
   const replacePattern3 = /(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})/gim
-  replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>')
+  replacedText = replacedText.replace(replacePattern3,
+      '<a href="mailto:$1">$1</a>')
 
   return replacedText
 
@@ -66,7 +69,7 @@ export const setMessage = (message) => {
       if (existItems.length) {
         dispatch({
           type: SET_MESSAGE,
-          payload: existItems
+          payload: existItems,
         })
       }
 
@@ -79,7 +82,7 @@ export const setMessage = (message) => {
     } else {
       dispatch({
         type: PUSH_MESSAGE,
-        payload: items
+        payload: items,
       })
     }
 
@@ -95,7 +98,7 @@ export const updateLocalMessage = (id, message = null) => {
       payload: {
         id: id,
         message: message,
-      }
+      },
     })
 
   }
@@ -148,7 +151,8 @@ export const loadMessages = (groupId, limit = 50, skip = 0) => {
   }
 }
 
-export const createConversation = (message, userIds = [], g = {title: '', avatar: ''}) => {
+export const createConversation = (
+    message, userIds = [], g = {title: '', avatar: ''}) => {
 
   return (dispatch, getState, {service}) => {
 
@@ -166,7 +170,9 @@ export const createConversation = (message, userIds = [], g = {title: '', avatar
     const gif = _.get(message, 'gif', '')
     const attachments = JSON.stringify(_.get(message, 'attachments', []))
     const query = `mutation createConversation {
-      createConversation(title: "${_.get(g, 'title', '')}", avatar: "${_.get(g, 'avatar', '')}", participants: ${participants}, body: ${body}, gif: "${gif}", emoji: ${emoji}, attachments: ${attachments}) {
+      createConversation(title: "${_.get(g, 'title', '')}", avatar: "${_.get(g,
+        'avatar',
+        '')}", participants: ${participants}, body: ${body}, gif: "${gif}", emoji: ${emoji}, attachments: ${attachments}) {
         id
         title
         user_id
@@ -255,7 +261,7 @@ export const createConversation = (message, userIds = [], g = {title: '', avatar
 
           dispatch({
             type: UPDATE_CHAT_TAB,
-            payload: tab
+            payload: tab,
           })
 
         }
@@ -317,7 +323,8 @@ export const updateMessage = (id, message, callService = false) => {
   }
 }
 
-export const sendMessage = (message, group = {id: null, avatar: '', title: ''}, userIds = []) => {
+export const sendMessage = (
+    message, group = {id: null, avatar: '', title: ''}, userIds = []) => {
   return async (dispatch, getState, {service}) => {
 
     const groupId = _.get(group, 'id', null)
@@ -369,7 +376,10 @@ export const sendMessage = (message, group = {id: null, avatar: '', title: ''}, 
     const attachmentIds = JSON.stringify(_.get(message, 'attachments', []))
 
     const query = `mutation sendMessage {
-      sendMessage(group_id: ${groupId}, body: ${JSON.stringify(_.get(message, 'body', ''))}, gif: "${_.get(message, 'gif', '')}", emoji: ${_.get(message, 'emoji', false)}, attachments: ${attachmentIds}) {
+      sendMessage(group_id: ${groupId}, body: ${JSON.stringify(
+        _.get(message, 'body', ''))}, gif: "${_.get(message, 'gif',
+        '')}", emoji: ${_.get(message, 'emoji',
+        false)}, attachments: ${attachmentIds}) {
         id
         body
         emoji
@@ -420,7 +430,8 @@ const generateId = () => {
   return Math.random().toString(36).substr(2, 9)
 }
 
-export const setAttachmentModal = (group_id = null, attachments = [], selected = null, open = true) => {
+export const setAttachmentModal = (
+    group_id = null, attachments = [], selected = null, open = true) => {
   return (dispatch, getState) => {
 
     dispatch({
@@ -428,8 +439,8 @@ export const setAttachmentModal = (group_id = null, attachments = [], selected =
       payload: {
         open: open,
         selected: selected,
-        attachments: attachments
-      }
+        attachments: attachments,
+      },
     })
 
     if (group_id) {
@@ -454,7 +465,7 @@ export const setAttachmentModal = (group_id = null, attachments = [], selected =
             payload: {
               open: open,
               attachments: ats,
-            }
+            },
           })
         }
 
@@ -467,7 +478,7 @@ export const closeAttachmentModal = () => {
   return (dispatch) => {
     dispatch({
       type: CLOSE_ATTACHMENT_MODAL,
-      payload: false
+      payload: false,
     })
   }
 }
@@ -476,7 +487,7 @@ export const setAttachmentModalSelected = (attachment) => {
   return (dispatch) => {
     dispatch({
       type: SET_SELECTED_ATTACHMENT_MODAL,
-      payload: attachment
+      payload: attachment,
     })
   }
 }
@@ -486,7 +497,7 @@ export const deleteMessage = (id, callService = false) => {
 
     dispatch({
       type: REMOVE_MESSAGE,
-      payload: id
+      payload: id,
     })
 
     if (callService) {

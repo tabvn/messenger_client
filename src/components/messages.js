@@ -3,7 +3,7 @@ import styled, {keyframes} from 'styled-components'
 import Message from './message'
 import _ from 'lodash'
 import UserTyping from './user-typing'
-import BottomNotification from './bottom-notification'
+import NotificationMessage from './notification-message'
 
 const Container = styled.div`
   flex-grow: 1;
@@ -189,13 +189,23 @@ export default class Messages extends React.Component {
 
     messages.map((message, index) => {
 
-      rows.push(<Message onEdit={(message) => {
-        if (this.props.onEdit) {
-          this.props.onEdit(message)
-        }
+      let item = null
 
-      }} dock={dock} hideAvatar={author === message.user_id} key={index}
-                         message={message}/>)
+      if (_.get(message, 'type') === 'notification') {
+
+        item = <NotificationMessage message={message}/>
+
+      } else {
+        item = <Message key={index} onEdit={(message) => {
+          if (this.props.onEdit) {
+            this.props.onEdit(message)
+          }
+
+        }} dock={dock} hideAvatar={author === message.user_id} key={index}
+                        message={message}/>
+      }
+
+      rows.push(item)
 
       author = message.user_id
 
@@ -304,11 +314,6 @@ export default class Messages extends React.Component {
 
                 return <UserTyping key={key} user={user}/>
               }) : null
-            }
-            {
-              notifications.map((n, i) => {
-                return <BottomNotification key={i} message={n.message}/>
-              })
             }
 
             {showUnreadNotify > 0 ? (

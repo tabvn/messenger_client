@@ -1,6 +1,7 @@
 import {setError} from './error'
 import {updateUserStatus} from './user-status'
 import _ from 'lodash'
+import moment from 'moment'
 import {deleteMessage, setMessage, updateLocalMessage} from './message'
 import {
   addUserToGroup,
@@ -11,10 +12,9 @@ import {
 import {setUser} from './user'
 import {openChat} from './chat'
 import {
-  ADD_GROUP_NOTIFICATION,
   EVENT_GROUP_USER_REMOVED,
   ON_PLAY_SOUND,
-  PUSH_FRIEND,
+  PUSH_MESSAGE,
   REMOVE_FRIEND, UPDATE_GROUP,
 } from '../types'
 import {callEnd, receiveCalling} from './call'
@@ -177,15 +177,22 @@ const handleReceiveUserLeftGroup = (payload) => {
     dispatch(removeUserFromGroup(group_id, {id: userId}, false))
 
     if (user) {
-      const msg = `${_.get(user, 'first_name', '')} has left the group`
+
+      const currentTimestamp = moment().unix()
+      const notifyMessage = {
+        group_id: group_id,
+        user_id: 0,
+        type: 'notification',
+        body: `${_.get(user, 'first_name', '')} has left the group`,
+        created: currentTimestamp,
+        updated: currentTimestamp,
+      }
+
       dispatch({
-        type: ADD_GROUP_NOTIFICATION,
-        payload: {
-          group_id: group_id,
-          user_id: userId,
-          message: msg,
-        },
+        type: PUSH_MESSAGE,
+        payload: [notifyMessage],
       })
+
     }
 
   }
@@ -209,9 +216,36 @@ const handleReceiveUserJoinGroup = (payload) => {
     let user = state.user.find((u) => u.id === payload.user.id)
     if (!user) {
       dispatch(setUser([payload.user]))
+      user = payload.user
     }
 
     dispatch(addUserToGroup(group_id, payload.user, false))
+
+    let msg = `${_.get(user, 'first_name')} joined the group`
+    const addedByUserId = _.get(payload, 'added_by')
+    if (addedByUserId === userId) {
+
+    } else {
+
+      let addedByUser = state.user.find((u) => u.id === addedByUserId)
+      if (addedByUser)
+        msg = `${_.get(addedByUser, 'first_name')} added ${_.get(user,
+            'first_name')} to the group`
+    }
+    const currentTimestamp = moment().unix()
+    const notifyMessage = {
+      group_id: group_id,
+      user_id: 0,
+      type: 'notification',
+      body: msg,
+      created: currentTimestamp,
+      updated: currentTimestamp,
+    }
+
+    dispatch({
+      type: PUSH_MESSAGE,
+      payload: [notifyMessage],
+    })
 
   }
 }
@@ -305,16 +339,21 @@ export const handleReceiveRemoveGroupUser = (payload) => {
 
     const user = state.user.find((u) => u.id === userId)
 
-    const msg = `${_.get(payload, 'delete_by.first_name')}removed ${_.get(
-        user, 'first_name', '')} from the group`
+    const currentTimestamp = moment().unix()
+    const notifyMessage = {
+      group_id: group_id,
+      user_id: 0,
+      type: 'notification',
+      body: `${_.get(payload, 'delete_by.first_name')} removed ${_.get(
+          user, 'first_name', '')} from the group`,
+      created: currentTimestamp,
+      updated: currentTimestamp,
+
+    }
 
     dispatch({
-      type: ADD_GROUP_NOTIFICATION,
-      payload: {
-        group_id: group_id,
-        user_id: userId,
-        message: msg,
-      },
+      type: PUSH_MESSAGE,
+      payload: [notifyMessage],
     })
 
     if (userId === currentUserId) {
