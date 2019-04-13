@@ -9,6 +9,7 @@ import {
 import {setError} from './error'
 import _ from 'lodash'
 import {setGroup} from './group'
+import {openChat} from './chat'
 
 export const replaceUrls = (body) => {
 
@@ -290,6 +291,8 @@ export const createConversation = (
           }
 
         }
+
+        dispatch(openChat(group.users, group))
 
         return resolve(_.get(messages, '[0]'))
 

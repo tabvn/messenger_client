@@ -41,6 +41,84 @@ const handleReceiveUserStatus = (payload) => {
   }
 }
 
+const handleReceiveNewGroupCreated = (groupId) => {
+
+  return (dispatch, getState, {service}) => {
+
+    const state = getState()
+    const currentUserId = _.get(state.app.user, 'id')
+
+    const q = `query group {
+        group(id: ${groupId}){
+          id
+          title
+          avatar
+          created
+          updated
+          unread
+          users {
+            id
+            uid
+            first_name
+            last_name
+            avatar
+            status
+          }
+          members {
+            user_id
+            added_by
+            blocked
+            accepted
+            created
+          }
+          messages {
+            id
+            body
+            emoji
+            group_id
+            user_id
+            unread
+            gif
+            created
+            attachments {
+              id
+              message_id
+              name
+              original
+              type
+              size
+            }
+          }
+        }
+      
+      }`
+
+    service.request(q).then((res) => {
+
+      const g = res.group
+      dispatch(setUser(g.users))
+      dispatch(setMessage(g.messages))
+      dispatch(setGroup([g]))
+
+      dispatch(openChat(g.users, g, false))
+
+      if (_.get(state.chat.active, 'group_id') !== groupId &&
+          _.get(state.inbox.active, 'group.id') !== groupId) {
+
+        // play sound
+
+        dispatch({
+          type: ON_PLAY_SOUND,
+          payload: true,
+        })
+
+      }
+
+    })
+
+  }
+}
+
 const handleReceiveMessage = (message) => {
 
   return (dispatch, getState, {service}) => {
@@ -421,6 +499,14 @@ export const handleReceiveWsMessage = (message) => {
     const action = _.get(message, 'action', '')
 
     switch (action) {
+
+      case 'group_created':
+
+        console.log('group created id', message.payload)
+
+        dispatch(handleReceiveNewGroupCreated(message.payload))
+
+        break
 
       case 'user_status':
 

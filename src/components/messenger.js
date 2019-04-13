@@ -4,7 +4,12 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import Sidebar from './sidebar'
 import Chats from './chats'
-import {openChat, createChat, removeInboxActive} from '../redux/actions'
+import {
+  openChat,
+  createChat,
+  removeInboxActive,
+  createConversation,
+} from '../redux/actions'
 
 const Dock = styled.div`
   position: fixed;
@@ -73,7 +78,16 @@ class Messenger extends React.Component {
               }}
               onCreateGroup={(g) => {
 
-                this.props.openChat(g.users, g)
+                let userIds = []
+
+                g.users.forEach((u) => {
+                  userIds.push(u.id)
+                })
+                this.props.createConversation(null, userIds, g).then((res) => {
+                  console.log('res', res)
+                })
+                console.log('create group', g)
+                //this.props.openChat(g.users, g)
               }}
               onSelect={(group, users) => {
 
@@ -105,6 +119,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   openChat,
   createChat,
   removeInboxActive,
+  createConversation,
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messenger)

@@ -194,7 +194,7 @@ export default class Messages extends React.Component {
 
       if (_.get(message, 'type') === 'notification') {
 
-        item = <NotificationMessage message={message}/>
+        item = <NotificationMessage key={index} message={message}/>
 
       } else {
         item = <Message key={index} onEdit={(message) => {
@@ -202,7 +202,7 @@ export default class Messages extends React.Component {
             this.props.onEdit(message)
           }
 
-        }} dock={dock} hideAvatar={author === message.user_id} key={index}
+        }} dock={dock} hideAvatar={author === message.user_id}
                         message={message}/>
       }
 
