@@ -46,7 +46,6 @@ const handleReceiveNewGroupCreated = (groupId) => {
   return (dispatch, getState, {service}) => {
 
     const state = getState()
-    const currentUserId = _.get(state.app.user, 'id')
 
     const q = `query group {
         group(id: ${groupId}){
@@ -501,8 +500,6 @@ export const handleReceiveWsMessage = (message) => {
     switch (action) {
 
       case 'group_created':
-
-        console.log('group created id', message.payload)
 
         dispatch(handleReceiveNewGroupCreated(message.payload))
 

@@ -83,10 +83,7 @@ class Messenger extends React.Component {
                 g.users.forEach((u) => {
                   userIds.push(u.id)
                 })
-                this.props.createConversation(null, userIds, g).then((res) => {
-                  console.log('res', res)
-                })
-                console.log('create group', g)
+                this.props.createConversation(null, userIds, g)
                 //this.props.openChat(g.users, g)
               }}
               onSelect={(group, users) => {
