@@ -10,6 +10,7 @@ import {
   removeInboxActive,
   createConversation,
 } from '../redux/actions'
+import _ from 'lodash'
 
 const Dock = styled.div`
   position: fixed;
@@ -65,11 +66,11 @@ class Messenger extends React.Component {
   render() {
 
     const {wH} = this.state
-    const {sidebarIsOpen, tabs} = this.props
+    const {sidebarIsOpen, tabs,currentUserId} = this.props
     let px = sidebarIsOpen ? 275 : 80
 
     return (
-        <div className={'messenger-container'}>
+        currentUserId ? <div className={'messenger-container'}>
           <Sidebar
               height={wH}
               dock={true}
@@ -102,7 +103,7 @@ class Messenger extends React.Component {
                 </Dock>
             ) : null
           }
-        </div>
+        </div> : null
     )
   }
 }
@@ -110,6 +111,7 @@ class Messenger extends React.Component {
 const mapStateToProps = (state) => ({
   sidebarIsOpen: state.sidebar.open,
   tabs: state.chat.tabs,
+  currentUserId: _.get(state.app.user, 'id', null),
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
