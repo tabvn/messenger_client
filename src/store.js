@@ -19,12 +19,13 @@ export const store = createStore(
 )
 
 const requestData = new FormData()
-
 requestData.append('js_module', 'ar_react')
 requestData.append('js_callback', 'messenger_auth')
-axios.post(`https://tree.addictionrecovery.com/server.php`, requestData).
+axios.post(`/server.php`, requestData).
     then(res => {
       const initStore = _.get(res.data, 'data')
+
+
       store.dispatch({
         type: INIT_APP,
         payload: initStore,

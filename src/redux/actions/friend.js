@@ -176,7 +176,12 @@ export const requestAddFriend = (user) => {
 
   return (dispatch, getState, {service}) => {
 
-    axios.get(`/messenger/request-friend/${user.uid}`).catch((e) => {
+    const formData = new FormData()
+    formData.append('js_module', 'ar_react')
+    formData.append('js_callback', 'messenger_friend')
+    formData.append('friend', user.uid)
+
+    axios.post('/server.php', formData).catch((e) => {
       dispatch(setError(e))
     })
     // request service

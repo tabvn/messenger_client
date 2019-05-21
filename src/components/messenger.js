@@ -18,6 +18,7 @@ const Dock = styled.div`
   left: auto;
   right: ${props => props.right}px;
   height: 100%;
+  z-index: 1000;
   @media (max-width: 991px) {
     &.is-closed{
       right: -10px;
@@ -47,12 +48,20 @@ class Messenger extends React.Component {
   componentDidMount() {
 
     window.addEventListener('resize', this.resize.bind(this))
-
-    document.body.classList.add('ar-messenger')
     this.props.removeInboxActive()
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    const {currentUserId} = this.props
+    if (currentUserId) {
+      document.body.classList.remove('ar-messenger')
+      document.body.classList.add('ar-messenger')
+    }
+
+  }
+
   componentWillUnmount() {
+    document.body.classList.remove('ar-messenger')
     window.removeEventListener('resize', this.resize.bind(this))
   }
 
@@ -63,10 +72,13 @@ class Messenger extends React.Component {
     })
   }
 
+
+
+
   render() {
 
     const {wH} = this.state
-    const {sidebarIsOpen, tabs,currentUserId} = this.props
+    const {sidebarIsOpen, tabs, currentUserId} = this.props
     let px = sidebarIsOpen ? 275 : 80
 
     return (
@@ -111,6 +123,7 @@ class Messenger extends React.Component {
 const mapStateToProps = (state) => ({
   sidebarIsOpen: state.sidebar.open,
   tabs: state.chat.tabs,
+  user: state.app.user,
   currentUserId: _.get(state.app.user, 'id', null),
 })
 
