@@ -25,15 +25,17 @@ axios.post(`/server.php`, requestData).
     then(res => {
       const initStore = _.get(res.data, 'data')
 
+      if(_.get(initStore, 'account')){
+        store.dispatch({
+          type: INIT_APP,
+          payload: initStore,
+        })
+        service.setApiUrl(_.get(initStore, 'api.url'))
+        service.setStore(store)
+        service.setToken(_.get(initStore, 'account'))
+        store.dispatch(initLoad())
+      }
 
-      store.dispatch({
-        type: INIT_APP,
-        payload: initStore,
-      })
-      service.setApiUrl(_.get(initStore, 'api.url'))
-      service.setStore(store)
-      service.setToken(_.get(initStore, 'account'))
-      store.dispatch(initLoad())
 
     })
 

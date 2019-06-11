@@ -1,8 +1,4 @@
 @import "../fonts/material-icons.css";
-body {
-  font-family: "Roboto", sans-serif;
-}
-
 body.messenger {
   margin: 0;
   padding: 0;

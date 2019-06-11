@@ -116,7 +116,7 @@ export const initLoad = () => {
       // also save friends to user
       let users = friends && friends.length ? friends : []
 
-      if (groups.length) {
+      if (groups && groups.length) {
         groups.forEach((g) => {
           const groupMessages = _.get(g, 'messages', [])
           const groupUsers = _.get(g, 'users', [])
