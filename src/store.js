@@ -21,23 +21,28 @@ export const store = createStore(
 const requestData = new FormData()
 requestData.append('js_module', 'ar_react')
 requestData.append('js_callback', 'messenger_auth')
-axios.post(`/server.php`, requestData).
-    then(res => {
-      const initStore = _.get(res.data, 'data')
 
-      if(_.get(initStore, 'account')){
-        store.dispatch({
-          type: INIT_APP,
-          payload: initStore,
-        })
-        service.setApiUrl(_.get(initStore, 'api.url'))
-        service.setStore(store)
-        service.setToken(_.get(initStore, 'account'))
-        store.dispatch(initLoad())
-      }
+axios({
+  method: 'post',
+  url: '/server.php',
+  headers: {'content-type': 'application/json'},
+  withCredentials: true,
+  data: requestData,
+}).then(res => {
 
+  const initStore = _.get(res.data, 'data')
 
+  if (_.get(initStore, 'account')) {
+    store.dispatch({
+      type: INIT_APP,
+      payload: initStore,
     })
+    service.setApiUrl(_.get(initStore, 'api.url'))
+    service.setStore(store)
+    service.setToken(_.get(initStore, 'account'))
+    store.dispatch(initLoad())
+  }
+})
 
 // Allow Drupal call from outside
 
